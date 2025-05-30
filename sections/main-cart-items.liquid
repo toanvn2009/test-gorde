@@ -94,11 +94,17 @@
                     <div>
                       <div class="cart-items">
                         <div>
-                          {%- for item in cart.items -%}
+                          {%- for item in cart.items -%} 
+{% liquid
+  assign collections = ''
+  for collection in item.product.collections
+      assign collections = collections | append: collection.id | append: ','
+  endfor
+%}
                             <div
                               class="cart-item product__item border-bottom fs-bigger-2 pb-15 mb-15 last-0"
                               id="CartItem-{{ item.index | plus: 1 }}"
-                            >
+                             data-foxkit-product-id={{ item.product.id }} data-foxkit-collections="{{ collections }}">
                               <div class="cart-item_inner d-flex flex-cols" style="--col-gap: 25px">
                                 {% if item.image %}
                                   <div class="cart-item__media">
