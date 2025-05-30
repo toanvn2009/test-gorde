@@ -1,0 +1,177 @@
+{% liquid
+  assign sec_settings = section.settings
+  assign eb_only_homepage = sec_settings.enable_on_homepage
+  assign eb_social_icon = sec_settings.enable_social_icon
+  assign banner_image = sec_settings.newsletter_banner
+  assign show_page = ''
+  if eb_only_homepage
+    if request.page_type == 'index'
+      assign show_page = 'show-on-homepage'
+    endif
+  else
+    assign show_page = 'show-all-page'
+  endif
+  assign heading = sec_settings.newsletter_heading
+  assign short_desc = sec_settings.newsletter_sub_title
+  assign email_placeholder = sec_settings.newsletter_email_placeholder
+  assign btn_label = sec_settings.newsletter_button_label
+%}
+<div class="bls-section-newsletter-popup" style="display: none;">
+  <newsletter-popup data-enable-page="{{ show_page }}">
+    <div class="bls-newsletter-popup-wrapper">
+      <div class="bls-newsletter-popup d-flex flex-wrap gap-15">
+        <div class="bls-newsletter-popup__content flex-1 p-20 text-center">
+          <div class="bls-newsletter-popup__header text-center mb-55 px-md-20 pt-15 pt-md-40">
+            {%- if heading != blank -%}
+              <h2 class="heading-letter-spacing bls-newsletter-popup__heading mt-0 h1 lh-1">{{ heading }}</h2>
+            {%- endif -%}
+            {%- if short_desc != blank -%}
+              <div class="bls-newsletter-popup__-des mb-20 word-break">
+                {{ short_desc }}
+              </div>
+            {%- endif -%}
+          </div>
+          {% form 'customer', class: 'newsletter-form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="section-newsletter-form">
+              <div class="field gap-10 justify-content-center btn-large">
+                <input
+                  id="NewsletterEmail--{{ section.id }}"
+                  type="email"
+                  name="contact[email]"
+                  class="flex-1"
+                  value="{{ form.email }}"
+                  aria-required="true"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  autocomplete="email"
+                  {% if form.errors %}
+                    autofocus
+                    aria-invalid="true"
+                    aria-describedby="Newsletter-error--{{ section.id }}"
+                  {% elsif form.posted_successfully? %}
+                    aria-describedby="Newsletter-success--{{ section.id }}"
+                  {% endif %}
+                  placeholder="{% if email_placeholder != blank %}{{ email_placeholder }}{% else %}{{ 'newsletter.label' | t }}{% endif %}"
+                  required
+                >
+                <label class="visually-hidden" for="NewsletterEmail--{{ section.id }}">
+                  {{ 'newsletter.label' | t -}}
+                </label>
+                <button
+                  type="submit"
+                  class="button section-newsletter-form__button nowrap"
+                  name="commit"
+                  aria-label="{{ 'subscribe.button_label' | t }}"
+                >
+                  {% if btn_label != blank %}{{ btn_label }}{% else %}{{ 'subscribe.button_label' | t }}{% endif %}
+                </button>
+              </div>
+              {%- if form.errors -%}
+                <small class="visually-hidden" id="Newsletter-error--{{ section.id }}">
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </small>
+              {%- endif -%}
+              {%- if form.posted_successfully? -%}
+                <div
+                  class="visually-hidden"
+                  id="Newsletter-success--{{ section.id }}"
+                  tabindex="-1"
+                >
+                  {{- 'newsletter.success' | t }}
+                </div>
+              {%- endif -%}
+            </div>
+          {% endform %}
+          {% if eb_social_icon %}
+            <div class="bls-newsletter-popup__social mt-30">
+              {% render 'social-icons' %}
+            </div>
+          {% endif %}
+          <div
+            class="bls-newsletter-popup__dont-show dont-show btn-text-transform  mt-45 fs-small pointer"
+            tabindex="0"
+          >
+            <span class="heading-color border-bottom">{{ 'newsletter_popup.do_not_show_again' | t }}</span>
+          </div>
+        </div>
+        {% if banner_image != blank %}
+          <div class="bls-newsletter-popup__banner rounded-corner-item relative banner__media d-none d-md-block">
+            {{
+              banner_image
+              | image_url: width: 500
+              | image_tag: loading: 'lazy', sizes: '100vw', widths: '165, 360, 535, 750, 1070, 1500'
+            }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </newsletter-popup>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.newsletter_popup.name",
+  "tag": "section",
+  "class": "overlay-section overlay-newsletter",
+  "limit": 1,
+  "enabled_on": {
+    "groups": [
+      "custom.overlay"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.newsletter_popup.header.heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_on_homepage",
+      "label": "t:sections.newsletter_popup.settings.show_on_homepage",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_social_icon",
+      "label": "t:sections.newsletter_popup.settings.enable_social_icon",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "newsletter_banner",
+      "label": "t:sections.newsletter_popup.settings.banner_image"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.newsletter_popup.settings.heading",
+      "default": "Newsletter heading"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_sub_title",
+      "label": "t:sections.newsletter_popup.settings.short_description",
+      "default": "<p>Newsletter description</p>"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_email_placeholder",
+      "label": "t:sections.newsletter_popup.settings.email_placeholder",
+      "default": "Email placeholder"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "t:sections.newsletter_popup.settings.button_label",
+      "default": "Button label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.newsletter_popup.name"
+    }
+  ]
+}
+{% endschema %}

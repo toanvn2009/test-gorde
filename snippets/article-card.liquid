@@ -1,0 +1,202 @@
+{%- if article and article != empty -%}
+  <div
+    class="article-card-wrapper bls__item-load card-wrapper underline-links-hover{% if customClass and settings.animations_reveal_on_scroll %} {{ customClass }}{% endif %}"
+    {% if indexFor and settings.animations_reveal_on_scroll %}
+      data-cascade
+      style="--animation-order: {{ indexFor }};"
+    {% endif %}
+  >
+    <div class="card article-card">
+      {%- if section.settings.blog_desgin == 'desgin_modern' -%}
+        <div class="article-card-modern__info btn-text-transform heading-color d-flex flex-wrap mb-20 lh-normal space-between align-center">
+          <div class="article-card-modern__inner">
+            {%- if show_author -%}
+              <span class="post-author d-inline-flex align-center mb-7 uppercase">
+                {% render 'icon-account', custom_width: 16 %}
+                <span class="ml-5">
+                  {{ 'blogs.article.by' | t: author: article.author -}}
+                </span>
+              </span>
+            {%- endif -%}
+            {%- if show_tags -%}
+              {% if article.tags.size > 0 %}
+                <div class="d-flex flex-wrap gap-10">
+                  {% for tag in article.tags limit: 5 %}
+                    {% if current_tags contains tag %}
+                      <span class="blog-tag remove-underline d-inline-flex align-center mb-7 no-links fs-small">
+                        {{ tag }}
+                      </span>
+                    {% else %}
+                      <div class="blog-tag  mb-7 fs-small">
+                        {{ tag | link_to_tag: tag }}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {%- endif -%}
+            {%- if show_cate -%}
+              {% assign blog_name = article.handle | split: '/' | first %}
+              {% if blog_name != blank %}
+                <div class="blog-meta-tag blog-cate mb-7 fs-small">
+                  <a
+                    class="post-tags remove-underline d-inline-flex align-center"
+                    href="{{ blog.url }}"
+                    aria-label="blog category"
+                  >
+                    {{ blog_name | capitalize }}
+                  </a>
+                </div>
+              {% endif %}
+            {%- endif -%}
+            {%- if show_category -%}
+              {% assign blog_name = article.handle | split: '/' | first %}
+              {% if blog_name != blank %}
+                <div class="blog-tag mb-7 fs-small">
+                  <a
+                    href="{{ blog.url }}"
+                    class="post-blog remove-underline d-inline-flex align-center"
+                    aria-label="{{  blog_name }}"
+                  >
+                    {{- blog_name | capitalize -}}
+                  </a>
+                </div>
+              {% endif %}
+            {%- endif -%}
+          </div>
+          {%- if show_date -%}
+            <span class="post-date d-inline-flex align-center mb-7 uppercase">
+              {% render 'icon-clock', custom_width: 16 -%}
+              <span class="ml-5">{{- article.published_at | date: '%d %b %Y' -}}</span>
+            </span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if show_image == true and article.image -%}
+        <div class="hover-effect{% if settings.enable_zoom_effect %} zoom-in{% else %} fade-in{% endif %}">
+          <div
+            class="banner__media mb-27"
+            {% if media_aspect_ratio != 'adapt' %}
+              style="--aspect-ratio:{{ media_aspect_ratio }}"
+            {% else %}
+              style="--aspect-ratio:{{ article.image.aspect_ratio }}"
+            {% endif %}
+          >
+            {%- liquid
+              assign alt = article.title | escape
+              if article.image.alt != blank
+                assign alt = article.image.alt | escape
+              endif
+            -%}
+            <a href="{{ article.url }}" class="remove-underline">
+              <img
+                srcset="
+                  {%- if article.image.src.width >= 165 -%}{{ article.image.src | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if article.image.src.width >= 360 -%}{{ article.image.src | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if article.image.src.width >= 533 -%}{{ article.image.src | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if article.image.src.width >= 720 -%}{{ article.image.src | image_url: width: 720 }} 720w,{%- endif -%}
+                  {%- if article.image.src.width >= 1000 -%}{{ article.image.src | image_url: width: 1000 }} 1000w,{%- endif -%}
+                  {%- if article.image.src.width >= 1500 -%}{{ article.image.src | image_url: width: 1500 }} 1500w,{%- endif -%}
+                  {{ article.image.src | image_url }} {{ article.image.src.width }}w
+                "
+                src="{{ article.image.src | image_url: width: 720 }}"
+                sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
+                alt="{{ alt }}"
+                class="motion-reduce"
+                loading="lazy"
+                width="{{ article.image.width }}"
+                height="{{ article.image.height }}"
+              >
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+      <div class="card__content">
+        {%- if section.settings.blog_desgin == 'desgin_default' -%}
+          <div class="article-card__info btn-text-transform heading-color d-flex flex-wrap fs-small mb-15 pt-md-10 lh-normal">
+            {%- if show_tags -%}
+              {% if article.tags.size > 0 %}
+                {% for tag in article.tags limit: 5 %}
+                  {% if current_tags contains tag %}
+                    <span class="blog-tag {% if settings.rounded_corner %}outline-style reset-hover{% endif %} remove-underline d-inline-flex align-center mb-7 no-links">
+                      {{ tag }}
+                    </span>
+                  {% else %}
+                    <div class="blog-tag {% if settings.rounded_corner %}show-outline-style{% endif %} mb-7">
+                      {{ tag | link_to_tag: tag }}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {%- endif -%}
+            {%- if show_cate -%}
+              {% assign blog_name = article.handle | split: '/' | first %}
+              {% if blog_name != blank %}
+                <div class="blog-meta-tag blog-cate mb-7">
+                  <a
+                    class="post-tags outline-style remove-underline d-inline-flex align-center"
+                    href="{{ blog.url }}"
+                    aria-label="blog category"
+                  >
+                    {{ blog_name | capitalize }}
+                  </a>
+                </div>
+              {% endif %}
+            {%- endif -%}
+            {%- if show_category -%}
+              {% assign blog_name = article.handle | split: '/' | first %}
+              {% if blog_name != blank %}
+                <div class="blog-tag {% if settings.rounded_corner %}show-outline-style{% endif %} mb-7">
+                  <a
+                    href="{{ blog.url }}"
+                    class="post-blog remove-underline d-inline-flex align-center"
+                    aria-label="{{  blog_name }}"
+                  >
+                    {{- blog_name | capitalize -}}
+                  </a>
+                </div>
+              {% endif %}
+            {%- endif -%}
+            {%- if show_date -%}
+              <span class="post-date{% if settings.rounded_corner %} outline-style reset-hover{% endif %} d-inline-flex align-center mb-7">
+                {% render 'icon-clock', custom_width: 16 -%}
+                <span class="ml-5">{{- article.published_at | date: '%d %b %Y' -}}</span>
+              </span>
+            {%- endif -%}
+            {%- if show_author -%}
+              <span class="post-author {% if settings.rounded_corner %}outline-style reset-hover{% endif %} d-inline-flex align-center mb-7">
+                {% render 'icon-account', custom_width: 16 %}
+                <span class="ml-5">
+                  {{ 'blogs.article.by' | t: author: article.author -}}
+                </span>
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <div class="card__heading h5 mt-0">
+          <a href="{{ article.url }}" class="heading-color remove-underline border-animation">
+            {{ article.title | escape }}
+          </a>
+        </div>
+        {%- if show_excerpt -%}
+          {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+            <p class="article-card__excerpt rte-width mb-0 rte">
+              {%- if article.excerpt.size > 0 -%}
+                {{ article.excerpt | strip_html | truncatewords: 30 }}
+              {%- else -%}
+                {{ article.content | strip_html | truncatewords: 30 }}
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if show_comment_count -%}
+          <div class="article-card__footer">
+            {%- if blog.comments_enabled? -%}
+              <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

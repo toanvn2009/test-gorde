@@ -1,0 +1,48 @@
+<script src="{{ 'share.js' | asset_url }}" defer="defer"></script>
+
+<share-button id="Share-{{ section.id }}" class="share-button quick-add-hidden d-inline-flex relative">
+  <button class="button btn-reset share-button__button hidden" aria-label="Share">
+    <span
+      class="no-js-hidden mr-10 transition pointer w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+    >
+      {% render 'icon-link', custom_width: 18 %}
+    </span>
+  </button>
+  <details id="Details-{{ block.id }}-{{ section.id }}" class="mb-15">
+    <summary class="share-button__button">
+      <span
+        class="no-js-hidden mr-10 transition pointer w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+      >
+        {% render 'icon-link', custom_width: 18 %}
+      </span>
+    </summary>
+    <div class="share-button__fallback motion-reduce d-flex gap-10 absolute top-100 left-0 bg-default z-3">
+      <div class="field gap-5 flex-column">
+        <label class="field__label" for="ShareUrl-{{ section.id }}">{{ 'general.share.share_url' | t }}</label>
+        <span
+          id="ShareMessage-{{ section.id }}"
+          class="share-button__message input-style input-height d-inline-flex align-center hidden nowrap"
+          role="status"
+        >
+        </span>
+        <input
+          type="text"
+          class="field__input"
+          id="ShareUrl-{{ section.id }}"
+          value="{{ share_link }}"
+          placeholder="{{ 'general.share.share_url' | t }}"
+          onclick="this.select();"
+          readonly
+        >
+      </div>
+      <button class="button share-button__close hidden no-js-hidden align-self-end input-height input-width p-0 d-inline-flex align-center">
+        {% render 'icon-close' %}
+        <span class="visually-hidden">{{ 'general.share.close' | t }}</span>
+      </button>
+      <button class="button share-button__copy no-js-hidden align-self-end input-height input-width p-0 d-inline-flex align-center">
+        {% render 'icon-clipboard' %}
+        <span class="visually-hidden">{{ 'general.share.copy_to_clipboard' | t }}</span>
+      </button>
+    </div>
+  </details>
+</share-button>

@@ -1,0 +1,17 @@
+source_language: en
+target_languages: [de, es, fr, it]
+non_blocking_languages: []
+components:
+  - name: buyer
+    audience: buyer
+    scheme: 'apps-and-themes'
+    owners: ['@Shopify/themes-translations']
+    paths:
+      - locales/{{language}}.json
+  - name: merchant
+    target_languages: [e, es, fr, it]
+    audience: merchant
+    scheme: 'apps-and-themes'
+    owners: ['@Shopify/themes-translations']
+    paths:
+      - locales/{{language}}.schema.json

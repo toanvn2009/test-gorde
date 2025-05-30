@@ -1,0 +1,67 @@
+/* Shopable video */
+.mute-button {
+    background: #FFFFFF26;
+    width: 4.8rem;
+    height: 3.2rem;
+}
+
+body.rounded-corner .mute-button {
+    border-radius: 8px;
+}
+
+.mute-button.active .mute-close,
+.mute-open {
+    display: none;
+}
+
+.mute-button.active .mute-open {
+    display: block;
+}
+
+.video-item--ratio {
+    cursor: pointer;
+}
+
+.video-item--ratio::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(to top, #000000b3 0% 1%, #0000 58% 59%);
+    opacity: .75;
+    pointer-events: none;
+
+}
+
+.shopable-video-product .product__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    --product-spacing-top: 0;
+    --product-name-size: 2rem;
+    --heading-color: #fff;
+    --link-hover-color: #fff;
+    --product-price-size: 1.4rem
+}
+
+.shopable-video-product .product__inner {
+    flex: 0 0 auto;
+    width: 5.8rem;
+}
+
+.shopable-video-product .product__infomation {
+    flex: 1;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.shopable-video-product .product__item .product__media {
+    --aspect-ratio: 1 !important;
+    --rounded-radius: 50%;
+}
+
+.shopable-video-product .product__price {
+    margin-top: 0;
+}

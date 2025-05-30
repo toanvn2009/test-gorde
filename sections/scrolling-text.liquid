@@ -1,0 +1,324 @@
+{%- liquid
+  assign section_width = ''
+  if section.settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif section.settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+
+  assign tb_top_spacing = ''
+  if section.settings.padding_top > settings.vertical_space_tablet
+    assign tb_top_spacing = ' top-tb'
+  endif
+  assign tb_bottom_spacing = ''
+  if section.settings.padding_bottom > settings.vertical_space_tablet
+    assign tb_bottom_spacing = ' bottom-tb'
+  endif
+
+  assign mb_top_spacing = ''
+  if section.settings.padding_top > settings.vertical_space_mobile
+    assign mb_top_spacing = ' top-mb'
+  endif
+  assign mb_bottom_spacing = ''
+  if section.settings.padding_bottom > settings.vertical_space_mobile
+    assign mb_bottom_spacing = ' bottom-mb'
+  endif
+
+  assign img_size = ''
+  if section.settings.scrolling_size == '30'
+    assign img_size = '40'
+  elsif section.settings.scrolling_size == '70'
+    assign img_size = '80'
+  else
+    assign img_size = '100'
+  endif
+-%}
+
+{%- capture style -%}
+--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+--marquee-speed: {{ section.settings.marquee_speed }}s;
+--gradient-color-start: {{ section.settings.gradient_color_start }};
+--gradient-color-end: {{ section.settings.gradient_color_end }};
+{%- endcapture -%}
+
+<div
+  class="color-{{ section.settings.color_scheme }} gradient bls__section scrolling-text section-padding{{ tb_top_spacing }}{{ tb_bottom_spacing }}{{ mb_top_spacing }}{{ mb_bottom_spacing }}"
+  aria-label="{{ 'sections.scrolling_text.name' | t }}"
+  {{ block.shopify_attributes }}
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    <div class="marquee d-flex overflow-hidden w-full justify-content-center heading-color{% if section.settings.use_heading_font %} heading-font{% endif %}">
+      {%- for i in (0..5) -%}
+        <div class="d-flex animation-marquee direction-{{ section.settings.direction }}">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.text != blank -%}
+              <a
+                tabindex="-1"
+                {% if block.settings.link == blank %}
+                  role="link" aria-disabled="true" {{ block.shopify_attributes }}
+                {% else %}
+                  href="{{ block.settings.link }}"
+                  target="_blank"
+                {% endif %}
+                class="scrolling__bar-link relative lh-normal remove-underline d-flex justify-content-center link link--text align-center nowrap size-{{ section.settings.scrolling_size }}{% if section.settings.use_heading_font == blank %} body-size{% endif %}{% if section.settings.uppercase %} uppercase{% endif %}{% if section.settings.style_between_item %} {% if section.settings.scrolling_icon == 'circle' %}show-dot z--1{% endif %}{% endif %}{% if block.settings.accent_color %} accent-color{% endif %}{% if section.settings.use_heading_font != blank and block.settings.accent_color == blank %} heading-color{% endif %} {% if section.settings.use_gradient_color %}use-gradient-color{% endif %}"
+              >
+                {%- if block.settings.image != blank -%}
+                  <div
+                    class="bls__scrolling-img d-flex align-center"
+                    style="--img-width: {{ img_size }}px"
+                  >
+                    {{
+                      block.settings.image
+                      | image_url: width: 3840
+                      | image_tag:
+                        loading: 'lazy',
+                        sizes: '100vw',
+                        widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+                    }}
+                  </div>
+                {%- endif -%}
+                {% if block.settings.link != blank %}<span class="underline">{% endif %}
+                {{ block.settings.text }}
+                {% if block.settings.link != blank %}</span>{% endif %}
+                {% if section.settings.scrolling_icon == 'infinity' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="37" viewBox="0 0 36 37" fill="none">
+                    <path d="M10.125 10.625C5.7876 10.625 2.25 14.1626 2.25 18.5C2.25 22.8418 5.7832 26.375 10.125 26.375C13.4209 26.375 15.4336 24.5645 16.9805 22.332C16.519 21.5894 16.1323 20.8555 15.75 20.1523C14.3701 22.4331 12.8232 24.125 10.125 24.125C7.02246 24.125 4.5 21.6025 4.5 18.5C4.5 15.3799 7.00488 12.875 10.125 12.875C11.9443 12.875 13.1001 13.5254 14.168 14.6328C15.2358 15.7402 16.1367 17.3398 17.0508 19.0273C17.9648 20.7148 18.8921 22.4902 20.25 23.9141C21.6079 25.3379 23.48 26.375 25.875 26.375C30.2124 26.375 33.75 22.8374 33.75 18.5C33.75 14.1582 30.2168 10.625 25.875 10.625C22.5967 10.625 20.5708 12.3784 19.0195 14.5625C19.481 15.292 19.9028 16.0083 20.2852 16.707C21.6562 14.4922 23.1855 12.875 25.875 12.875C28.9775 12.875 31.5 15.3975 31.5 18.5C31.5 21.6201 28.9951 24.125 25.875 24.125C24.0864 24.125 22.9614 23.4746 21.9023 22.3672C20.8433 21.2598 19.938 19.6602 19.0195 17.9727C18.1011 16.2852 17.1562 14.5098 15.7852 13.0859C14.4141 11.6621 12.542 10.625 10.125 10.625Z" fill="black"/>
+                  </svg>
+                {% endif %}
+                {% if section.settings.scrolling_icon == 'leaf' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="37" viewBox="0 0 36 37" fill="none">
+                    <path d="M28.1602 5L27 5.52734C23.4229 7.10498 18.2549 7.69824 13.8516 9.25391C11.6499 10.0317 9.61084 11.0688 8.08594 12.7344C6.56103 14.3999 5.625 16.6938 5.625 19.625C5.625 22.6572 7.40918 24.7358 9.07031 25.918C9.77783 26.4233 10.4634 26.7881 11.0391 27.043C10.3447 28.3306 9.83057 29.4907 9.49219 30.4883C8.87695 32.2856 8.78027 33.6919 8.82422 34.707C8.86816 35.7222 9 36.4165 9 36.3945L11.25 36.6055C11.3203 35.7925 11.1094 35.3662 11.0742 34.6016C11.0391 33.8369 11.105 32.7866 11.6367 31.2266C12.7002 28.1108 15.6489 22.9824 23.3086 14.7734L21.6914 13.2266C17.0991 18.1484 14.1328 21.9849 12.1992 25.0742C11.707 24.8765 11.0479 24.5732 10.3711 24.0898C9.06592 23.1626 7.875 21.8047 7.875 19.625C7.875 17.1465 8.58252 15.5117 9.73828 14.2461C10.894 12.9805 12.5771 12.0752 14.5898 11.3633C18.2329 10.0757 22.7417 9.42529 26.6133 7.98828C26.9736 9.35498 28.125 14.0352 28.125 21.3477C28.125 25.4961 27.1538 27.8735 26.0156 29.1875C24.8774 30.5015 23.5063 30.875 22.2891 30.875C21.0762 30.875 19.7666 30.2554 18.6328 29.4688C17.499 28.6821 16.7168 27.8604 15.9258 27.3594L14.7305 29.2578C14.9326 29.3853 16.0532 30.4224 17.3672 31.332C18.6812 32.2417 20.3467 33.125 22.2891 33.125C24.0205 33.125 26.1387 32.5142 27.7383 30.6641C29.3379 28.814 30.375 25.8433 30.375 21.3477C30.375 12.5498 28.5117 6.23047 28.5117 6.23047L28.1602 5Z" fill="black"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.scrolling-text.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "expand_full_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.scrolling-text.header"
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.announcement-bar.settings.scrolling-text.left"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.announcement-bar.settings.scrolling-text.right"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.announcement-bar.settings.scrolling-text.direction"
+    },
+    {
+      "type": "select",
+      "id": "scrolling_icon",
+      "options": [
+        {
+          "value": "circle",
+          "label": "t:sections.all.icon.circle.label"
+        },
+        {
+          "value": "infinity",
+          "label": "t:sections.all.icon.infinity.label"
+        },
+        {
+          "value": "leaf",
+          "label": "t:sections.all.icon.leaf.label"
+        }
+      ],
+      "default": "circle",
+      "label": "t:sections.icon-with-text.settings.icon.icon_svg"
+    },
+
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "default": 20,
+      "label": "t:sections.announcement-bar.settings.marquee_speed.label",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "s"
+    },
+    {
+      "type": "checkbox",
+      "id": "style_between_item",
+      "default": true,
+      "label": "t:sections.icon-with-text.settings.icon.style_between_item_icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_color",
+      "default": false,
+      "label": "t:sections.icon-with-text.settings.use_gradient_color.label"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_start",
+      "label": "t:sections.icon-with-text.settings.use_gradient_color.gradient_color_start",
+      "default": "#288066 "
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_end",
+      "label": "t:sections.icon-with-text.settings.use_gradient_color.gradient_color_end",
+      "default": "#f4ebe0"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.content_setting.label"
+    },
+    {
+      "type": "select",
+      "id": "scrolling_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.size.large.label"
+        }
+      ],
+      "default": "large",
+      "label": "t:sections.all.content_setting.text.text-size"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "default": true,
+      "label": "t:settings_schema.typography.settings.heading.text_transform.uppercase"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_heading_font",
+      "default": true,
+      "label": "t:settings_schema.typography.settings.heading.use_heading_font"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "scrolling-text",
+      "name": "t:sections.all.content_setting.text.label",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.all.image.label"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Scrolling text",
+          "label": "t:sections.all.content_setting.content"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.colors.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "accent_color",
+          "label": "t:sections.scrolling-text.settings.accent_color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.scrolling-text.name",
+      "blocks": [
+        {
+          "type": "scrolling-text"
+        },
+        {
+          "type": "scrolling-text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

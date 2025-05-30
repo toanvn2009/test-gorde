@@ -1,0 +1,106 @@
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "blocks": {
+        "description_zdRYkB": {
+          "type": "description",
+          "settings": {
+            "page_description": ""
+          }
+        }
+      },
+      "block_order": [
+        "description_zdRYkB"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "text_alignment": "center",
+        "eb_breadcrumb": true,
+        "padding_top": 80,
+        "padding_bottom": 65
+      }
+    },
+    "2b863182-8de1-4d58-914a-aed70ab246be": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_L4XK7W": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "heading_size": "h2",
+            "remove_space": false,
+            "remove_letter_spacing": false
+          }
+        },
+        "text_BPp4wj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>",
+            "description_size": "",
+            "remove_space": false
+          }
+        },
+        "spacing_6ehNr3": {
+          "type": "spacing",
+          "settings": {
+            "desktop_spacing": 1,
+            "mobile_spacing": 3
+          }
+        },
+        "subheading_ANRjtU": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Subheading text",
+            "subheading_size": "h4",
+            "remove_space": false
+          }
+        },
+        "text_x8VeR3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>",
+            "description_size": "",
+            "remove_space": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_L4XK7W",
+        "text_BPp4wj",
+        "spacing_6ehNr3",
+        "subheading_ANRjtU",
+        "text_x8VeR3"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "text_alignment": "left",
+        "content_max_width": 100,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "contact_form_gWHPed": {
+      "type": "contact-form",
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "title": "Contact form",
+        "description": "<p>Add a short description for this section.<\/p>",
+        "text_alignment": "left",
+        "name": "Your name",
+        "email_placeholder": "Enter your email...",
+        "message": "Your comment",
+        "button_label": "Send message",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "2b863182-8de1-4d58-914a-aed70ab246be",
+    "contact_form_gWHPed"
+  ]
+}

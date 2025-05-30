@@ -1,0 +1,474 @@
+{{ 'section-shopable-video.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign the_settings = settings
+  assign sec_settings = section.settings
+  assign section_width = ''
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = 'container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = 'full-width px-20'
+  else
+    assign section_width = 'full-width-gap'
+  endif
+  assign autoplay = sec_settings.autoplay
+  assign aspect_ratio = sec_settings.aspect_ratio
+  assign custom_ratio = sec_settings.custom_ratio
+  assign autoplay_first = true
+%}
+{%- capture sizes -%}
+  (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px)
+  calc(100vw - 10rem), 100vw
+{%- endcapture -%}
+{%- capture style -%}
+--section-padding-top: {{ sec_settings.padding_top }}px; --section-padding-bottom: {{ sec_settings.padding_bottom }}px;
+{%- endcapture -%}
+<div
+  class="d-block color-{{ sec_settings.color_scheme }} gradient bls__section bls__shopable-video"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    <div class="section-inner section-padding">
+      {%- if sec_settings.title != blank or sec_settings.description != blank -%}
+        <div class="bls__section-header mb-40 mb-sm-35 text-{{ sec_settings.text_alignment }}{% if the_settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if sec_settings.title != blank -%}
+            <h2 class="bls_section-heading heading-letter-spacing mt-0 mb-7 mb-md-15">{{ sec_settings.title }}</h2>
+          {%- endif -%}
+          {%- if sec_settings.description != blank -%}
+            <div class="short-des">
+              {{ sec_settings.description }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      <slide-section
+        class="shopable-video-slide"
+        data-items="{{ sec_settings.columns_desktop }}"
+        data-controls="{{ sec_settings.show_navigation }}"
+        data-loop="false"
+        data-nav="{{ sec_settings.show_pagination }}"
+        data-autoplay="{{ sec_settings.enable_autoplay }}"
+        data-mouse-drag="true"
+        data-autoplay-timeout="{{ sec_settings.carousel_time | times: 1000 }}"
+        data-controls-position="top"
+        data-nav-as-thumbnails="true"
+        data-autoplay-button-output="false"
+        data-axis="horizontal"
+        data-center="true"
+        data-mode="carousel"
+        data-fix-height="false"
+        data-pause-video="false"
+        data-product-type="true"
+        data-gap="{{ sec_settings.column_gap }}"
+        data-mobile="1"
+      >
+        <div class="slide-container no-js-scroll{% if the_settings.animations_reveal_on_scroll %} slide-animation opacity-0 opacity-1-768{% endif %}">
+          {%- for block in section.blocks -%}
+            {% liquid
+              assign blo_settings = block.settings
+              assign product = blo_settings.product
+              assign poster_image = blo_settings.poster_image
+              assign local_video = blo_settings.local_video
+              assign ratio = ''
+              if aspect_ratio != 'adapt'
+                case aspect_ratio
+                  when 'portrait'
+                    assign ratio = '3/4'
+                  else
+                    if custom_ratio != empty
+                      assign ratio = custom_ratio | replace: ':', '/'
+                    else
+                      assign ratio = '3/4'
+                    endif
+                endcase
+              else
+                if poster_image != blank
+                  assign ratio = poster_image.aspect_ratio
+                elsif local_video != blank
+                  assign ratio = local_video.aspect_ratio
+                else
+                  assign ratio = '3/4'
+                endif
+              endif
+            %}
+            <shopable-video
+              {{ block.shopify_attributes }}
+              class="bls_shopable-video-items text-left"
+              {% if the_settings.animations_reveal_on_scroll %}
+                data-cascade
+              {% endif %}
+              {% if product != blank %}
+                data-href="{{ product.url }}"
+              {% endif %}
+              style="
+                {%- if the_settings.animations_reveal_on_scroll -%}
+                  --animation-order: {{ forloop.index }};
+                {%- endif -%}
+              "
+            >
+              <div class="relative">
+                {% if poster_image != blank or local_video != blank %}
+                  <div
+                    class="video-item--ratio"
+                    style="--aspect-ratio: {{ ratio }};"
+                  >
+                    {% if local_video != blank %}
+                      {%- liquid
+                        assign source = local_video.sources
+                        assign source_url = ''
+                        for s in source
+                          if s.format == 'mp4'
+                            assign source_url = s.url
+                            break
+                          endif
+                        endfor
+                        assign poster = local_video.preview_image | image_url: width: 500
+                        if poster_image != blank
+                          assign poster = poster_image | image_url: width: 500
+                        endif
+                      -%}
+                      <video
+                        preload="auto"
+                        loop
+                        muted
+                        playsinline
+                        poster="{{ poster }}"
+                        {% if autoplay == 'first_video' and autoplay_first %}
+                          autoplay
+                          data-src="{{ source_url }}"
+                        {% else %}
+                          data-src="{{ source_url }}"
+                        {% endif %}
+                        class="lazyload-video"
+                      ></video>
+                      {%- assign autoplay_first = false -%}
+                    {% else %}
+                      {% if poster_image != blank %}
+                        {%- assign image_alt = poster_image.alt | escape -%}
+                        {{
+                          poster_image
+                          | image_url: width: 3840
+                          | image_tag:
+                            loading: 'lazy',
+                            sizes: sizes,
+                            widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                            alt: image_alt
+                        }}
+                      {% else %}
+                        {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                {% else %}
+                  <div
+                    class="video-item--ratio"
+                    style="--aspect-ratio: {{ ratio }};"
+                  >
+                    {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+                {% if local_video != blank %}
+                  <button
+                    aria-label="{{ 'mute_button.video' | t }}"
+                    class="mute-button absolute z-1 top-15 right-15 border-0 d-inline-flex align-center justify-content-center"
+                  >
+                    <svg
+                      class="mute-open"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M6.627 1.55c.238.101.411.342.411.583v7.714c0 .261-.173.482-.411.603a.742.742 0 0 1-.757-.121l-2.921-2.41H1.5c-.779 0-1.385-.563-1.385-1.286V5.347c0-.703.606-1.286 1.385-1.286h1.449l2.921-2.39a.742.742 0 0 1 .757-.121Zm3.721 1.447c.931.723 1.537 1.788 1.537 2.993 0 1.225-.606 2.29-1.537 2.993a.542.542 0 0 1-.735-.06c-.195-.201-.152-.502.065-.683.714-.522 1.168-1.326 1.168-2.25 0-.904-.454-1.708-1.168-2.23a.475.475 0 0 1-.065-.683.565.565 0 0 1 .735-.08ZM9.029 4.503c.476.362.779.884.779 1.487 0 .623-.303 1.145-.779 1.507a.55.55 0 0 1-.736-.081.454.454 0 0 1 .087-.663.966.966 0 0 0 .389-.763.928.928 0 0 0-.389-.743.475.475 0 0 1-.087-.683.57.57 0 0 1 .736-.061Z" fill="#fff"></path>
+                    </svg>
+                    <svg
+                      class="mute-close"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M6.266 1.551a0.667 0.667 0 0 1 0.382 0.583v7.714c0 0.261 -0.161 0.482 -0.381 0.602a0.651 0.651 0 0 1 -0.703 -0.12L2.85 7.918h-1.346a1.269 1.269 0 0 1 -1.286 -1.286v-1.286c0 -0.703 0.562 -1.286 1.286 -1.286h1.346L5.563 1.671a0.651 0.651 0 0 1 0.703 -0.12Zm2.492 2.651 1.105 1.106 1.105 -1.106c0.18 -0.18 0.483 -0.18 0.663 0 0.201 0.201 0.201 0.502 0 0.683L10.526 5.991l1.106 1.104c0.201 0.201 0.201 0.502 0 0.683a0.44 0.44 0 0 1 -0.663 0l-1.106 -1.105 -1.104 1.106c-0.201 0.201 -0.502 0.201 -0.683 0 -0.201 -0.182 -0.201 -0.483 0 -0.684l1.105 -1.105L8.073 4.886c-0.2 -0.18 -0.2 -0.482 0 -0.683 0.182 -0.18 0.483 -0.18 0.684 0Z" fill="#fff"></path>
+                    </svg>
+                  </button>
+                {% endif %}
+                {% if product != blank %}
+                  <div
+                    class="shopable-video-product  absolute z-1 bottom-15 right-15 left-15 overflow-hidden"
+                  >
+                    {% render 'card-product',
+                      card_product: product,
+                      section_id: section.id,
+                      disable_quickview: true,
+                      show_quick_add: true,
+                      disable_badge: true,
+                      disable_rate: true,
+                      disable_swatch: true,
+                      enable_view_product: false,
+                      disable_vendor: true,
+                      show_quick_add: false
+                    %}
+                  </div>
+                {% endif %}
+              </div>
+            </shopable-video>
+          {%- endfor -%}
+        </div>
+      </slide-section>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.shopable-video.name",
+  "tag": "section",
+  "class": "section shopable-video",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_setting.label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.all.content_setting.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.content_setting.description.label"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.option_1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.option_2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.option_3.label"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.all.text_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.shopable-video.settings.header.video_setting"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.shopable-video.settings.aspect_ratio.adapt"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.shopable-video.settings.aspect_ratio.option__1"
+        },
+        {
+          "value": "custom",
+          "label": "t:sections.shopable-video.settings.aspect_ratio.option__2"
+        }
+      ],
+      "default": "portrait",
+      "label": "t:sections.shopable-video.settings.aspect_ratio.label"
+    },
+    {
+      "type": "text",
+      "id": "custom_ratio",
+      "label": "t:sections.shopable-video.settings.custom_ratio.label",
+      "info": "t:sections.shopable-video.settings.aspect_ratio.info"
+    },
+    {
+      "type": "select",
+      "id": "autoplay",
+      "options": [
+        {
+          "value": "first_video",
+          "label": "t:sections.shopable-video.settings.autoplay.option__1"
+        },
+        {
+          "value": "none",
+          "label": "t:sections.shopable-video.settings.autoplay.option__3"
+        }
+      ],
+      "default": "first_video",
+      "label": "t:sections.shopable-video.settings.autoplay.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.carousel.header"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 5,
+      "label": "t:sections.all.setting.columns_desktop.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "default": true,
+      "label": "t:sections.shopable-video.settings.carousel.show_navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "default": false,
+      "label": "t:sections.all.carousel.show_pagination.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "t:sections.shopable-video.settings.carousel.autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "carousel_time",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.shopable-video.settings.carousel.delay_time"
+    },
+    {
+      "type": "select",
+      "id": "column_gap",
+      "options": [
+        {
+          "value": "no_gap",
+          "label": "t:sections.all.padding.column_gap.no_gap"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.all.padding.column_gap.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.padding.column_gap.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.padding.column_gap.large"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.all.padding.column_gap.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "t:sections.shopable-video.settings.block.add_video",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:sections.shopable-video.settings.block.product.select_product"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "t:sections.shopable-video.settings.block.poster_image"
+        },
+        {
+          "type": "video",
+          "id": "local_video",
+          "label": "t:sections.shopable-video.settings.block.video_local.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.shopable-video.presets.name",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

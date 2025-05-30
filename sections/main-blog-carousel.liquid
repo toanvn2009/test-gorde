@@ -1,0 +1,343 @@
+{% liquid
+  assign sec_settings = section.settings
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+%}
+{%- capture style -%}
+  --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;--overlay-opacity: {{ sec_settings.image_overlay_opacity }}%;
+{%- endcapture -%}
+<div
+  class="color-{{ section.settings.color_scheme }} gradient blog-posts-carousel bls__section section-padding"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="section-inner{{ section_width }}">
+    <div class="blog-posts-carousel_inner relative">
+      <slide-section
+        data-items="1"
+        data-controls="{%- if section.settings.show_navigation -%}true{% else %}false{% endif %}"
+        data-nav="{%- if section.settings.show_pagination -%}true{% else %}false{% endif %}"
+        data-loop="true"
+        data-autoplay="{{ sec_settings.slide_auto_change }}"
+        data-mouse-drag="true"
+        data-autoplay-timeout="{{ sec_settings.change_slide_every | times: 1000 }}"
+        data-controls-position="top"
+        data-nav-as-thumbnails="{%- if section.settings.show_pagination or section.settings.show_navigation -%}true{% else %}false{% endif %}"
+        data-autoplay-button-output="false"
+        data-axis="horizontal"
+        data-mode="gallery"
+        data-fix-height="false"
+        data-next="next-post-{{ section.id }}"
+        data-prev="prev-post-{{ section.id }}"
+        data-nav-container="pagination-custom-slideshow-{{ section.id }}"
+      >
+        <div class="slide-container{% if sec_settings.blog_cate.articles_count > 0 and sec_settings.blog_cate != blank %} blog--not_empty{%- endif -%}">
+          {%- if sec_settings.blog_cate.articles_count > 0 and sec_settings.blog_cate != blank -%}
+            {%- for article in sec_settings.blog_cate.articles limit: sec_settings.post_limit -%}
+              <div class="blog-posts-items">
+                <div class="blog-posts-items_inner item-hero-{{ section.settings.image_height }} d-flex bottom-left flex-wrap overlay-bg{% if sec_settings.image_overlay_opacity == 0 %} grandient-bg{% endif %}">
+                  <a
+                    class="remove-underline z-2-impo"
+                    href="{{ article.url }}"
+                    aria-label="{{ article.title }}"
+                  >
+                    <div
+                      class="blog-posts__media banner__media rounded-corner-item absolute inset-0"
+                    >
+                      {% if article.image != blank %}
+                        <img
+                          srcset="
+                            {%- if article.image.src.width >= 165 -%}{{ article.image.src | image_url: width: 165 }} 165w,{%- endif -%}
+                            {%- if article.image.src.width >= 360 -%}{{ article.image.src | image_url: width: 360 }} 360w,{%- endif -%}
+                            {%- if article.image.src.width >= 533 -%}{{ article.image.src | image_url: width: 533 }} 533w,{%- endif -%}
+                            {%- if article.image.src.width >= 720 -%}{{ article.image.src | image_url: width: 720 }} 720w,{%- endif -%}
+                            {%- if article.image.src.width >= 1000 -%}{{ article.image.src | image_url: width: 1000 }} 1000w,{%- endif -%}
+                            {%- if article.image.src.width >= 1500 -%}{{ article.image.src | image_url: width: 1500 }} 1500w,{%- endif -%}
+                            {%- if article.image.src.width >= 2200 %}{{ article.image.src | image_url: width: 2200 }} 2200w,{% endif %}
+                            {%- if article.image.src.width >= 3000 %}{{ article.image.src | image_url: width: 3000 }} 3000w,{% endif %}
+                            {{ article.image.src | image_url }} {{ article.image.src.width }}w
+                          "
+                          src="{{ article.image.src | image_url: width: 3000 }}"
+                          sizes="100vw"
+                          alt="{{ article.image.src.alt | escape }}"
+                          class="motion-reduce"
+                          loading="lazy"
+                          width="{{ article.image.width }}"
+                          height="{{ article.image.height }}"
+                        >
+                      {% endif %}
+                    </div>
+                  </a>
+                  <div class="blog-posts-content px-60 py-55 d-flex bottom-left">
+                    <div class="blog-posts-content_inner">
+                      <div class="article-card__info btn-text-transform  heading-color d-flex flex-wrap fs-small mb-15 pt-md-10 row-gap-10">
+                        {%- if sec_settings.show_blog -%}
+                          {% if sec_settings.blog_cate != blank %}
+                            <span class="post-blog{% if settings.rounded_corner %} outline-style reset-hover{% endif %} remove-underline">
+                              {{- sec_settings.blog_cate.title | capitalize -}}
+                            </span>
+                          {% endif %}
+                        {%- endif -%}
+                        {%- if sec_settings.show_author -%}
+                          <span class="post-author {% if settings.rounded_corner %}outline-style reset-hover{% endif %}">
+                            {{- article.author -}}
+                          </span>
+                        {%- endif -%}
+                        {%- if sec_settings.show_date -%}
+                          <span class="post-date {% if settings.rounded_corner %}outline-style reset-hover{% endif %}">
+                            {{- article.published_at | date: '%b %d %Y' -}}
+                          </span>
+                        {%- endif -%}
+                      </div>
+                      <div class="card__heading h1 heading-letter-spacing mb-15">
+                        <a href="{{ article.url }}" class="remove-underline border-animation">
+                          {{ article.title | escape }}
+                        </a>
+                      </div>
+                      {%- if sec_settings.show_excerpt -%}
+                        {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+                          <p class="article-card__excerpt rte-width fs-bigger-2 fs-1025-bigger-4 mb-0 word-break mb-0 rte">
+                            {%- if article.excerpt.size > 0 -%}
+                              {{ article.excerpt | strip_html | truncatewords: 30 }}
+                            {%- else -%}
+                              {{ article.content | strip_html | truncatewords: 30 }}
+                            {%- endif -%}
+                          </p>
+                        {%- endif -%}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {%- else -%}
+            {% for i in (0..2) %}
+              <div class="blog-posts-items">
+                <div class="blog-posts-items_inner custom-height item-hero-{{ section.settings.image_height }} d-flex flex-wrap overlay-bg{% if sec_settings.image_overlay_opacity == 0 %} grandient-bg{% endif %}">
+                  <div
+                    class="banner__media overflow-hidden absolute z-2-impo inset-0 absolute placeholder"
+                  >
+                    {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                  <div class="blog-posts-content px-60 py-55 z-3 relative d-flex bottom-left">
+                    <div class="blog-posts-content_inner">
+                      <div class="card__heading h1">
+                        {{ 'sections.main_blog.onboarding_title' | t }}
+                      </div>
+                      <p class="article-card__excerpt rte-width fs-bigger-2 mb-0 word-break mb-0">
+                        {{ 'sections.main_blog.onboarding_content' | t }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {%- if section.settings.show_navigation or section.settings.show_pagination -%}
+          <div class="custom-actions text-center absolute bottom-0 right-0 py-lg-55 px-lg-60 z-2 pt-30 pb-30 {% if section.settings.show_navigation == false and section.settings.show_pagination %}blog-dot{% endif %}">
+            <div class="controls d-inline-flex align-center rounded-corner-item color-light">
+              {% if section.settings.show_navigation %}
+                <div id="prev-post-{{ section.id }}" class="pointer btn-navigation py-10 pl-15 pr-8 z-2">
+                  {% render 'icon-prev', custom_width: 20 %}
+                </div>
+              {% endif %}
+              {%- if section.settings.show_pagination -%}
+                <div
+                  class="tns-nav custom-slide-control mt-0 px-15 py-5 d-inline-flex nowrap z-2"
+                  id="pagination-custom-slideshow-{{ section.id }}"
+                >
+                  {% if sec_settings.blog_cate.articles_count > 0 and sec_settings.blog_cate != blank %}
+                    {%- for article in sec_settings.blog_cate.articles limit: sec_settings.post_limit -%}
+                      <button
+                        type="button"
+                        aria-label="Custom paginate Page {{ forloop.index }} Section {{ section.id }}"
+                        class="button dot-blog btn-reset"
+                      ></button>
+                    {%- endfor -%}
+                  {% else %}
+                    {% for i in (0..2) %}
+                      <button
+                        type="button"
+                        aria-label="Custom paginate Page {{ forloop.index }} Section {{ section.id }}"
+                        class="button dot-blog btn-reset"
+                      ></button>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              {%- endif -%}
+              {% if section.settings.show_navigation %}
+                <div id="next-post-{{ section.id }}" class="pointer btn-navigation py-10 pr-15 pl-8 z-2">
+                  {% render 'icon-next', custom_width: 20 %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {%- endif -%}
+      </slide-section>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "t:sections.main-blog.blog_carousel.name",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "color-scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.main-collection-banner.settings.image_overlay_opacity.label",
+      "default": 0
+    },
+    {
+      "type": "blog",
+      "id": "blog_cate",
+      "label": "t:sections.main-blog.blog_carousel.settings.blog_cate"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.main-blog.blog_carousel.settings.post_limit.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.blog_carousel.settings.show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog",
+      "default": true,
+      "label": "t:sections.main-blog.blog_carousel.settings.show_blog.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.blog_carousel.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": true,
+      "label": "t:sections.main-blog.blog_carousel.settings.show_excerpt.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.blog_carousel.header.heading_carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "default": true,
+      "label": "t:sections.all.carousel.show_navigation.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "default": true,
+      "label": "t:sections.all.carousel.show_pagination.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_auto_change",
+      "default": false,
+      "label": "t:sections.all.carousel.slide_auto_change"
+    },
+    {
+      "type": "range",
+      "id": "change_slide_every",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "t:sections.all.carousel.change_slide_every",
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__4.label"
+        }
+      ],
+      "default": "small",
+      "label": "t:sections.main-article.blocks.featured_image.settings.image_height.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ]
+}
+{% endschema %}

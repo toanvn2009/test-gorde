@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eb_breadcrumb": true,
+        "padding_top": 70,
+        "padding_bottom": 30
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

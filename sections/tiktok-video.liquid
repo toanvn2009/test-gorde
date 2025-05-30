@@ -1,0 +1,272 @@
+{% liquid
+  assign sec_settings = section.settings
+
+  assign section_width = ''
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+%}
+{%- capture style -%}
+--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    {%- endcapture -%}
+<div
+  class="color-{{ section.settings.color_scheme }} gradient bls__section tiktock-section section-padding"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="section-inner{{ section_width }}">
+    {%- if section.settings.title != blank or section.settings.description != blank -%}
+      <div class="bls__section-header mb-40 mb-sm-35 text-{{ section.settings.text_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {%- if section.settings.title != blank -%}
+          <h2 class="bls_section-heading heading-letter-spacing mt-0 mb-7 mb-md-15">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <div class="short-des">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <slide-section
+      data-items="{{ section.settings.columns_desktop }}"
+      data-controls="true"
+      data-nav="true"
+      data-loop="false"
+      data-autoplay="false"
+      data-mouse-drag="true"
+      data-autoplay-timeout="5000"
+      data-controls-position="top"
+      data-nav-as-thumbnails="false"
+      data-autoplay-button-output="false"
+      data-axis="horizontal"
+      data-nav-center-postion="banner__media"
+      data-mode="carousel"
+      data-fix-height="false"
+      data-product-type="true"
+      data-gap="{{ section.settings.column_gap }}"
+      data-mobile="1"
+      class="round-on-top slide-section-tiktok"
+    >
+      <div class="slide-container no-js-scroll{% if settings.animations_reveal_on_scroll %} slide-animation opacity-0 opacity-1-768{% endif %}">
+        {%- for block in section.blocks -%}
+          <div
+            {{ block.shopify_attributes }}
+            class="tiktok-items text-center"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+            {% endif %}
+          >
+            {%- if block.settings.tiktok_embed_url != blank -%}
+              <div class="tiktock-video w-full custom-tiktok-height">
+                {{ block.settings.tiktok_embed_url }}
+              </div>
+            {%- else -%}
+              <div class="rounded-corner-item overflow-hidden">
+                {%- render 'placeholder-render' | type: "blog" | class: "rounded-corner-item img-placeholder" -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </slide-section>
+    {% comment %}
+      <div
+        class="grid-cols gap-{{ section.settings.column_gap }} custom-scrollbar custom-scrollbar-x"
+        style="--col-number: {{ section.blocks.size }}"
+      >
+
+      </div>
+    {% endcomment %}
+    {%- if section.settings.tiktok_handle != blank -%}
+      <div class="social-tiktok-link w-full text-center">
+        <a
+          class="mb-0 mt-20 d-inline-block"
+          role="link"
+          aria-label="{{ section.settings.tiktok_handle }}"
+          href="{{ settings.social_media_tiktok }}"
+          target="_blank"
+        >
+          {{ section.settings.tiktok_handle }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "t:sections.tiktok.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "fix_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_setting.label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.all.content_setting.heading.label",
+      "default": "Vertical video feed"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.content_setting.description.label",
+      "default": "<p>Add a short description for this section.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.option_1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.option_2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.option_3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.all.text_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.tiktok.settings.header.label"
+    },
+    {
+      "type": "richtext",
+      "id": "tiktok_handle",
+      "label": "t:sections.tiktok.settings.tiktok_handle.label",
+      "default": "<p>@yourVideoHandle</p>"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "t:sections.all.setting.columns_desktop.label",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "column_gap",
+      "options": [
+        {
+          "value": "no_gap",
+          "label": "t:sections.all.padding.column_gap.no_gap"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.all.padding.column_gap.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.padding.column_gap.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.padding.column_gap.large"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.all.padding.column_gap.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tiktok_iitem",
+      "name": "t:sections.tiktok.blocks.name",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "tiktok_embed_url",
+          "label": "t:sections.tiktok.blocks.settings.tiktok_embed_url",
+          "info": "t:sections.tiktok.blocks.settings.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.tiktok.presets.name",
+      "blocks": [
+        {
+          "type": "tiktok_iitem"
+        },
+        {
+          "type": "tiktok_iitem"
+        },
+        {
+          "type": "tiktok_iitem"
+        },
+        {
+          "type": "tiktok_iitem"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

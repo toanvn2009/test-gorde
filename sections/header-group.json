@@ -1,0 +1,98 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_cMwCzN": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        },
+        "announcement_XfybMa": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_cMwCzN",
+        "announcement_XfybMa"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "scheme-0ba1b009-7eed-45cd-b0f5-57fda3e81ca0",
+        "show_close": false,
+        "homepage_only": true,
+        "show_mobile": false,
+        "announcement_actions": "slide",
+        "marquee_speed": 7,
+        "style_between_item": true,
+        "space_between_text": "30",
+        "uppercase": false,
+        "scrolling_size": "small"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "menu_product_YYqKMN": {
+          "type": "menu_product",
+          "settings": {
+            "text": "Shop",
+            "product_menu_column": 4,
+            "product_width": 40,
+            "product_1": "caro-dress",
+            "product_2": "floral-jumpsuit"
+          }
+        }
+      },
+      "block_order": [
+        "menu_product_YYqKMN"
+      ],
+      "custom_css": [
+        ".header__logo .site-logo {position: relative; top: -3px;}"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "logo_position": "center",
+        "logo_width": 140,
+        "logo_width_mobile": 100,
+        "sticky_header_type": "on-scroll-up",
+        "menu": "main-menu",
+        "uppercase_first_level": true,
+        "show_search": true,
+        "show_account": true,
+        "show_cart": true,
+        "show_currency": true,
+        "show_language": false,
+        "banner_type": "collection",
+        "banner_title": "Popular categories",
+        "banner_collection": [],
+        "banner_link": "",
+        "show_border_bottom": true,
+        "transparent_on_home": true,
+        "header_text_icon_transparent": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

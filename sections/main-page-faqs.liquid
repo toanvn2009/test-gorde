@@ -1,0 +1,377 @@
+{%- liquid
+  assign sec_settings = section.settings
+  assign heading_help = sec_settings.heading_help
+  assign show_number = sec_settings.show_number
+  assign open_all_question = sec_settings.open_all_question
+  assign show_content_right = sec_settings.show_content_right
+  assign text = sec_settings.text
+  assign label_1 = sec_settings.label_1
+  assign label_2 = sec_settings.label_2
+  assign link_1 = sec_settings.link_1
+  assign link_2 = sec_settings.link_2
+
+  assign section_width = ''
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+-%}
+{%- capture style -%}
+    --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+{%- endcapture -%}
+<section class="bls__section bls__faqs-page section-padding" style="{{ style | strip | strip_newlines }}">
+  <div class="{{ section_width }}">
+    <div class="bls__faqs-content row gap-large">
+      <div class="{% if show_content_right %}col-lg-8{% else %}col-12{% endif %} relative mb-0-important bls__faqs-left">
+        <faq-item>
+          {%- for block in section.blocks -%}
+            <div
+              id="{{ block.id }}"
+              {{ block.shopify_attributes }}
+              class="faq-block mb-70 last-0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {%- if settings.animations_reveal_on_scroll -%}
+                style="--animation-order: {{ forloop.index }};"
+              {%- endif -%}
+            >
+              {%- if block.settings.faq_title != blank -%}
+                <h2 class="heading-letter-spacing mb-25">{{ block.settings.faq_title }}</h2>
+              {%- endif -%}
+              {%- for i in (1..10) -%}
+                {%- liquid
+                  assign question_ = 'question_' | append: i
+                  assign question = block.settings[question_]
+                  assign answer_ = 'answer_' | append: i
+                  assign answer = block.settings[answer_]
+                -%}
+                {%- if question != blank and answer != blank -%}
+                  <div class="bls_faq-section-items bls-toggle relative">
+                    <h3
+                      tabindex="0"
+                      class="bls_faq-section-title text-body fs-bigger-2 fs-1025-bigger-4 my-0 border-bottom pointer py-10 relative d-flex align-center space-between no-js-opened {% if open_all_question %}opened{% endif %}"
+                    >
+                      {% if show_number == true %}
+                        {{ i }}.
+                      {%- endif %}
+                      {{ question }}
+                      <span class="open-children-toggle touch-target transition">
+                        {% render 'icon-plus-animation', custom_width: 12 %}
+                      </span>
+                    </h3>
+                    <div
+                      class="bls_faq-section-content overflow-hidden opened no-js-block"
+                      style="display: {% if open_all_question %}block{% else %}none{% endif %};"
+                    >
+                      <div class="faq_content-inner pt-20 pb-10">{{ answer }}</div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </faq-item>
+      </div>
+      {% if show_content_right %}
+        <div class="col-lg-4 bls__faqs-right{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <div class="sticky top-30 mt-60 mt-lg-0">
+            <h2 class="heading-letter-spacing h2 mb-30 mb-lg-40">{{ heading_help }}</h2>
+            {{ text }}
+            {%- if label_1 != blank or label_2 != blank -%}
+              <div class="btn-faqs d-flex gap-10 mt-50">
+            {%- endif -%}
+            {%- if label_1 != blank -%}
+              <a href="{{ link_1 }}" class="btn btn-outline btn-faq w-full text-center">
+                {{ label_1 }}
+              </a>
+            {%- endif -%}
+            {%- if label_2 != blank -%}
+              <a href="{{ link_2 }}" class="btn btn-outline btn-faq w-full text-center">
+                {{ label_2 }}
+              </a>
+            {%- endif -%}
+            {%- if label_1 != blank or label_2 != blank -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "t:sections.main-faq.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-faq.heading.general"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_number",
+      "label": "t:sections.main-faq.settings.show_number",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "open_all_question",
+      "label": "t:sections.main-faq.settings.open_all_question",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-faq.heading.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_right",
+      "label": "t:sections.main-faq.settings.show_content_right",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading_help",
+      "label": "t:sections.main-faq.settings.heading_help",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.main-faq.settings.content_help",
+      "default": "<p>Add a short description for this block.</p>"
+    },
+    {
+      "type": "text",
+      "id": "label_1",
+      "label": "t:sections.main-faq.settings.label_1",
+      "default": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "t:sections.main-faq.settings.url_1"
+    },
+    {
+      "type": "text",
+      "id": "label_2",
+      "label": "t:sections.main-faq.settings.label_2",
+      "default": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "t:sections.main-faq.settings.url_2"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "t:sections.main-faq.blocks.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "faq_title",
+          "label": "t:sections.main-faq.blocks.settings.title",
+          "default": "Heading"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_1.question"
+        },
+        {
+          "type": "text",
+          "id": "question_1",
+          "label": "t:sections.main-faq.blocks.settings.question_1.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_1",
+          "label": "t:sections.main-faq.blocks.settings.question_1.answer",
+          "default": "<p>Write the answer.</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_2.question"
+        },
+        {
+          "type": "text",
+          "id": "question_2",
+          "label": "t:sections.main-faq.blocks.settings.question_2.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_2",
+          "label": "t:sections.main-faq.blocks.settings.question_2.answer",
+          "default": "<p>Write the answer.</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_3.question"
+        },
+        {
+          "type": "text",
+          "id": "question_3",
+          "label": "t:sections.main-faq.blocks.settings.question_3.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_3",
+          "label": "t:sections.main-faq.blocks.settings.question_3.answer",
+          "default": "<p>Write the answer.</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_4.question"
+        },
+        {
+          "type": "text",
+          "id": "question_4",
+          "label": "t:sections.main-faq.blocks.settings.question_4.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_4",
+          "label": "t:sections.main-faq.blocks.settings.question_4.answer",
+          "default": "<p>Write the answer.</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_5.question"
+        },
+        {
+          "type": "text",
+          "id": "question_5",
+          "label": "t:sections.main-faq.blocks.settings.question_5.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_5",
+          "label": "t:sections.main-faq.blocks.settings.question_5.answer",
+          "default": "<p>Write the answer.</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_6.question"
+        },
+        {
+          "type": "text",
+          "id": "question_6",
+          "label": "t:sections.main-faq.blocks.settings.question_6.question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_6",
+          "label": "t:sections.main-faq.blocks.settings.question_7.answer"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_7.question"
+        },
+        {
+          "type": "text",
+          "id": "question_7",
+          "label": "t:sections.main-faq.blocks.settings.question_7.question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_7",
+          "label": "t:sections.main-faq.blocks.settings.question_7.answer"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_8.question"
+        },
+        {
+          "type": "text",
+          "id": "question_8",
+          "label": "t:sections.main-faq.blocks.settings.question_8.question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_8",
+          "label": "t:sections.main-faq.blocks.settings.question_8.answer"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_9.question"
+        },
+        {
+          "type": "text",
+          "id": "question_9",
+          "label": "t:sections.main-faq.blocks.settings.question_9.question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_9",
+          "label": "t:sections.main-faq.blocks.settings.question_9.answer"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.main-faq.blocks.settings.question_10.question"
+        },
+        {
+          "type": "text",
+          "id": "question_10",
+          "label": "t:sections.main-faq.blocks.settings.question_10.question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_10",
+          "label": "t:sections.main-faq.blocks.settings.question_10.answer"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,150 @@
+{% liquid
+  assign sec_settings = section.settings
+  assign sec_blocks = section.blocks
+
+  assign section_width = ''
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width px-20'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+  assign eb_breadcrumb = sec_settings.eb_breadcrumb
+%}
+{%- capture style -%}
+  --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+{%- endcapture -%}
+<div
+  class="page-title text-{{ section.settings.text_alignment }} section-padding"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="page-content">
+    <div class="{{ section_width }}">
+      {% if eb_breadcrumb %}
+        <div class="breadcrumbs mb-10 {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- render 'breadcrumbs' -%}
+        </div>
+      {% endif %}
+      <div class="bls__section-header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <h1 class="h0 mb-0 mt-0 heading-letter-spacing">
+          {% if template contains 'blog' %}
+            {{ blog.title }}
+          {% else %}
+            {{ page.title }}
+          {% endif %}
+        </h1>
+        {% for block in sec_blocks %}
+          {% if block.type == 'description' %}
+            {%- if block.settings.page_description != blank -%}
+              <div class="short-des mt-10">
+                {{ block.settings.page_description }}
+              </div>
+            {%- else -%}
+              {{ page.content }}
+            {%- endif -%}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.all.section_setting.page_heading.label",
+  "tag": "section",
+  "class": "page-title",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.option_1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.option_2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.option_3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.all.text_alignment.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "eb_breadcrumb",
+      "label": "Enable breadcrumb",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "description",
+      "name": "t:sections.all.section_setting.page_heading.label_description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "page_description",
+          "label": "t:sections.all.section_setting.page_heading.label_description"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

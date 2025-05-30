@@ -1,0 +1,103 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "store_info_7W6nha": {
+          "type": "store_info",
+          "settings": {
+            "store_heading": "Store heading",
+            "image_width": 70,
+            "store_description": "<p>Store description</p>",
+            "store_address_heading": "Address",
+            "store_address": "<p>Store address</p>",
+            "working_hours": "Working time",
+            "store_phone_heading": "Phone",
+            "store_phone": "Store phone number",
+            "store_email_heading": "Email",
+            "store_email": "Store email",
+            "content_width": "33.333%"
+          }
+        },
+        "b3628586-461c-4237-8b07-795e94ae225e": {
+          "type": "link_list",
+          "settings": {
+            "heading": "",
+            "menu": "help",
+            "content_width": "16.666%"
+          }
+        },
+        "e2be6945-a2fc-4a1d-a6b6-9aedad3273e1": {
+          "type": "link_list",
+          "settings": {
+            "heading": "",
+            "menu": "sitemap",
+            "content_width": "16.666%"
+          }
+        },
+        "b8d3a559-55fb-44fc-be5d-38d17c93d6e6": {
+          "type": "link_list",
+          "settings": {
+            "heading": "",
+            "menu": "main-menu",
+            "content_width": "16.666%"
+          }
+        },
+        "link_list_KqadqE": {
+          "type": "link_list",
+          "settings": {
+            "heading": "",
+            "menu": "footer",
+            "content_width": "16.666%"
+          }
+        },
+        "newsletter_XyJB7B": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Subcribe and Get 10% Discount",
+            "description": "<p>Description</p>",
+            "email_placeholder": "Email placeholder",
+            "note": "",
+            "content_width": "100%",
+            "show_bg_social": false
+          }
+        }
+      },
+      "block_order": [
+        "store_info_7W6nha",
+        "b3628586-461c-4237-8b07-795e94ae225e",
+        "e2be6945-a2fc-4a1d-a6b6-9aedad3273e1",
+        "b8d3a559-55fb-44fc-be5d-38d17c93d6e6",
+        "link_list_KqadqE",
+        "newsletter_XyJB7B"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "default-color-scheme",
+        "enable_back_top": true,
+        "show_border_bottom": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_follow_on_shop": true,
+        "show_social": true,
+        "payment_enable": true,
+        "padding_top": 52,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

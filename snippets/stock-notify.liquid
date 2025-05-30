@@ -1,0 +1,67 @@
+{%- liquid
+  assign form_notify_id = 'FormStockNotify'
+-%}
+<stock-alert
+  class="{% if customClass %}{{ customClass }}{%- endif -%} notify-btn-js"
+  data-stock-title="{{ 'products.product.product_notify_re_stock.heading' | t }}"
+>
+  <div id="success-message" style="display: none;">
+    {{- 'products.product.product_notify_re_stock.message_form' | t -}}
+  </div>
+  {%- form 'contact', id: form_notify_id, class: 'stock-notify-form' -%}
+    <p class="fs-14 uppercase mb-10 heading-color">
+      {{ 'products.product.product_notify_re_stock.heading' | t }}
+    </p>
+    <div class="field">
+      <input
+        type="email"
+        name="contact[email]"
+        class="field__input w-full"
+        aria-required="true"
+        autocomplete="email"
+        spellcheck="false"
+        autocapitalize="off"
+        id="StockNotify"
+        value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+        {% if form.errors contains 'email' %}
+          aria-invalid="true"
+          aria-describedby="ContactForm-email-error"
+        {% endif %}
+        placeholder="{{ 'products.product.product_notify_re_stock.placeholder' | t }}"
+        required
+      >
+      <label class="visually-hidden" for="StockNotify">
+        {{- 'products.product.product_notify_re_stock.placeholder' | t -}}
+      </label>
+      {%- if form.errors contains 'email' -%}
+        <small class="contact__field-error visually-hidden" id="ContactForm-email-error">
+          <span>{{ 'accessibility.error' | t }}</span>
+        </small>
+      {%- endif -%}
+    </div>
+    <div class="contact__button">
+      <button type="submit" class="button w-full">
+        {{ 'products.product.product_notify_re_stock.button' | t }}
+      </button>
+    </div>
+
+    <p class="d-none">
+      <textarea
+        rows="20"
+        id="{{ form_notify_id }}-product-info"
+        name="contact[product]"
+        required="required"
+      >
+        {{ product.title }}{% if product.selected_or_first_available_variant.title != blank %}( {{ product.selected_or_first_available_variant.title }} ){% endif %} - {{ request.origin }}{{ product.selected_or_first_available_variant.url }}
+      </textarea>
+    </p>
+    <p class="d-none">
+      <textarea
+        rows="9"
+        id="{{ form_notify_id }}-message-notify"
+        name="contact[body]"
+        required="required"
+      >{{ 'products.product.product_notify_re_stock.message' | t }}</textarea>
+    </p>
+  {%- endform -%}
+</stock-alert>

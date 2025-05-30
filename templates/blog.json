@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "blocks": {
+        "description_tDQaqU": {
+          "type": "description",
+          "settings": {
+            "page_description": ""
+          }
+        }
+      },
+      "block_order": [
+        "description_tDQaqU"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "text_alignment": "center",
+        "eb_breadcrumb": true,
+        "padding_top": 80,
+        "padding_bottom": 40
+      }
+    },
+    "main-blog-carousel": {
+      "type": "main-blog-carousel",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "image_overlay_opacity": 35,
+        "blog_cate": "",
+        "post_limit": 3,
+        "show_author": true,
+        "show_blog": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "show_navigation": true,
+        "show_pagination": true,
+        "slide_auto_change": false,
+        "change_slide_every": 5,
+        "image_height": "large",
+        "padding_top": 37,
+        "padding_bottom": 31
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "subcribe_form_FNLjEY": {
+          "type": "subcribe_form",
+          "settings": {
+            "form_position": 6,
+            "form_title": "Newsletter",
+            "form_description": "Add a short description for this block."
+          }
+        }
+      },
+      "block_order": [
+        "subcribe_form_FNLjEY"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "text_alignment": "center",
+        "title": "Latest Articles",
+        "show_all_tags": true,
+        "aspect_ratio": "landscape",
+        "post_limit": 14,
+        "columns_desktop": 3,
+        "column_gap": "small",
+        "pagination": "default",
+        "show_author": true,
+        "show_cate": false,
+        "show_tags": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "padding_top": 40,
+        "padding_bottom": 15
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "main-blog-carousel",
+    "main"
+  ]
+}

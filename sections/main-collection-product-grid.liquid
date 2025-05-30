@@ -1,0 +1,985 @@
+{%- liquid
+  assign section_width = ''
+  if section.settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif section.settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+
+  assign columns_small_desktop = ''
+  assign desktop-small = ''
+  if section.settings.columns_desktop > 3
+    assign columns_small_desktop = ' small-desktop-4'
+  endif
+  assign columns_tablet = ''
+  if section.settings.columns_desktop > 2
+    assign columns_tablet = ' tablet-3'
+  endif
+  assign columns_mobile = ''
+  if section.settings.columns_desktop > 1
+    assign columns_mobile = ' mb-2'
+  endif
+
+  assign all_product = collection.products_count
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  if collection.url
+    assign results_url = collection.url
+  else
+    assign terms = collection.terms | escape
+    assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+  endif
+-%}
+{%- capture style -%}
+  --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+{%- endcapture -%}
+<div class="bls__section section-main-collection section-padding" style="{{ style | strip | strip_newlines }}">
+  <div class="{{ section_width }}{% if section.settings.filter_type == 'vertical' %} vertical-filter-layout relative position-1025-unset{% endif %} filter-product">
+    {%- paginate collection.products by section.settings.products_to_show -%}
+      {% if section.settings.filter_type == 'vertical' and collection.products.size != 0 %}
+        <div class="filter-count d-flex flex-wrap gap-15 mb-40{% if section.settings.filter_type == 'vertical' %} vertical-filter flex-end align-md-top space-between-1025{% else %} space-between{% endif %}{% if section.settings.show_count %} show-filter-count{% endif %}">
+          {%- if section.settings.show_count -%}
+            <div class="collection-count d-none d-1025-block" role="status">
+              <h2 class="reset-hover outline-style rounded-5 product-count__text text-body btn-text-transform mt-0 fs-small mb-0 lh-normal nowrap d-inline-flex align-center normal-weight{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                <span id="ProductCountDesktop">
+                  {%- if collection.results_count -%}
+                    {{
+                      'templates.search.results_with_count'
+                      | t: terms: collection.terms, count: collection.results_count
+                    }}
+                  {%- elsif collection.products_count == collection.all_products_count -%}
+                    {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                  {%- else -%}
+                    {{
+                      'products.facets.product_count'
+                      | t: product_count: collection.products_count, count: collection.all_products_count
+                    }}
+                  {%- endif -%}
+                </span>
+              </h2>
+            </div>
+          {%- endif -%}
+          {%- unless section.settings.filter_type == 'canvas' -%}
+            <div class="filter-count active-facets active-facets-desktop d-flex flex-wrap gap-10 row-gap-0 row-gap-1025-10{% if section.settings.filter_type == 'vertical' %} flex-1{% endif %}">
+              {%- for filter in collection.filters -%}
+                {%- for value in filter.active_values -%}
+                  <div class="facet-remove d-inline-flex align-center heading-color fs-small-1 lh-reset mt-15 mt-1025-0">
+                    <facet-remove class="d-inline-flex">
+                      <a
+                        href="{{ value.url_to_remove }}"
+                        class="active-facets__button active-facets__button--light remove-underline py-10 px-15 hover-as-fill-button accent-color-second-bg fs-small"
+                      >
+                        {{ value.label | escape }}
+                        <span class="active-facets__button-inner button--tertiary ml-10">
+                          {% render 'icon-close', custom_width: 14 %}
+                          <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+                        </span>
+                      </a>
+                    </facet-remove>
+                  </div>
+                {%- endfor -%}
+                {% if filter.type == 'price_range' %}
+                  {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                    <div class="facet-remove d-inline-flex align-center heading-color fs-small-1 lh-reset mt-15 mt-1025-0">
+                      <facet-remove class="d-inline-flex">
+                        <a
+                          href="{{ filter.url_to_remove }}"
+                          class="active-facets__button active-facets__button--light remove-underline py-10 px-15 hover-as-fill-button accent-color-second-bg fs-small"
+                        >
+                          {%- if filter.min_value.value -%}
+                            {{ filter.min_value.value | money }}
+                          {%- else -%}
+                            {{ 0 | money }}
+                          {%- endif -%}
+                          -
+                          {%- if filter.max_value.value -%}
+                            {{ filter.max_value.value | money }}
+                          {%- else -%}
+                            {{ filter.range_max | money }}
+                          {%- endif -%}
+                          <span class="active-facets__button-inner button--tertiary ml-10">
+                            {% render 'icon-close', custom_width: 14 %}
+                            <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+                          </span>
+                        </a>
+                      </facet-remove>
+                    </div>
+                  {%- endif -%}
+                {% endif %}
+              {%- endfor -%}
+              <div class="facet-remove facet-clear-all btn-text-transform fs-small d-inline-flex align-center heading-color lh-reset py-10 px-15 mt-10 mt-1025-0">
+                <facet-remove class="active-facets__button-wrapper">
+                  <a href="{{ results_url }}" class="active-facets__button-remove underlined-link">
+                    <span>{{ 'products.facets.clear_all' | t }}</span>
+                  </a>
+                </facet-remove>
+              </div>
+            </div>
+            {%- if section.settings.enable_sorting -%}
+              <facet-filters-form class="facets facets-vertical-sort small-hide no-js-hidden">
+                <form
+                  class="facets-vertical-form{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}"
+                  id="FacetSortForm"
+                >
+                  <div class="facet-filters sorting caption">
+                    <div class="facet-filters__field btn-text-transform lh-reset heading-color{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                      <div class="select pointer w-auto{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                        <select
+                          name="sort_by"
+                          class="facet-filters__sort caption-large btn-text-transform fs-small lh-normal heading-color rounded-5 relative border-grey"
+                          aria-label="{{ 'products.facets.sort_button' | t }}"
+                          aria-describedby="a11y-refresh-page-message"
+                        >
+                          {%- for option in collection.sort_options -%}
+                            <option
+                              value="{{ option.value | escape }}"
+                              {% if option.value == sort_by %}
+                                selected="selected"
+                              {% endif %}
+                            >
+                              {{ option.name | escape }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                        <div class="icon-down absolute right-15 inset-y-0 d-inline-flex align-center pointer-none">
+                          {% render 'icon-caret', custom_width: 12 %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </facet-filters-form>
+            {%- endif -%}
+          {%- endunless -%}
+        </div>
+      {% endif %}
+      {%- if section.settings.filter_type == 'canvas' and collection.products.size != 0 -%}
+        {% if section.settings.enable_filtering or section.settings.enable_sorting %}
+          <div class="filter-count filter__on-top mb-0 mb-1025-20 d-flex gap-15 space-between">
+            {% if section.settings.enable_filtering %}
+              <details class="d-flex flex-wrap gap-15 space-between type-canvas overlay-section overlay-filter">
+                <summary class="has-overlay" tabindex="-1">
+                  <toggle-nav
+                    class="pointer shipping uppercase outline-style reset-hover rounded-5 d-inline-flex align-center fs-small"
+                    tabindex="0"
+                    data-item="overlay-filter"
+                    id="filter-icon-buddle"
+                  >
+                    {% render 'icon-filter', custom_width: 20 %}
+                    <span class="ml-8 heading-color">{{ 'products.facets.filter' | t }}</span>
+                  </toggle-nav>
+                </summary>
+                <aside
+                  aria-labelledby="verticalTitle"
+                  class="facets-wrapper facets-wrapper--no-filters custom-scrollbar overflow-y-auto bls__canvas bls__canvas-left bls__canvas-footer has-close-btn close-slide-up canvas-filter"
+                  id="main-collection-filters"
+                  data-id="{{ section.id }}"
+                  tabindex="0"
+                  data-focus-item="filter-icon-buddle"
+                >
+                  <close-button
+                    class="touch-target absolute right-5 top-0 no-js-hidden heading-color hover-svg-zoom"
+                    tabindex="0"
+                  >
+                    {% render 'icon-close', custom_width: 14 %}
+                  </close-button>
+                  {% render 'facets',
+                    results: collection,
+                    enable_filtering: section.settings.enable_filtering,
+                    enable_sorting: section.settings.enable_sorting,
+                    enable_count: section.settings.show_count,
+                    filter_type: section.settings.filter_type,
+                    paginate: paginate,
+                    results_url: results_url
+                  %}
+                </aside>
+              </details>
+            {% endif %}
+            {%- if section.settings.show_count -%}
+              <div class="collection-count d-none d-1025-block" role="status">
+                <h2 class="reset-hover outline-style rounded-5 product-count__text text-body btn-text-transform mt-0 fs-small mb-0 lh-normal nowrap d-inline-flex align-center normal-weight{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                  <span id="ProductCountDesktop">
+                    {%- if collection.results_count -%}
+                      {{
+                        'templates.search.results_with_count'
+                        | t: terms: collection.terms, count: collection.results_count
+                      }}
+                    {%- elsif collection.products_count == collection.all_products_count -%}
+                      {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                    {%- else -%}
+                      {{
+                        'products.facets.product_count'
+                        | t: product_count: collection.products_count, count: collection.all_products_count
+                      }}
+                    {%- endif -%}
+                  </span>
+                </h2>
+              </div>
+            {%- endif -%}
+            {% if section.settings.enable_sorting %}
+              <facet-filters-form class="facets facets-vertical-sort small-hide no-js-hidden">
+                <form
+                  class="facets-vertical-form{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}"
+                  id="FacetSortForm"
+                >
+                  <div class="facet-filters sorting caption">
+                    <div class="facet-filters__field btn-text-transform lh-reset heading-color{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                      <div class="select pointer w-auto{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                        <select
+                          name="sort_by"
+                          class="facet-filters__sort caption-large btn-text-transform fs-small heading-color border-grey rounded-5 lh-normal"
+                          aria-label="{{ 'products.facets.sort_button' | t }}"
+                          aria-describedby="a11y-refresh-page-message"
+                        >
+                          {%- for option in collection.sort_options -%}
+                            <option
+                              value="{{ option.value | escape }}"
+                              {% if option.value == sort_by %}
+                                selected="selected"
+                              {% endif %}
+                            >
+                              {{ option.name | escape }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                        <div class="icon-down absolute right-15 inset-y-0 d-inline-flex align-center pointer-none">
+                          {% render 'icon-caret', custom_width: 12 %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </facet-filters-form>
+            {% endif %}
+          </div>
+          <div class="filter-count active-facets active-facets-desktop d-flex flex-wrap gap-10 row-gap-0 row-gap-1025-10{% if section.settings.filter_type == 'vertical' %} flex-1{% endif %}">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <div class="facet-remove d-inline-flex align-center heading-color fs-small-1 lh-reset mt-15 mt-1025-0">
+                  <facet-remove class="d-inline-flex">
+                    <a
+                      href="{{ value.url_to_remove }}"
+                      class="active-facets__button active-facets__button--light remove-underline py-10 px-15 hover-as-fill-button accent-color-second-bg fs-small"
+                    >
+                      {{ value.label | escape }}
+                      <span class="active-facets__button-inner button--tertiary ml-10">
+                        {% render 'icon-close', custom_width: 14 %}
+                        <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+                      </span>
+                    </a>
+                  </facet-remove>
+                </div>
+              {%- endfor -%}
+              {% if filter.type == 'price_range' %}
+                {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                  <div class="facet-remove d-inline-flex align-center heading-color fs-small-1 lh-reset mt-15 mt-1025-0">
+                    <facet-remove class="d-inline-flex">
+                      <a
+                        href="{{ filter.url_to_remove }}"
+                        class="active-facets__button active-facets__button--light remove-underline py-10 px-15 hover-as-fill-button accent-color-second-bg fs-small"
+                      >
+                        {%- if filter.min_value.value -%}
+                          {{ filter.min_value.value | money }}
+                        {%- else -%}
+                          {{ 0 | money }}
+                        {%- endif -%}
+                        -
+                        {%- if filter.max_value.value -%}
+                          {{ filter.max_value.value | money }}
+                        {%- else -%}
+                          {{ filter.range_max | money }}
+                        {%- endif -%}
+                        <span class="active-facets__button-inner button--tertiary ml-10">
+                          {% render 'icon-close', custom_width: 14 %}
+                          <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+                        </span>
+                      </a>
+                    </facet-remove>
+                  </div>
+                {%- endif -%}
+              {% endif %}
+            {%- endfor -%}
+            <div class="facet-remove facet-clear-all btn-text-transform fs-small d-inline-flex align-center heading-color lh-reset py-10 px-15 mt-10 mt-1025-0">
+              <facet-remove class="active-facets__button-wrapper">
+                <a href="{{ results_url }}" class="active-facets__button-remove underlined-link">
+                  <span>{{ 'products.facets.clear_all' | t }}</span>
+                </a>
+              </facet-remove>
+            </div>
+          </div>
+        {% endif %}
+      {%- endif -%}
+
+      <div class="{% if section.settings.filter_type == 'vertical' %}facets-vertical loading-bar{% endif %}">
+        {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+        {%- if section.settings.enable_filtering -%}
+          {% if section.settings.filter_type == 'vertical' and collection.products.size != 0 %}
+            <details
+              class="d-inline-flex overlay-filter overlay-section has-open"
+              open
+            >
+              <summary class="has-overlay d-block d-1025-none" tabindex="-1">
+                <toggle-nav
+                  tabindex="0"
+                  class=" d-inline-flex d-1025-none pointer shipping btn-reset uppercase outline-style rounded-5 align-center fs-small"
+                  data-item="overlay-filter"
+                  id="filter-icon-buddle"
+                >
+                  {% render 'icon-filter', custom_width: 20 %}
+                  <span class="ml-8 heading-color">{{ 'products.facets.filter' | t }}</span>
+                </toggle-nav>
+              </summary>
+              <aside
+                aria-labelledby="verticalTitle"
+                class="facets-wrapper{% if section.settings.filter_type != 'vertical' %} loading-bar{% endif %}"
+                id="main-collection-filters"
+                data-id="{{ section.id }}"
+              >
+                {% render 'facets',
+                  results: collection,
+                  enable_filtering: section.settings.enable_filtering,
+                  enable_sorting: section.settings.enable_sorting,
+                  enable_count: section.settings.show_count,
+                  filter_type: section.settings.filter_type,
+                  paginate: paginate,
+                  results_url: results_url
+                %}
+              </aside>
+            </details>
+          {% endif %}
+        {%- endif -%}
+        {%- if section.settings.filter_type == 'horizontal' and collection.products.size != 0 -%}
+          <div class="filter-count filter__on-top d-flex flex-wrap space-between relative gap-10 horizontal mb-1025-30">
+            {%- if section.settings.enable_filtering -%}
+              <details
+                class="d-inline-flex align-center overlay-filter overlay-section has-open flex-1"
+                open
+              >
+                <summary class="has-overlay d-block d-1025-none" tabindex="-1">
+                  <toggle-nav
+                    class="pointer btn-filter outline-style rounded-5 d-1025-none d-inline-flex align-center"
+                    tabindex="0"
+                    data-item="overlay-filter"
+                    id="filter-icon-buddle"
+                  >
+                    {% render 'icon-filter', custom_width: 20 %}
+                    <span class="ml-8 heading-color btn-text-transform fs-small">
+                      {{- 'products.facets.filter' | t -}}
+                    </span>
+                  </toggle-nav>
+                </summary>
+                <aside
+                  aria-labelledby="verticalTitle"
+                  class="loading-bar facets-wrapper flex-1 d-flex gap-15 w-full"
+                  id="main-collection-filters"
+                  data-id="{{ section.id }}"
+                >
+                  {% render 'facets',
+                    results: collection,
+                    enable_filtering: section.settings.enable_filtering,
+                    enable_sorting: section.settings.enable_sorting,
+                    enable_count: section.settings.show_count,
+                    filter_type: section.settings.filter_type,
+                    paginate: paginate,
+                    results_url: results_url
+                  %}
+                </aside>
+              </details>
+            {%- endif -%}
+            {% if section.settings.enable_sorting %}
+              <facet-filters-form class="facets facets-vertical-sort small-hide no-js-hidden">
+                <form class="facets-vertical-form" id="FacetSortForm">
+                  <div class="facet-filters sorting caption">
+                    <div class="facet-filters__field btn-text-transform lh-reset heading-color">
+                      <div class="facet-filters__sort caption-large btn-text-transform fs-small lh-normal heading-color rounded-5 relative">
+                        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                        <select
+                          name="sort_by"
+                          class="facet-filters__sort caption-large btn-text-transform fs-small lh-normal heading-color rounded-5 relative"
+                          aria-label="{{ 'products.facets.sort_button' | t }}"
+                          aria-describedby="a11y-refresh-page-message"
+                        >
+                          {%- for option in collection.sort_options -%}
+                            <option
+                              value="{{ option.value | escape }}"
+                              {% if option.value == sort_by %}
+                                selected="selected"
+                              {% endif %}
+                            >
+                              {{ option.name | escape }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                        <div class="icon-down absolute right-15 inset-y-0 d-inline-flex align-center pointer-none">
+                          {% render 'icon-caret', custom_width: 12 %}
+                        </div>
+                      </div>
+                    </div>
+                    <noscript>
+                      <button type="submit" class="mr-10 facets__button-no-js button button--secondary">
+                        {{ 'products.facets.sort_button' | t }}
+                      </button>
+                    </noscript>
+                  </div>
+                </form>
+              </facet-filters-form>
+            {% endif %}
+            {%- if section.settings.show_count -%}
+              <div
+                class="collection-count d-none d-1025-block"
+                role="status"
+              >
+                <h2 class="reset-hover outline-style rounded-5 product-count__text text-body btn-text-transform mt-0 fs-small mb-0 lh-normal nowrap d-inline-flex align-center normal-weight{% if section.settings.filter_type != 'horizontal' %} h-full{% endif %}">
+                  <span id="ProductCountDesktop">
+                    {%- if collection.results_count -%}
+                      {{
+                        'templates.search.results_with_count'
+                        | t: terms: collection.terms, count: collection.results_count
+                      }}
+                    {%- elsif collection.products_count == collection.all_products_count -%}
+                      {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                    {%- else -%}
+                      {{
+                        'products.facets.product_count'
+                        | t: product_count: collection.products_count, count: collection.all_products_count
+                      }}
+                    {%- endif -%}
+                  </span>
+                </h2>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="filter-count active-facets active-facets-desktop d-flex flex-wrap gap-10 row-gap-0 row-gap-1025-10{% if section.settings.filter_type == 'vertical' %} flex-1{% endif %}">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <div class="facet-remove d-inline-flex align-center heading-color fs-small-1 lh-reset mt-15 mt-1025-0">
+                  <facet-remove class="d-inline-flex">
+                    <a
+                      href="{{ value.url_to_remove }}"
+                      class="active-facets__button active-facets__button--light remove-underline py-10 px-15 hover-as-fill-button accent-color-second-bg fs-small"
+                    >
+                      {{ value.label | escape }}
+                      <span class="active-facets__button-inner button--tertiary ml-10">
+                        {% render 'icon-close', custom_width: 14 %}
+                        <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+                      </span>
+                    </a>
+                  </facet-remove>
+                </div>
+              {%- endfor -%}
+              {% if filter.type == 'price_range' %}
+                {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                  <div class="facet-remove d-inline-flex align-center heading-color fs-small-1 lh-reset mt-15 mt-1025-0">
+                    <facet-remove class="d-inline-flex">
+                      <a
+                        href="{{ filter.url_to_remove }}"
+                        class="active-facets__button active-facets__button--light remove-underline py-10 px-15 hover-as-fill-button accent-color-second-bg fs-small"
+                      >
+                        {%- if filter.min_value.value -%}
+                          {{ filter.min_value.value | money }}
+                        {%- else -%}
+                          {{ 0 | money }}
+                        {%- endif -%}
+                        -
+                        {%- if filter.max_value.value -%}
+                          {{ filter.max_value.value | money }}
+                        {%- else -%}
+                          {{ filter.range_max | money }}
+                        {%- endif -%}
+                        <span class="active-facets__button-inner button--tertiary ml-10">
+                          {% render 'icon-close', custom_width: 14 %}
+                          <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+                        </span>
+                      </a>
+                    </facet-remove>
+                  </div>
+                {%- endif -%}
+              {% endif %}
+            {%- endfor -%}
+            <div class="facet-remove facet-clear-all btn-text-transform fs-small d-inline-flex align-center heading-color lh-reset py-10 px-15 mt-10 mt-1025-0">
+              <facet-remove class="active-facets__button-wrapper">
+                <a href="{{ results_url }}" class="active-facets__button-remove underlined-link">
+                  <span>{{ 'products.facets.clear_all' | t }}</span>
+                </a>
+              </facet-remove>
+            </div>
+          </div>
+        {%- endif -%}
+        <div
+          class="product-grid-container view-as-grid{% if section.settings.filter_type == 'horizontal' or section.settings.filter_type == 'canvas' %} mt-40{% endif %}"
+          id="ProductContainer"
+        >
+          {%- if collection.products.size == 0 -%}
+            <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+              <div class="loading-overlay gradient"></div>
+              <div class="title-wrapper text-center">
+                <h2 class="title title--primary my-0">
+                  {{ 'sections.collection_template.no_products_found' | t -}}
+                  <br>
+                  {{
+                    'sections.collection_template.use_fewer_filters_html'
+                    | t: link: results_url, class: 'underlined-link link'
+                  }}
+                </h2>
+                <a
+                  href="{{ routes.all_products_collection_url }}"
+                  aria-label="{{- 'general.continue_shopping' | t -}}"
+                  class="btn remove-underline btn-primary d-inline-block mt-20"
+                >
+                  {{- 'general.continue_shopping' | t -}}
+                </a>
+              </div>
+            </div>
+          {%- else -%}
+            <div class="collection">
+              <div class="loading-overlay gradient"></div>
+
+              <div
+                id="product-grid"
+                data-id="{{ section.id }}"
+                class="grid-cols{{ desktop-small }}{{ columns_small_desktop }}{{ columns_tablet }}{{ columns_mobile }} ajax-loadmore gap-{{ section.settings.column_gap }}"
+                style="--col-number: {{ section.settings.columns_desktop }}"
+              >
+                {%- if collection.products.size > 0 -%}
+                  {%- liquid
+                    assign bannerPositions = ''
+                    for block in section.blocks
+                      assign position = block.settings.banner_position
+                      assign bannerPositions = bannerPositions | append: position | append: ','
+                    endfor
+                    assign arr = bannerPositions | split: ','
+                    assign cp = paginate.current_page | minus: 1
+                    assign midnum = section.settings.products_to_show | times: cp
+                  -%}
+                  {%- for product in collection.products -%}
+                    {%- liquid
+                      assign index = forloop.index0 | plus: 1 | plus: midnum
+                      assign indexPosition = index | minus: midnum
+                      for item in arr
+                        assign itemInt = item | plus: 0
+                        if itemInt == index
+                          assign found = true
+                          break
+                        endif
+                      endfor
+                    -%}
+                    {%- if found -%}
+                      {%- for block in section.blocks -%}
+                        {%- if block.settings.banner_position == index -%}
+                          <div
+                            {{ block.shopify_attributes }}
+                            class="{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                            {% if settings.animations_reveal_on_scroll %}
+                              data-cascade
+                              style="--animation-order: {{ index }};"
+                            {% endif %}
+                          >
+                            {%- liquid
+                              assign r = ''
+                              if settings.product_image_ratio != 'adapt_to_image'
+                                case settings.product_image_ratio
+                                  when 'square'
+                                    assign r = '1/1'
+                                  else
+                                    assign r = '3/4'
+                                endcase
+                              else
+                                if block.settings.image != blank
+                                  assign r = block.settings.image.aspect_ratio
+                                else
+                                  assign r = '3/4'
+                                endif
+                              endif
+                            -%}
+                            <div class="product__promotion-banner relative">
+                              <div
+                                class="banner__media overlay-bg"
+                              >
+                                {%- liquid
+                                  assign banner_alt = ''
+                                  if block.settings.heading
+                                    assign banner_alt = block.settings.heading
+                                  endif
+                                  if block.settings.image.alt
+                                    assign banner_alt = block.settings.image.alt
+                                  endif
+                                -%}
+                                <a
+                                  {% if block.settings.promotion_link == blank %}
+                                    role="link" aria-disabled="true"
+                                  {% else %}
+                                    href="{{ block.settings.promotion_link }}"
+                                  {% endif %}
+                                  aria-label="{{ banner_alt }}"
+                                  {% if block.settings.image != blank %}
+                                    style="--aspect-ratio: {{ r }};"
+                                    class="d-block"
+                                  {% endif %}
+                                >
+                                  {%- if block.settings.image != blank -%}
+                                    {{
+                                      block.settings.image
+                                      | image_url: width: 1500
+                                      | image_tag:
+                                        loading: 'lazy',
+                                        sizes: '100vw',
+                                        widths: '165, 360, 535, 750, 1070, 1500',
+                                        alt: banner_alt
+                                    }}
+                                  {%- else -%}
+                                    <div class="placeholder banner__media media" style="--aspect-ratio: {{ r }};">
+                                      {%- render 'placeholder-render' | type: "collection" -%}
+                                    </div>
+                                  {%- endif -%}
+                                </a>
+                              </div>
+                              {%- if block.settings.subheading != blank
+                                or block.settings.heading != blank
+                                or block.settings.button_label != blank
+                              -%}
+                                <div class="promotion-banner-information">
+                                  {%- if block.settings.subheading != blank -%}
+                                    <div class="btn-text-transform fs-small">{{ block.settings.subheading }}</div>
+                                  {%- endif -%}
+                                  {%- if block.settings.heading != blank -%}
+                                    <a
+                                      class="promotion-banner-text heading-style"
+                                      {% if block.settings.promotion_link == blank %}
+                                        role="link" aria-disabled="true"
+                                      {% else %}
+                                        href="{{ block.settings.promotion_link }}"
+                                        aria-label="{{ banner_alt }}"
+                                      {% endif %}
+                                    >
+                                      {{ block.settings.heading }}
+                                    </a>
+                                  {%- endif -%}
+                                  {%- if block.settings.button_label != blank -%}
+                                    <div class="mt-15">
+                                      <a
+                                        {% if block.settings.promotion_link == blank %}
+                                          role="link" aria-disabled="true"
+                                        {% else %}
+                                          href="{{ block.settings.promotion_link }}"
+                                          aria-label="{{ banner_alt }}"
+                                        {% endif %}
+                                        class="btn remove-underline btn-primary"
+                                      >
+                                        {{ block.settings.button_label }}
+                                      </a>
+                                    </div>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                      {% render 'card-product',
+                        card_product: product,
+                        section_id: section.id,
+                        customClass: ' scroll-trigger animate--slide-in',
+                        indexFor: indexPosition,
+                        show_video: true
+                      %}
+                    {%- else -%}
+                      {% render 'card-product',
+                        card_product: product,
+                        section_id: section.id,
+                        customClass: ' scroll-trigger animate--slide-in',
+                        indexFor: indexPosition,
+                        show_video: true
+                      %}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  {% for i in (0..section.settings.products_to_show) %}
+                    {% render 'card-product' | section_id: section.id, customClass: 'scroll-trigger animate--slide-in', indexFor: forloop.index %}
+                  {% endfor %}
+                {%- endif -%}
+                {%- liquid
+                  assign showing_products = section.settings.products_to_show | times: paginate.current_page
+                  if showing_products > collection.products_count
+                    assign showing_products = collection.products_count
+                  endif
+                -%}
+                <span class="visually-hidden counting_product">
+                  {{-
+                    'sections.collection_template.product_count'
+                    | t: count: showing_products, product_count: collection.products_count
+                  -}}
+                </span>
+              </div>
+              {%- liquid
+                assign sp = section.settings.products_to_show
+                if sp > collection.products_count
+                  assign sp = collection.products_count
+                endif
+              -%}
+              {%- case section.settings.pagination_type -%}
+                {%- when 'button' -%}
+                  <loadmore-button-collection
+                    data-all-products="{{ all_product }}"
+                    data-limit="{{ section.settings.products_to_show }}"
+                    data-url="?page={{ paginate.current_page | plus: 1 }}"
+                    class="d-block text-center mt-80"
+                  >
+                    <p class="counting_product">
+                      {{-
+                        'sections.collection_template.product_count'
+                        | t: count: sp, product_count: collection.products_count
+                      -}}
+                    </p>
+                    {% if all_product > section.settings.products_to_show %}
+                      <button class="button btn-outline load-more mt-3 relative">
+                        <span class="loading-overlay__spinner loading-icon"></span>
+                        <span class="hidden-on-load">{{ 'sections.collection_template.load_more' | t }}</span>
+                      </button>
+                    {% endif %}
+                  </loadmore-button-collection>
+                {%- when 'infinity' -%}
+                  <loadmore-infinity
+                    data-all-products="{{ all_product }}"
+                    data-limit="{{ section.settings.products_to_show }}"
+                    data-url="?page={{ paginate.current_page | plus: 1 }}"
+                    class="d-block text-center mt-80"
+                  >
+                    <p class="counting_product">
+                      {{-
+                        'sections.collection_template.product_count'
+                        | t: count: sp, product_count: collection.products_count
+                      -}}
+                    </p>
+                    {% if all_product > section.settings.products_to_show %}
+                      <button class="button btn-outline load-more relative mt-3">
+                        <span class="loading-overlay__spinner loading-icon"></span>
+                        <span class="hidden-on-load">{{ 'sections.collection_template.load_more' | t }}</span>
+                      </button>
+                    {% endif %}
+                  </loadmore-infinity>
+                {%- else -%}
+                  {%- if paginate.pages > 1 -%}
+                    {% render 'pagination', paginate: paginate, anchor: '' %}
+                  {%- endif -%}
+              {%- endcase -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+    <script src="{{ 'facets-action.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-product-grid.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.show_count.label"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+        },
+        {
+          "value": "vertical",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
+        },
+        {
+          "value": "canvas",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
+        }
+      ],
+      "default": "horizontal",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
+      "info": "t:sections.main-collection-product-grid.settings.filter_type.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+    },
+    {
+      "type": "select",
+      "id": "column_gap",
+      "options": [
+        {
+          "value": "no_gap",
+          "label": "t:sections.all.padding.column_gap.no_gap"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.all.padding.column_gap.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.padding.column_gap.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.padding.column_gap.large"
+        }
+      ],
+      "default": "small",
+      "label": "t:sections.all.padding.column_gap.label"
+    },
+    {
+      "type": "select",
+      "id": "pagination_type",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:sections.main-collection-product-grid.settings.pagination_type.options__1.label"
+        },
+        {
+          "value": "button",
+          "label": "t:sections.main-collection-product-grid.settings.pagination_type.options__2.label"
+        },
+        {
+          "value": "infinity",
+          "label": "t:sections.main-collection-product-grid.settings.pagination_type.options__3.label"
+        }
+      ],
+      "default": "default",
+      "label": "t:sections.main-collection-product-grid.settings.pagination_type.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promotion",
+      "name": "t:sections.main-collection-product-grid.blocks.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.main-collection-product-grid.blocks.image"
+        },
+        {
+          "type": "url",
+          "id": "promotion_link",
+          "label": "t:sections.all.content_setting.link.label"
+        },
+        {
+          "type": "range",
+          "id": "banner_position",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "default": 7,
+          "label": "t:sections.main-collection-product-grid.blocks.banner_position"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "default": "Subheading",
+          "label": "t:sections.all.content_setting.subheading.label"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Heading",
+          "label": "t:sections.all.content_setting.heading.label"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Button label",
+          "label": "t:sections.all.content_setting.button_label.label",
+          "info": "t:sections.all.content_setting.button_label.info"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

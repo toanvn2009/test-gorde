@@ -1,0 +1,412 @@
+{% liquid
+  if settings.color_swatch_trigger != blank and settings.enable_color_swatches != false
+    assign option_name = settings.color_swatch_trigger | split: ','
+  else
+    assign option_name = 'Color'
+  endif
+  assign option_size = 'Size'
+  assign has_color = false
+  for opt in product.options_with_values
+    for c in option_name
+      if opt.name == c
+        assign has_color = true
+      endif
+    endfor
+  endfor
+  assign limit_color = settings.limit_color
+%}
+{%- if type and type == 'item' -%}
+  {% if product.has_only_default_variant == false and has_color == true -%}
+    <variant-radios class="product-swatches-js d-flex flex-wrap pl-4 no-js-hidden" {{ block.shopify_attributes }}>
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign isColorOption = false
+          for cl in option_name
+            if option.name == cl
+              assign isColorOption = true
+            endif
+          endfor
+        -%}
+        {%- if isColorOption == true -%}
+          {% if limit_color != 'default' %}
+            {% assign limit_color = limit_color | plus: 0 %}
+          {% endif %}
+          {% assign color_left = option.values | size | minus: limit_color %}
+          {%- for value in option.values -%}
+            {%- liquid
+              assign op = 'option' | append: option.position
+              assign variant = product.variants | where: op, value
+              assign img = ''
+              for i in variant
+                if i.featured_image.src
+                  assign img = i.featured_image.src
+                  break
+                endif
+              endfor
+              if settings.color_swatch_custom != blank and settings.enable_color_swatches
+                assign stringValue = settings.color_swatch_custom
+                assign pairs = stringValue | split: ','
+                assign colorCode = ''
+                for pair in pairs
+                  assign keyAndValue = pair | split: ':'
+                  assign key = keyAndValue[0] | strip
+                  assign v = keyAndValue[1] | strip
+                  if key == value
+                    assign colorCode = v
+                  endif
+                endfor
+              endif
+            -%}
+            <div
+              class="product__color-swatch tooltip pointer mr-10 mt-10 swatch-items-js {% if limit_color != "default" and  forloop.index > limit_color %} opacity-0 hidden {% endif %} {% if settings.enable_color_swatches != true and img == blank %}d-none{% endif %}"
+              data-value="{{ value }}"
+              {% if settings.enable_color_swatches %}
+                data-color="{{ value | downcase }}"
+                data-hex="{{ colorCode }}"
+              {% endif %}
+              data-position="{{ option.position }}"
+              {% if img != blank %}
+                data-image="{{ img | image_url }}"
+              {% endif %}
+            >
+              <span class="tooltip-content fs-small tooltip-top">{{ value }}</span>
+            </div>
+          {%- endfor -%}
+          {% if limit_color != "default" and color_left > 0  %}
+            <span class="show-color-swatch-js pointer mr-10 mt-10"> + {{ color_left }} </span>
+          {% endif %}
+        {%- endif -%}
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+    </variant-radios>
+  {% endif %}
+{%- elsif type and type == 'detail' -%}
+  {%- unless product.has_only_default_variant -%}
+    {%- if is_dropdown -%}
+      {%- if t and t == 'page' -%}
+        <variant-selects-page
+          id="variant-selects-{{ section.id }}"
+          class="no-js-hidden"
+          data-section="{{ section.id }}"
+          data-url="{{ product.url }}"
+          {% if update_url == false %}
+            data-update-url="false"
+          {% endif %}
+        >
+      {%- else -%}
+        <variant-selects
+          id="variant-selects-{{ section.id }}"
+          class="no-js-hidden"
+          data-section="{{ section.id }}"
+          data-url="{{ product.url }}"
+          {% if update_url == false %}
+            data-update-url="false"
+          {% endif %}
+        >
+      {%- endif -%}
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign op = 'option' | append: option.position
+          assign op_value = product.selected_or_first_available_variant[op]
+        -%}
+        <div class="product-form__input product-form__input--dropdown mb-15 last-0">
+          <div class="d-flex space-between mb-6">
+            <label
+              class="form__label d-flex gap-10 flex-1 align-center mb-0"
+              for="Option-{{ section.id }}-{{ forloop.index0 }}"
+            >
+              {{ option.name }}: <span class="option_value">{{ op_value }}</span>
+            </label>
+            {%- if option.name == 'Size' -%}
+              {% if product.metafields.custom.external_affiliate == blank %}
+                {%- if block.settings.show_size_guide -%}
+                  {%- liquid
+                    assign productCollections = product.collections
+                    assign collectionSizeChart = ''
+                    for productCollection in productCollections
+                      if productCollection.metafields.custom.size_chart != blank
+                        assign collectionSizeChart = productCollection.metafields.custom.size_chart
+                      endif
+                    endfor
+                  -%}
+                  {% if block.settings.size_guide_page != blank
+                    or product.metafields.custom.size_chart != blank
+                    or collectionSizeChart != ''
+                  %}
+                    <modal-popup data-title="{{ block.settings.size_guide_label }}">
+                      <div class="pointer modal-btn heading-color d-inline-flex align-center border-bottom lh-1-4 fs-small text-transform-unset">
+                        {% render 'icon-size-guide', custom_width: 17 %}
+                        <span class="ml-5">{{ block.settings.size_guide_label }}</span>
+                      </div>
+                      <div class="content d-none">
+                        {% if product.metafields.custom.size_chart != blank %}
+                          {% assign size_chart_html = product.metafields.custom.size_chart | replace: '&lt;', '<' | replace: '&gt;', '>' %}
+                          {{ size_chart_html }}
+                        {%- elsif collectionSizeChart != '' -%}
+                          {% assign size_chart_html = collectionSizeChart | replace: '&lt;', '<' | replace: '&gt;', '>' %}
+                          {{ size_chart_html }}
+                        {%- else -%}
+                          {{ pages[block.settings.size_guide_page].content }}
+                        {% endif %}
+                      </div>
+                    </modal-popup>
+                  {% endif %}
+                {%- endif -%}
+              {% endif %}
+            {%- endif -%}
+          </div>
+          <div class="select relative">
+            <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ option.name | escape }}]"
+              form="{{ product_form_id }}"
+            >
+              {% render 'product-variant-options', product: product, option: option, is_dropdown: is_dropdown %}
+            </select>
+            <div class="icon-down absolute right-15 inset-y-0 d-inline-flex align-center pointer-none">
+              {% render 'icon-caret', custom_width: 12 %}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+      {%- if t and t == 'page' -%}
+        </variant-selects-page>
+      {%- else -%}
+        </variant-selects>
+      {%- endif -%}
+    {%- else -%}
+      {%- if t and t == 'page' -%}
+        <variant-radios-page
+          id="variant-radios-{{ section.id }}"
+          data-section="{{ section.id }}"
+          class="no-js-hidden"
+          data-url="{{ product.url }}"
+          {% if update_url == false %}
+            data-update-url="false"
+          {% endif %}
+        >
+      {%- else -%}
+        <variant-radios-detail
+          id="variant-radios-{{ section.id }}"
+          data-section="{{ section.id }}"
+          class="no-js-hidden"
+          data-url="{{ product.url }}"
+          {% if update_url == false %}
+            data-update-url="false"
+          {% endif %}
+        >
+      {%- endif -%}
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign isColorOption = false
+          for cl in option_name
+            if option.name == cl
+              assign isColorOption = true
+            endif
+          endfor
+          assign op = 'option' | append: option.position
+          assign op_value = product.selected_or_first_available_variant[op]
+        -%}
+        <fieldset class="js product-form__input{% if isColorOption == true %} product-form__input_color{% endif %}{% if option.name == option_size %} product-form__input_size{% endif %}">
+          <legend class="form__label d-flex gap-10 w-full align-center">
+            {{ option.name }}: <span class="option_value">{{ op_value }}</span>
+            {%- if option.name == 'Size' -%}
+              {% if product.metafields.custom.external_affiliate == blank %}
+                {%- if block.settings.show_size_guide -%}
+                  {%- liquid
+                    assign productCollections = product.collections
+                    assign collectionSizeChart = ''
+                    for productCollection in productCollections
+                      if productCollection.metafields.custom.size_chart != blank
+                        assign collectionSizeChart = productCollection.metafields.custom.size_chart
+                      endif
+                    endfor
+                  -%}
+                  {% if block.settings.size_guide_page != blank
+                    or product.metafields.custom.size_chart != blank
+                    or collectionSizeChart != ''
+                  %}
+                    <modal-popup
+                      data-id="size-chart"
+                      class="d-inline-flex flex-1 justify-content-end"
+                      data-title="{{ block.settings.size_guide_label }}"
+                    >
+                      <button
+                        data-focus-item="size-chart-buddle"
+                        id="size-chart-buddle"
+                        aria-label="{{ block.settings.size_guide_label }}"
+                        class="button btn-reset pointer modal-btn heading-color d-inline-flex align-center border-bottom lh-1-4 fs-small text-transform-unset"
+                      >
+                        {% render 'icon-size-guide', custom_width: 17 %}
+                        <span class="ml-5">{{ block.settings.size_guide_label }}</span>
+                      </button>
+                      <span class="content d-none">
+                        {% if product.metafields.custom.size_chart != blank %}
+                          {% assign size_chart_html = product.metafields.custom.size_chart | replace: '&lt;', '<' | replace: '&gt;', '>' %}
+                          {{ size_chart_html }}
+                        {%- elsif collectionSizeChart != '' -%}
+                          {% assign size_chart_html = collectionSizeChart | replace: '&lt;', '<' | replace: '&gt;', '>' %}
+                          {{ size_chart_html }}
+                        {%- else -%}
+                          {{ pages[block.settings.size_guide_page].content }}
+                        {% endif %}
+                      </span>
+                    </modal-popup>
+                  {% endif %}
+                {%- endif -%}
+              {% endif %}
+            {%- endif -%}
+          </legend>
+          {% render 'product-variant-options', product: product, option: option, is_dropdown: is_dropdown | option_name: option_name %}
+        </fieldset>
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+      {%- if t and t == 'page' -%}
+        </variant-radios-page>
+      {%- else -%}
+        </variant-radios-detail>
+      {%- endif -%}
+      <noscript class="product-form__noscript-wrapper-{{ section.id }} mt-15 d-block">
+        <div class="product-form__input{% if product.has_only_default_variant %} hidden{% endif %}">
+          <label class="form__label" for="Variants-{{ section.id }}">
+            {{- 'products.product.product_variants' | t -}}
+          </label>
+          <div class="select border relative">
+            <select
+              name="id"
+              id="Variants-{{ section.id }}"
+              class="select__select border-0"
+              form="{{ product_form_id }}"
+            >
+              {%- for variant in product.variants -%}
+                <option
+                  {% if variant == product.selected_or_first_available_variant %}
+                    selected="selected"
+                  {% endif %}
+                  {% if variant.available == false %}
+                    disabled
+                  {% endif %}
+                  value="{{ variant.id }}"
+                >
+                  {%- liquid
+                    echo variant.title
+                    echo variant.price | money | strip_html | prepend: ' - '
+                    if variant.available == false
+                      echo 'products.product.sold_out' | t | prepend: ' - '
+                    endif
+                    if variant.quantity_rule.increment > 1
+                      echo 'products.product.quantity.multiples_of' | t: quantity: variant.quantity_rule.increment | prepend: ' - '
+                    endif
+                    if variant.quantity_rule.min > 1
+                      echo 'products.product.quantity.minimum_of' | t: quantity: variant.quantity_rule.min | prepend: ' - '
+                    endif
+                    if variant.quantity_rule.max != null
+                      echo 'products.product.quantity.maximum_of' | t: quantity: variant.quantity_rule.max | prepend: ' - '
+                    endif
+                    # TODO: enable theme-check once `item_count_for_variant` is accepted as valid filter
+                    # theme-check-disable
+                    assign cart_quantity = cart | item_count_for_variant: variant.id
+                    # theme-check-enable
+                    if cart_quantity > 0
+                      echo 'products.product.quantity.in_cart_html' | t: quantity: cart_quantity | prepend: ' - '
+                    endif
+                  -%}
+                </option>
+              {%- endfor -%}
+            </select>
+            <div class="icon-down absolute right-15 inset-y-0 d-inline-flex align-center pointer-none">
+              {% render 'icon-caret', custom_width: 12 %}
+            </div>
+          </div>
+        </div>
+      </noscript>
+    {%- endif -%}
+  {%- endunless -%}
+{%- elsif type and type == 'sticky' -%}
+  {%- unless product.has_only_default_variant -%}
+    {%- if is_dropdown -%}
+      <variant-selects-sticky
+        id="variant-selects-{{ section.id }}"
+        class="no-js-hidden"
+        data-section="{{ section.id }}"
+        data-url="{{ product.url }}"
+        {% if update_url == false %}
+          data-update-url="false"
+        {% endif %}
+      >
+        {%- for option in product.options_with_values -%}
+          {%- liquid
+            assign op = 'option' | append: option.position
+            assign op_value = product.selected_or_first_available_variant[op]
+          -%}
+          <div class="product-form__input product-form__input--dropdown">
+            <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}: <span class="option_value">{{ op_value }}</span>
+            </label>
+            <div class="select relative">
+              <select
+                id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                class="select__select"
+                name="options[{{ option.name | escape }}]"
+                form="{{ product_form_id }}"
+              >
+                {% render 'product-variant-options', product: product, option: option, is_dropdown: is_dropdown %}
+              </select>
+              <div class="icon-down absolute right-15 inset-y-0 d-inline-flex align-center pointer-none">
+                {% render 'icon-caret', custom_width: 12 %}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        <script type="application/json">
+          {{ product.variants | json }}
+        </script>
+      </variant-selects-sticky>
+    {%- else -%}
+      <variant-radios-sticky
+        id="variant-radios-{{ section.id }}"
+        data-section="{{ section.id }}"
+        class="no-js-hidden"
+        data-url="{{ product.url }}"
+        {% if update_url == false %}
+          data-update-url="false"
+        {% endif %}
+      >
+        {%- for option in product.options_with_values -%}
+          {%- liquid
+            assign isColorOption = false
+            for cl in option_name
+              if option.name == cl
+                assign isColorOption = true
+              endif
+            endfor
+            assign op = 'option' | append: option.position
+            assign op_value = product.selected_or_first_available_variant[op]
+          -%}
+          <fieldset class="js product-form__input{% if isColorOption == true %} product-form__input_color{% endif %}{% if option.name == option_size %} product-form__input_size{% endif %}">
+            <legend class="form__label">
+              {{ option.name }}: <span class="option_value">{{ op_value }}</span>
+            </legend>
+            {% render 'product-variant-options',
+              product: product,
+              option: option,
+              is_dropdown: is_dropdown,
+              option_name: option_name
+            %}
+          </fieldset>
+        {%- endfor -%}
+        <script type="application/json">
+          {{ product.variants | json }}
+        </script>
+      </variant-radios-sticky>
+    {%- endif -%}
+  {%- endunless -%}
+{%- endif -%}

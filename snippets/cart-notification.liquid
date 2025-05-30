@@ -1,0 +1,42 @@
+<cart-notification>
+  <div class="cart-notification-wrapper">
+    <div
+      id="cart-notification"
+      class="cart-notification absolute bg-default focus-inset{% if color_scheme %} color-{{ color_scheme }} gradient{% endif %}"
+      aria-modal="true"
+      aria-label="{{ 'general.cart.item_added' | t }}"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="cart-notification__header">
+        <h2 class="space-between d-flex align-center cart-notification__heading text-body text-size my-0 px-30 py-12 success-bg">
+          {%- render 'icon-checkmark', custom_width: 13 -%}
+          <span class="flex-1"> {{ 'general.cart.item_added' | t }} </span>
+          <span class="touch-target close" tabindex="0">
+            {% render 'icon-close', custom_width: 20 %}
+          </span>
+        </h2>
+      </div>
+      <div class="cart-notification-inner border border-top-0 pt-30">
+        <div id="cart-notification-product" class="cart-notification-product px-30 pb-30"></div>
+        <div class="cart-notification__links px-30 pb-30 text-center">
+          <div class="btn-cart-main d-flex flex-wrap gap-10">
+            <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form" class="w-full">
+              <button class="button btn w-full" name="checkout">
+                {{ 'general.cart.checkout_non_price' | t }}
+              </button>
+            </form>
+            <a
+              href="{{ routes.cart_url }}"
+              id="cart-notification-button"
+              class="btn-outline btn w-full"
+            >
+              {{- 'general.cart.view_empty_cart' | t -}}
+            </a>
+          </div>
+          <button type="button" class="mt-15 btn-reset link button-label close">{{ 'general.continue_shopping' | t }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</cart-notification>

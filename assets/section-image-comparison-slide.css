@@ -1,0 +1,67 @@
+body.rounded-corner .image-comparison-container {
+    border-radius: var(--rounded-radius, 0);
+    overflow: hidden;
+    will-change: transform;
+}
+
+.image-comparison__after {
+    clip-path: inset(0px 0px 0px var(--percent));
+}
+
+.image-comparison__button {
+    padding: 0;
+    position: absolute;
+    left: var(--percent);
+    transform: translateX(-50%);
+    border: 0;
+    z-index: 3;
+    background-color: transparent;
+    cursor: col-resize;
+}
+
+.image-comparison__button:before {
+    content: "";
+    width: 2px;
+    position: absolute;
+    background-color: var(--color-white);
+    top: 0;
+    bottom: 0;
+}
+
+.image-comparison__button>span {
+    width: clamp(3rem, 3.5vw, 4.5rem);
+    height: clamp(6rem, 7vw, 8rem);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-white);
+    position: relative;
+    cursor: pointer;
+}
+
+body.rounded-corner .image-comparison__button>span {
+    border-radius: 60px;
+}
+
+.image-comparison__button svg {
+    width: clamp(.6rem, .7vw, .8rem);
+    height: clamp(1.5rem, 1.75vw, 2rem);
+}
+
+.image-text {
+    font-size: clamp(1.4rem, 1.6vw, 1.8rem);
+    max-width: 14rem;
+}
+
+.image-comparison-slide .left-50 {
+    left: clamp(2rem, 3.5vw, 5rem);
+}
+
+.image-comparison-slide .bottom-30 {
+    bottom: clamp(1rem, 2vw, 3rem);
+}
+
+.image-comparison-slide .right-50 {
+    right: clamp(2rem, 3.5vw, 5rem);
+}

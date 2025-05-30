@@ -1,0 +1,446 @@
+{{ 'section-image-tabs.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign the_settings = settings
+  assign sec_settings = section.settings
+  assign section_width = ''
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = 'container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = 'full-width px-20'
+  else
+    assign section_width = 'full-width-gap'
+  endif
+  assign slide_vertical = sec_settings.sliding_effects
+  assign mode = 'carousel'
+  if slide_vertical == 'fade_in'
+    assign mode = 'gallery'
+    assign slide_vertical = 'horizontal'
+  endif
+  assign width_image = sec_settings.width_image
+  assign image_position = sec_settings.image_position
+  assign aspect_ratio = sec_settings.aspect_ratio
+  assign custom_ratio = sec_settings.custom_ratio
+  assign column_gap = sec_settings.column_gap
+  assign ratio = ''
+%}
+{%- capture sizes -%}
+  (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px)
+  calc(100vw - 10rem), 100vw
+{%- endcapture -%}
+{%- capture style -%}
+--section-padding-top: {{ sec_settings.padding_top }}px; --section-padding-bottom: {{ sec_settings.padding_bottom }}px; --section-image-width: {{ width_image }};
+{%- endcapture -%}
+<div
+  class="d-block color-{{ sec_settings.color_scheme }} gradient bls__section bls__image-tabs section-padding"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="section-inner {{ section_width }}">
+    {%- if sec_settings.title != blank or sec_settings.description != blank -%}
+      <div class="bls__section-header mb-40 mb-sm-35 text-{{ sec_settings.text_alignment }}{% if the_settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {%- if sec_settings.title != blank -%}
+          <h2 class="bls_section-heading heading-letter-spacing mt-0 mb-7 mb-md-15">{{ sec_settings.title }}</h2>
+        {%- endif -%}
+        {%- if sec_settings.description != blank -%}
+          <div class="short-des">
+            {{ sec_settings.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="image-tabs-content">
+      <image-tabs
+        class="{% if sec_settings.sliding_effects == 'fade_in' %}sliding-effects-none{% endif %} image-tabs align-md-{{ image_position }} d-flex align-center flex-cols flex-column gap-{{ column_gap }} {% if image_position == "right" %} flex-md-row-reverse{% else %} flex-md-row{% endif %}"
+        style="--row-gap: 0"
+      >
+        <div class="tabs-image w-full">
+          <div class="banner__media">
+            <slide-section
+              class="image-tabs-slide"
+              data-items="1"
+              data-controls="false"
+              data-loop="false"
+              data-nav="false"
+              data-autoplay="false"
+              data-mouse-drag="true"
+              data-controls-position="top"
+              data-nav-as-thumbnails="false"
+              data-autoplay-button-output="false"
+              data-axis="{{ slide_vertical }}"
+              data-center="true"
+              data-mode="{{ mode }}"
+              data-fix-height="false"
+              data-pause-video="false"
+              data-product-type="true"
+            >
+              <div
+                class="slide-container no-js-scroll{% if the_settings.animations_reveal_on_scroll %} slide-animation opacity-0 opacity-1-768{% endif %}"
+              >
+                {%- for block in section.blocks -%}
+                  {% liquid
+                    assign blo_settings = block.settings
+                    assign image = blo_settings.image
+                    assign image_link = blo_settings.image_link
+                    if aspect_ratio != 'adapt'
+                      assign ratio = ''
+                      case aspect_ratio
+                        when 'square'
+                          assign ratio = '1/1'
+                        when 'portrait'
+                          assign ratio = '3/4'
+                        when 'landscape'
+                          assign ratio = '4/3'
+                        else
+                          if custom_ratio != empty
+                            assign ratio = custom_ratio | replace: ':', '/'
+                          else
+                            assign ratio = '3/4'
+                          endif
+                      endcase
+                    else
+                      if ratio == blank
+                        if image != blank
+                          assign ratio = image.aspect_ratio
+                        else
+                          assign ratio = '3/4'
+                        endif
+                      endif
+                    endif
+                  %}
+                  <div class="img-slide__item" style="--aspect-ratio: {{ ratio }};">
+                    <a
+                      {% if image_link == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ image_link }}"
+                      {% endif %}
+                      aria-label="link"
+                    >
+                      {% if image != blank %}
+                        {%- assign image_alt = image.alt | escape -%}
+                        {{
+                          image
+                          | image_url: width: 3840
+                          | image_tag:
+                            loading: 'lazy',
+                            sizes: sizes,
+                            widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                            alt: image_alt
+                        }}
+
+                      {% else %}
+                        {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                    </a>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </slide-section>
+          </div>
+        </div>
+        <div class="tabs-body w-full">
+          <div class="image-tabs__body d-flex flex-column">
+            {%- for block in section.blocks -%}
+              {% liquid
+                assign blo_settings = block.settings
+                assign heading = blo_settings.heading
+                assign image_link = blo_settings.image_link
+                assign active_first = ''
+                if forloop.first
+                  assign active_first = ' active'
+                endif
+              %}
+              <tabs-item class="tabs__item{{ active_first }}" data-position="{{ forloop.index }}">
+                <a
+                  class="d-flex align-center remove-underline gap-15"
+                  {% if image_link == blank %}
+                    role="link" aria-disabled="true"
+                  {% else %}
+                    href="{{ image_link }}"
+                  {% endif %}
+                  aria-label="link"
+                >
+                  <span class="tabs__item-heading flex-1 fs-48 heading-letter-spacing heading-weight heading-font">
+                    {{- heading -}}
+                  </span>
+                  {% if image_link != blank %}
+                    <span class="tabs__item-icon d-inline-flex justify-content-center align-center border round-50">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="000000"
+                      >
+                        <path d="M17.25 0.75V13.1022H15.8826V3.07459L1.70718 17.25L0.75 16.2472L14.8798 2.1174H4.85221V0.75H17.25Z"/>
+                      </svg>
+                    </span>
+                  {% endif %}
+                </a>
+              </tabs-item>
+            {%- endfor -%}
+          </div>
+        </div>
+      </image-tabs>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.image-tabs.name",
+  "tag": "section",
+  "class": "section image-tabs",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_setting.label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.all.content_setting.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.content_setting.description.label"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.option_1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.option_2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.option_3.label"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.all.text_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.image-tabs.settings.header.setting"
+    },
+    {
+      "type": "select",
+      "id": "width_image",
+      "label": "t:sections.image-tabs.settings.width_image.label",
+      "default": "50%",
+      "options": [
+        {
+          "value": "40%",
+          "label": "t:sections.image-tabs.settings.width_image.option__1"
+        },
+        {
+          "value": "50%",
+          "label": "t:sections.image-tabs.settings.width_image.option__2"
+        },
+        {
+          "value": "60%",
+          "label": "t:sections.image-tabs.settings.width_image.option__3"
+        },
+        {
+          "value": "70%",
+          "label": "t:sections.image-tabs.settings.width_image.option__4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "sliding_effects",
+      "label": "t:sections.image-tabs.settings.sliding_effects.label",
+      "default": "vertical",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "t:sections.image-tabs.settings.sliding_effects.option__1"
+        },
+        {
+          "value": "vertical",
+          "label": "t:sections.image-tabs.settings.sliding_effects.option__2"
+        },
+        {
+          "value": "fade_in",
+          "label": "t:sections.image-tabs.settings.sliding_effects.option__3"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "t:sections.image-tabs.settings.image_position.label",
+      "default": "right",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.image-tabs.settings.image_position.option__1"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.image-tabs.settings.image_position.option__2"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.adapt"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__1"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__2"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__3"
+        },
+        {
+          "value": "custom",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__4"
+        }
+      ],
+      "default": "square",
+      "label": "t:sections.image-tabs.settings.aspect_ratio.label"
+    },
+    {
+      "type": "text",
+      "id": "custom_ratio",
+      "label": "t:sections.shopable-video.settings.custom_ratio.label",
+      "info": "t:sections.shopable-video.settings.aspect_ratio.info"
+    },
+    {
+      "type": "select",
+      "id": "column_gap",
+      "options": [
+        {
+          "value": "no_gap",
+          "label": "t:sections.all.padding.column_gap.no_gap"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.all.padding.column_gap.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.padding.column_gap.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.padding.column_gap.large"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.all.padding.column_gap.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "t:sections.image-tabs.settings.block.add_tab",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.image-tabs.settings.block.image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Tab title",
+          "label": "t:sections.image-tabs.settings.block.heading"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "t:sections.image-tabs.settings.block.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image-tabs.presets.name",
+      "blocks": [
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

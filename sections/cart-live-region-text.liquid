@@ -1,0 +1,2 @@
+{% assign total = cart.total_price | money_with_currency %}
+{{ 'sections.page_cart.checkout' | t: total: total }}

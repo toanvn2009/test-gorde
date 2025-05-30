@@ -1,0 +1,19 @@
+
+{%- if recommendations.products_count > 0 -%}
+    <div class="slide-container">
+        {%- for product in recommendations.products -%}
+            {% render 'card-product',
+                card_product: product,
+                section_id: section.id,
+                disable_quickview: true,
+                show_quick_add: true,
+                disable_badge: true,
+                disable_rate: true,
+                disable_swatch: true,
+                enable_view_product: false,
+                disable_vendor: true,
+                template: "minicart"
+            %}
+        {%- endfor -%}
+    </div>
+{%- endif -%} 

@@ -1,0 +1,22 @@
+{%- capture class -%}
+{%- if custom_class -%}class="{{ custom_class }}{% if is_predictive_search %} loading-animation{%- endif -%}"{%- endif -%}
+{%- endcapture -%}
+<img
+  srcset="
+    {%- if img.width >= 165 -%}{{ img | image_url: width: 165 }} 165w,{%- endif -%}
+    {%- if img.width >= 360 -%}{{ img | image_url: width: 360 }} 360w,{%- endif -%}
+    {%- if img.width >= 533 -%}{{ img | image_url: width: 533 }} 533w,{%- endif -%}
+    {%- if img.width >= 720 -%}{{ img | image_url: width: 720 }} 720w,{%- endif -%}
+    {%- if img.width >= 940 -%}{{ img | image_url: width: 940 }} 940w,{%- endif -%}
+    {%- if img.width >= 1066 -%}{{ img | image_url: width: 1066 }} 1066w,{%- endif -%}
+    {{ img | image_url }} {{ img.width }}w
+  "
+  src="{{ img | image_url: width: 720 }}"
+  data-sizes="auto"
+  alt="{{ img_alt }}"
+  {{ class }}
+  loading="lazy"
+  width="{{ img.width }}"
+  height="{{ img.height }}"
+  sizes="100vw"
+>

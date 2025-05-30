@@ -1,0 +1,69 @@
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "settings": {
+        "section_width": "stretch_width",
+        "text_alignment": "center",
+        "eb_breadcrumb": true,
+        "padding_top": 80,
+        "padding_bottom": 8
+      }
+    },
+    "main": {
+      "type": "main-page-our-store",
+      "blocks": {
+        "item_LWBtw9": {
+          "type": "item",
+          "settings": {
+            "store_lng": "",
+            "store_lat": "",
+            "store_name": "Store name",
+            "store_address": "Store adress",
+            "store_phone": "Your phone number",
+            "store_email": "Your store email",
+            "store_link": ""
+          }
+        },
+        "item_8VTAyi": {
+          "type": "item",
+          "settings": {
+            "store_lng": "",
+            "store_lat": "",
+            "store_name": "Store name",
+            "store_address": "Store adress",
+            "store_phone": "Your phone number",
+            "store_email": "Your store email",
+            "store_link": ""
+          }
+        },
+        "item_KHpmrn": {
+          "type": "item",
+          "settings": {
+            "store_lng": "",
+            "store_lat": "",
+            "store_name": "Store name",
+            "store_address": "Store adress",
+            "store_phone": "Your phone number",
+            "store_email": "Your store email",
+            "store_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_LWBtw9",
+        "item_8VTAyi",
+        "item_KHpmrn"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "main"
+  ]
+}

@@ -1,0 +1,73 @@
+{%- if localization.available_countries.size > 1 -%}
+  <noscript class="small-hide medium-hide">
+    {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
+      <div class="localization-form__select relative">
+        <h2 class="visually-hidden" id="HeaderCountryMobileLabelNoScript">{{ 'localization.country_label' | t }}</h2>
+        <select
+          class="localization-selector link"
+          name="country_code"
+          aria-labelledby="HeaderCountryMobileLabelNoScript"
+        >
+          {%- for country in localization.available_countries -%}
+            <option
+              value="{{ country.iso_code }}"
+              {%- if country.iso_code == localization.country.iso_code %}
+                selected
+              {% endif %}
+            >
+              {{ country.name }} ({{ country.currency.iso_code }}
+              {{ country.currency.symbol }})
+            </option>
+          {%- endfor -%}
+        </select>
+        <span class="icon-down absolute inset-y-0 right-5 m-auto pointer-none d-inline-flex">
+          {%- render 'icon-arrow-down', custom_width: 12 -%}
+        </span>
+      </div>
+      <button class="button button--tertiary btn-reset">{{ 'localization.update_country' | t }}</button>
+    {%- endform -%}
+  </noscript>
+  <localization-form class="no-js-hidden">
+    {%- assign form_id = 'localization-country-' | append: section.id -%}
+    {% form 'localization', id: form_id %}
+      <div class="disclosure relative d-inline-flex py-5 heading-color">
+        <button
+          type="button"
+          class="button button-localization disclosure__button localization-form__select localization-selector link link--text caption-large btn-reset open-children-toggle currentColor-svg inline-flex align-center"
+          aria-expanded="false"
+          aria-controls="{{ localPosition }}List"
+          aria-describedby="{{ localPosition }}Label"
+        >
+          {{ localization.country.name }}
+          ({{ localization.country.currency.iso_code }}
+          {{ localization.country.currency.symbol }})
+          {% render 'icon-arrow-down', custom_width: 12 %}
+        </button>
+        <div class="disclosure__list-wrapper custom-scrollbar" hidden="true">
+          <ul
+            class="disclosure__list p-20 list-none my-0 absolute top-100 right-0 list-style-none m-0 bg-default z-1 transition color-default-color-scheme"
+            role="list"
+          >
+            {% for country in localization.available_countries %}
+              <li class="disclosure__item" tabindex="-1">
+                <a
+                  href="{{ routes.root_url }}"
+                  class="remove-underline py-3 d-block disclosure__item-inner focus-inset"
+                  {% if country.iso_code == localization.country.iso_code %}
+                    aria-current="true"
+                  {% endif %}
+                  data-value="{{ country.iso_code }}"
+                >
+                  {{ country.name }}
+                  ({{ country.currency.iso_code }}
+                  {{ country.currency.symbol }})
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}

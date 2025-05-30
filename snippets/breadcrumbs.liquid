@@ -1,0 +1,70 @@
+{%- unless template == 'index' or template == '404' -%}
+  {%- assign t = template | split: '.' | first -%}
+  <nav class="breadcrumbs d-flex justify-content-center" role="navigation" aria-label="breadcrumbs">
+    <ol class="bls__breadcrumb-list list-style-none my-0 fs-small d-flex flex-wrap justify-content-center accent-color-second-bg uppercase rounded-corner-item px-15 py-5">
+      <li class="bls__breadcrumb-item d-inline-flex align-center">
+        <a class="bls__breadcrumb-link remove-underline" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+      </li>
+      {%- case t -%}
+        {%- when 'page' -%}
+          <li class="bls__breadcrumb-item d-inline-flex align-center-flex align-center">
+            <span class="bls__breadcrumb-link remove-underline" aria-current="page">{{ page.title }}</span>
+          </li>
+        {%- when 'product' -%}
+          {%- if collection.url -%}
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              {{ collection.title | link_to: collection.url }}
+            </li>
+          {%- endif -%}
+          <li class="bls__breadcrumb-item d-inline-flex align-center">
+            <span class="bls__breadcrumb-link remove-underline" aria-current="page">{{ product.title }}</span>
+          </li>
+        {%- when 'collection' and collection.handle -%}
+          {%- if current_tags -%}
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              {{ collection.title | link_to: collection.url }}
+            </li>
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              {%- capture tag_url -%}{{ collection.url }}/{{ current_tags | join: '+' }}{%- endcapture -%}
+              <span class="bls__breadcrumb-link remove-underline" aria-current="page">
+                {{- current_tags | join: ' + ' -}}
+              </span>
+            </li>
+          {%- else -%}
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              <span class="bls__breadcrumb-link remove-underline" aria-current="page">
+                {{- collection.title -}}
+              </span>
+            </li>
+          {%- endif -%}
+        {%- when 'blog' -%}
+          {%- if current_tags -%}
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              {{ blog.title | link_to: blog.url }}
+            </li>
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              {%- capture tag_url -%}{{ blog.url }}/tagged/{{ current_tags | join: '+' }}{%- endcapture -%}
+              <span class="bls__breadcrumb-link remove-underline" aria-current="page">
+                {{- current_tags | join: ' + ' -}}
+              </span>
+            </li>
+          {%- else -%}
+            <li class="bls__breadcrumb-item d-inline-flex align-center">
+              <span class="bls__breadcrumb-link remove-underline" aria-current="page">{{ blog.title }}</span>
+            </li>
+          {%- endif -%}
+        {%- when 'article' -%}
+          <li class="bls__breadcrumb-item d-inline-flex align-center">
+            {{ blog.title | link_to: blog.url }}
+          </li>
+          <li class="bls__breadcrumb-item d-inline-flex align-center">
+            <span class="bls__breadcrumb-link remove-underline" aria-current="page">{{ article.title }}</span>
+          </li>
+        {%- else -%}
+          <li class="bls__breadcrumb-item d-inline-flex align-center">
+            <span class="bls__breadcrumb-link remove-underline" aria-current="page">{{ page_title }}</span>
+          </li>
+      {%- endcase -%}
+    </ol>
+  </nav>
+{%- endunless -%}

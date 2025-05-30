@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "a1f2aec2-05dc-4862-acb6-e6692752510f": {
+          "type": "title",
+          "settings": {
+            "show_date": true,
+            "show_cate": true,
+            "show_breadcrumb": true
+          }
+        },
+        "cee8e3c6-3fc2-49bd-a6b7-abb398dd313b": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "large"
+          }
+        },
+        "64e7f91b-639e-4816-94fd-3891032f42a5": {
+          "type": "author",
+          "settings": {
+            "show_author": true,
+            "show_comment": true
+          }
+        },
+        "1517f896-e57f-4b2d-84c2-f0d9e4d111f6": {
+          "type": "content_article",
+          "settings": {
+          }
+        },
+        "271f9914-5b06-4a49-8ef4-98d1614cd898": {
+          "type": "tags",
+          "settings": {
+          }
+        },
+        "311be81e-e1fc-4558-b894-2bad022bc865": {
+          "type": "share",
+          "settings": {
+          }
+        },
+        "c8b8bfc6-1498-4ecd-a60a-13d2c8a994ae": {
+          "type": "prev_next_articles",
+          "settings": {
+          }
+        },
+        "356ffd11-8839-49f7-98a0-de6311a1ecff": {
+          "type": "related",
+          "settings": {
+            "related_title": "Related Posts",
+            "aspect_ratio": "adapt",
+            "show_date": true,
+            "show_author": true,
+            "show_excerpt": true
+          }
+        }
+      },
+      "block_order": [
+        "a1f2aec2-05dc-4862-acb6-e6692752510f",
+        "cee8e3c6-3fc2-49bd-a6b7-abb398dd313b",
+        "64e7f91b-639e-4816-94fd-3891032f42a5",
+        "1517f896-e57f-4b2d-84c2-f0d9e4d111f6",
+        "271f9914-5b06-4a49-8ef4-98d1614cd898",
+        "311be81e-e1fc-4558-b894-2bad022bc865",
+        "c8b8bfc6-1498-4ecd-a60a-13d2c8a994ae",
+        "356ffd11-8839-49f7-98a0-de6311a1ecff"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "padding_top": 80,
+        "padding_bottom": 15
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "cart-items": {
+      "type": "main-cart-items",
+      "settings": {
+        "section_width": "fix_width",
+        "eb_cart_note": true,
+        "eb_gift_wrap": true,
+        "product_gift_cart": "",
+        "padding_top": 80,
+        "padding_bottom": 90
+      }
+    },
+    "ded284e2-580d-4196-9ccc-1cc8fd7f64f5": {
+      "type": "recently-viewed-products",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "Recently viewed products",
+        "description": "",
+        "text_alignment": "left",
+        "products_to_show": 6,
+        "columns_desktop": 4,
+        "column_gap": "medium",
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "cart-items",
+    "ded284e2-580d-4196-9ccc-1cc8fd7f64f5"
+  ]
+}

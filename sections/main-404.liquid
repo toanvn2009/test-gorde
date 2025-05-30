@@ -1,0 +1,52 @@
+{%- capture style -%}
+  --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+{%- endcapture -%}
+<div class="template-404 container page-margin text-center flex-1">
+  <div class="error__page-content w-full section-padding" style="{{ style | strip | strip_newlines }}">
+    <div class="page-title">
+      <h1 class="h0 mb-1025-45-impo heading-letter-spacing">
+        {{ 'templates.404.title' | t }}
+      </h1>
+    </div>
+    <p class="h5 letter-spacing-0 mt-20 mt-1025-0">
+      {{ 'templates.404.subtext' | t }}
+    </p>
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn-large mt-30 mt-1025-70">
+      {{ 'general.continue_shopping' | t }}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-404.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 80
+    }
+  ]
+}
+{% endschema %}

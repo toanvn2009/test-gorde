@@ -1,0 +1,110 @@
+<ul class="list-social list-unstyled list-social">
+  {%- if settings.social_media_facebook != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_facebook }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.facebook' | t }}"
+      >
+        {%- render 'icon-facebook', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.facebook' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_instagram != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_instagram }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.instagram' | t }}"
+      >
+        {%- render 'icon-instagram', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.instagram' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_tiktok != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_tiktok }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.tiktok' | t }}"
+      >
+        {%- render 'icon-tiktok', custom_width: 22 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.tiktok' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_pinterest != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_pinterest }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.pinterest' | t }}"
+      >
+        {%- render 'icon-pinterest', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.pinterest' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_youtube != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_youtube }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.youtube' | t }}"
+      >
+        {%- render 'icon-youtube', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.youtube' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_vimeo != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_vimeo }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.vimeo' | t }}"
+      >
+        {%- render 'icon-vimeo', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.vimeo' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_twitter != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_twitter }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.twitter' | t }}"
+      >
+        {%- render 'icon-twitter', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.twitter' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_whatsapp != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_whatsapp }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.whatsapp' | t }}"
+      >
+        {%- render 'icon-whatsapp', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.whatsapp' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+  {%- if settings.social_media_snapchat != blank -%}
+    <li class="list-social__item d-inline-block mr-10 my-5 last-r-0:last-child">
+      <a
+        href="{{ settings.social_media_snapchat }}"
+        class="w-40 h-40 d-inline-flex middle-center link list-social__link px-10 tooltip rounded-corner-item"
+        aria-label="{{ 'general.social.links.snapchat' | t }}"
+      >
+        {%- render 'icon-snapchat', custom_width: 18 -%}
+        <span class="tooltip-content tooltip-top">{{ 'general.social.links.snapchat' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+</ul>

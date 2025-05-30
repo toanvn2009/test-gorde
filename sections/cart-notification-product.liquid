@@ -1,0 +1,134 @@
+{%- if cart != empty -%}
+  {%- for item in cart.items -%}
+    <div id="cart-notification-product-{{ item.key }}" class="cart-item cart-item product__item border-bottom pb-15 mb-15 last-0">
+        <div class="cart-item_inner d-flex flex-cols" style="--col-gap: 30px">
+          {% if item.image %}
+            <div class="cart-item__media">
+              {%- liquid
+                assign ratio = ''
+                if settings.product_image_ratio != 'adapt_to_image'
+                  case settings.product_image_ratio
+                    when 'square'
+                      assign ratio = '1/1'
+                    else
+                      assign ratio = '3/4'
+                  endcase
+                else
+                  assign ratio = item.image.aspect_ratio
+                endif
+              -%}
+              <div class="banner__media align-self-start" style="--aspect-ratio: {{ ratio }}">
+                <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true">
+                  <img
+                    class="cart-item__image"
+                    src="{{ item.image | image_url: width: 300 }}"
+                    alt="{{ item.image.alt | escape }}"
+                    loading="lazy"
+                    width="150"
+                    height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
+                  >
+                </a>
+              </div>
+            </div>
+          {% endif %}
+          <div class="cart-item__details flex-1">
+            <div class="cart-item__details-info d-flex flex-column space-between">
+              <div class="cart-item__details-info-top d-flex space-between gap-10">
+                <div class="cart-item-info">
+                  {%- if settings.show_vendor -%}
+                    <p class="caption-with-letter-spacing light mb-0 break-word fs-small">{{ item.product.vendor }}</p>
+                  {%- endif -%}
+                  <a href="{{ item.url }}" class="remove-underline product__name heading-style">
+                    {{- item.product.title | escape -}}
+                  </a>
+                  {%- if item.product.has_only_default_variant == false
+                    or item.properties.size != 0
+                    or item.selling_plan_allocation != null
+                  -%}
+                    <div class="product_option-cart mt-8 btn-text-transform fs-small-3">
+                      {%- if item.product.has_only_default_variant == false -%}
+                        {%- for option in item.options_with_values -%}
+                          {{ option.name }}:
+                          <div class="product-option d-inline-flex pr-3 fs-small-3">
+                            {{ option.value -}}
+                            {%- unless forloop.last %}, {% endunless %}
+                          </div>
+                        {%- endfor -%}
+                      {%- endif -%}
+
+                      {%- for property in item.properties -%}
+                        {%- assign property_first_char = property.first | slice: 0 -%}
+                        {%- if property.last != blank and property_first_char != '_' -%}
+                          <div class="product-option d-inline-flex pr-3 fs-small-3">
+                            {%- if property.last contains '/uploads/' -%}
+                              <a
+                                href="{{ property.last }}"
+                                class="link"
+                                target="_blank"
+                                aria-describedby="a11y-new-window-message"
+                              >
+                                {{ property.last | split: '/' | last }}
+                              </a>
+                            {%- else -%}
+                              {{ property.last }}
+                            {%- endif -%}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                    <p class="product-option pr-3 btn-text-transform  fs-small mb-0">
+                      {{ item.selling_plan_allocation.selling_plan.name }}
+                    </p>
+                  {%- endif -%}
+                </div>
+                <div class="cart-item__totals right heading-color pt-3">
+                  <div class="cart-item__price-wrapper word-break d-inline-flex align-center gap-5 flex-wrap">
+                    {%- if item.original_line_price != item.final_line_price -%}
+                      <div class="cart-item__discounted-prices">
+                        <span class="visually-hidden">
+                          {{ 'products.product.price.regular_price' | t }}
+                        </span>
+                        <s class="cart-item__old-price price price--end">
+                          {{ item.original_line_price | money }}
+                        </s>
+                        <span class="visually-hidden">
+                          {{ 'products.product.price.sale_price' | t }}
+                        </span>
+                        <span class="price price--end">
+                          {{ item.final_line_price | money }}
+                        </span>
+                      </div>
+                    {%- else -%}
+                      <span class="visually-hidden">
+                        {{ 'products.product.price.regular_price' | t }}
+                      </span>
+                      <span class="price price--end">
+                        {{ item.original_line_price | money }}
+                      </span>
+                    {%- endif -%}
+                    {%- if item.variant.available and item.unit_price_measurement -%}
+                      <div class="ml-8 unit-price caption">
+                        <span class="visually-hidden">
+                          {{- 'products.product.price.unit_price' | t -}}
+                        </span>
+                        {{ item.variant.unit_price | money }}
+                        <span aria-hidden="true">/</span>
+                        <span class="visually-hidden"
+                          >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span
+                        >
+                        {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
+                          {{- item.variant.unit_price_measurement.reference_value -}}
+                        {%- endif -%}
+                        {{ item.variant.unit_price_measurement.reference_unit }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  {%- endfor -%}
+{%- endif -%}

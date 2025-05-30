@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-search",
+      "settings": {
+        "section_width": "stretch_width",
+        "enable_sorting": true,
+        "enable_filtering": true,
+        "show_count": true,
+        "filter_type": "vertical",
+        "products_to_show": 16,
+        "columns_desktop": 4,
+        "column_gap": "small",
+        "padding_top": 80,
+        "padding_bottom": 10
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,98 @@
+.testimonials-products {
+    max-width: 47rem;
+    margin-top: clamp(3rem, 4.5vw, 6rem);
+}
+
+body.rounded-corner .testimonials-products {
+    border-radius: var(--rounded-radius);
+}
+
+.testimonials-gallery-product[data-items="1"] {
+    max-width: 120rem;
+    margin: auto;
+    --controls-icon-width: 2rem;
+    --next-position: 5px;
+    --prev-position: 5px;
+    --heading-letter-spacing: 0;
+}
+
+.testimonials-gallery-product[data-items="1"] .tns-ovh {
+    max-width: 95rem;
+    margin: auto;
+}
+
+.testimonials-product .fs-bigger-2 {
+    font-size: clamp(1.4rem, 1.5vw, 1.6rem);
+}
+
+.testimonials-product .testimonials-quote {
+    font-size: clamp(2rem, 2.6vw, 3.2rem);
+}
+
+.testimonials-products .product__item {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    --product-spacing-top: 0;
+    --product-name-size: 1.8rem;
+    --product-price-size: 1.4rem;
+    --rounded-radius: .5rem;
+}
+
+.testimonials-products .product__inner {
+    flex: 0 0 auto;
+    width: 7rem;
+}
+
+.testimonials-products .product__infomation {
+    flex: 1;
+    padding-inline-end: 5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonials-products .product__price {
+    margin-top: auto;
+}
+
+.testimonials-products .button-quickview:not(.btn) {
+    position: static;
+}
+
+.testimonials-products .button-quickview:not(.btn) .btn,
+.testimonials-products .button-quickview.btn {
+    opacity: 1;
+    pointer-events: visible;
+    transition: var(--bls-transition);
+    bottom: 50%;
+    transform: translateY(50%);
+    position: absolute;
+    left: auto;
+    right: 2rem;
+    width: 4.6rem;
+    height: 4.6rem;
+    padding: 0;
+    font-size: 0;
+    border-radius: 50%;
+    background: var(--btn-fill-bg-color);
+    border-color: var(--btn-fill-bg-color);
+}
+
+.testimonials-products .button-quickview.btn:hover {
+    background-position: bottom;
+
+}
+
+.testimonials-products .button-quickview:not(.btn) .btn::after,
+.testimonials-products .button-quickview.btn::after {
+    content: '';
+    background: url(../assets/icon_cart.svg) no-repeat;
+    width: 14px;
+    height: 12px;
+    display: inline-block;
+}
+
+.testimonials-products .button-quickview.loading .btn::after,
+.testimonials-products .button-quickview.loading::after {
+    opacity: 0;
+}

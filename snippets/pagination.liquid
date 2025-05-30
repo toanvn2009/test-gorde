@@ -1,0 +1,97 @@
+{%- liquid
+  assign t = template | split: '.' | first
+-%}
+{%- if paginate.parts.size > 0 -%}
+  {%- if pagination == 'default' or pagination == blank -%}
+    <div class="pagination-wrapper mt-80 color-default-color-scheme">
+      <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+        <ul class="pagination__list list-unstyled d-flex flex-wrap justify-content-center gap-10" role="list">
+          {%- if paginate.previous -%}
+            <li class="w-auto pagination__item--next">
+              <a
+                href="{{ paginate.previous.url }}{{ anchor }}"
+                class="px-15 pagination__item w-full h-44 border d-inline-flex align-center justify-content-center remove-underline pagination__item--next pagination__item-arrow link motion-reduce"
+                aria-label="{{ 'general.pagination.previous' | t }}"
+              >
+                {% render 'icon-prev', custom_width: 14 %}
+                <span class="ml-3">{{ 'general.pagination.previous' | t }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            <li class="w-44">
+              {%- if part.is_link -%}
+                <a
+                  href="{{ part.url }}{{ anchor }}"
+                  class="pagination__item w-full h-44 border d-inline-flex align-center justify-content-center remove-underline link"
+                  aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                >
+                  {{- part.title -}}
+                </a>
+              {%- else -%}
+                {%- if part.title == paginate.current_page -%}
+                  <a
+                    role="link"
+                    aria-disabled="true"
+                    class="pagination__item w-full h-44 border d-inline-flex align-center justify-content-center remove-underline pagination__item--current light"
+                    aria-current="page"
+                    aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                  >
+                    {{- part.title -}}
+                  </a>
+                {%- else -%}
+                  <span class="pagination__item w-full h-44 border d-inline-flex align-center justify-content-center">
+                    {{- part.title -}}
+                  </span>
+                {%- endif -%}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <li class="pagination__item--prev">
+              <a
+                href="{{ paginate.next.url }}{{ anchor }}"
+                class="px-15 pagination__item w-full h-44 border d-inline-flex align-center justify-content-center remove-underline pagination__item--prev pagination__item-arrow link motion-reduce"
+                aria-label="{{ 'general.pagination.next' | t }}"
+              >
+                <span class="mr-3">{{ 'general.pagination.next' | t }}</span>
+                {%- render 'icon-next', custom_width: 14 -%}
+              </a>
+            </li>
+          {%- endif -%}
+        </ul>
+      </nav>
+    </div>
+  {%- else -%}
+    <loadmore-button class="pagination-load-more color-default-color-scheme">
+      <div class="mt-70 text-center">
+        <div class="load-more-bar mb-15">
+          {%- liquid
+            assign paginate_size = paginate.parts.size | times: 1
+            assign cur_page = paginate.current_page | times: 1
+            if t == 'blog'
+              assign number_page = sec_settings.post_limit | times: 1
+              assign count = blog.articles_count
+            endif
+            assign amount = number_page | times: cur_page
+            if cur_page == paginate_size or amount > count
+              assign amount = count
+            endif
+          -%}
+          <p class="load-more-amount">
+            {{- 'general.pagination.result' | t: amount: amount, count: count -}}
+          </p>
+        </div>
+        {%- if paginate.next -%}
+          <a
+            href="{{ paginate.next.url }}"
+            class="relative actions-load-more btn btn-outline load-more mt-3{% if pagination == 'infinit_scrolling' %} infinit-scrolling{% endif %}"
+          >
+            <span class="hidden-on-load">{{ 'general.pagination.load_more' | t }}</span>
+            <div class="loading-overlay__spinner loading-icon"></div>
+          </a>
+        {%- endif -%}
+      </div>
+    </loadmore-button>
+  {%- endif -%}
+{%- endif -%}

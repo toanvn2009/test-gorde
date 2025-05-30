@@ -1,0 +1,215 @@
+{% liquid
+  assign banner_blur = ''
+  if section.settings.banner_blur
+    assign banner_blur = ' banner_blur'
+  endif
+%}
+<age-verifier
+  class="bls__section d-flex align-center justify-content-center fixed w-full h-full top-0 left-0 overflow-auto bg-default"
+  data-enable-design-mode="{{ section.settings.show_on_design }}"
+>
+  <div
+    class="outline-focus-none age-verify-detail d-none relative z-3 rounded-10 bg-default padding-inner overflow-y-auto text-center"
+    tabindex="0"
+  >
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h2
+            class="heading-letter-spacing banner__heading mt-0"
+            {{ block.shopify_attributes }}
+          >
+            <span>{{ block.settings.heading }}</span>
+          </h2>
+        {%- when 'description' -%}
+          <div
+            class="banner__text"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.description }}
+          </div>
+        {%- when 'button' -%}
+          {%- if block.settings.button_decline != blank or block.settings.button_approve != blank -%}
+            <div class="age-button-wrapper d-flex mt-30 gap-10 flex-wrap justify-content-center">
+              {%- if block.settings.button_decline != blank -%}
+                <button
+                  class="button btn-outline btn age-verifier-decline"
+                  aria-label="{{ block.settings.button_decline }}"
+                >
+                  {{ block.settings.button_decline }}
+                </button>
+              {%- endif -%}
+              {%- if block.settings.button_approve != blank -%}
+                <button class="btn age-verifier-approve" aria-label="{{ block.settings.button_approve }}">
+                  {{ block.settings.button_approve }}
+                </button>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+  <div
+    class="outline-focus-none decline-verify-detail d-none relative z-3 rounded-10 bg-default padding-inner overflow-y-auto text-center"
+    tabindex="0"
+  >
+    <h2
+      class="banner__heading mt-0"
+    >
+      <span>{{ section.settings.decline_heading }}</span>
+    </h2>
+    <div
+      class="banner__text"
+    >
+      {{ section.settings.decline_text }}
+    </div>
+    <button class="button mt-30 btn age-verifier-return" aria-label="{{ section.settings.button_return }}">
+      {{ section.settings.button_return }}
+    </button>
+  </div>
+  {% if section.settings.age_verifier_banner %}
+    <div class="age-banner absolute inset-0 overflow-hidden{{ banner_blur }}">
+      {%- liquid
+        assign alt_img = 'age_verifier.img_alt' | t
+        if section.settings.age_verifier_banner.alt != blank
+          assign alt_img = section.settings.age_verifier_banner.alt
+        endif
+      -%}
+      {{
+        section.settings.age_verifier_banner
+        | image_url: width: 3840
+        | image_tag:
+          loading: 'lazy',
+          sizes: '100vw',
+          alt: alt_img,
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+      }}
+    </div>
+  {% endif %}
+</age-verifier>
+
+{% schema %}
+{
+  "name": "t:sections.age_verifier_popup.name",
+  "tag": "section",
+  "class": "overlay-section overlay-age-verifier",
+  "limit": 1,
+  "enabled_on": {
+    "groups": [
+      "custom.overlay"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.age_verifier_popup.header.heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_design",
+      "label": "t:sections.age_verifier_popup.settings.show_on_design",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "age_verifier_banner",
+      "label": "t:sections.age_verifier_popup.settings.banner_image"
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_blur",
+      "label": "t:sections.age_verifier_popup.settings.banner_blur",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.age_verifier_popup.header.heading_decline"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.age_verifier_popup.header.paragraph_decline"
+    },
+    {
+      "type": "text",
+      "id": "decline_heading",
+      "label": "t:sections.age_verifier_popup.settings.heading",
+      "default": "Decline heading"
+    },
+    {
+      "type": "richtext",
+      "id": "decline_text",
+      "label": "t:sections.age_verifier_popup.settings.text",
+      "default": "<p>Decline description.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_return",
+      "label": "t:sections.age_verifier_popup.settings.button_return",
+      "default": "Button label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.all.content_setting.heading.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Section heading",
+          "label": "t:sections.all.content_setting.heading.label"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.all.content_setting.description.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "default": "<p>Section description</p>",
+          "label": "t:sections.all.content_setting.description.label"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.all.content_setting.button_label.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_decline",
+          "default": "Button label",
+          "label": "t:sections.all.content_setting.button_age_verifier_label.decline_button.label"
+        },
+        {
+          "type": "text",
+          "id": "button_approve",
+          "default": "Button label",
+          "label": "t:sections.all.content_setting.button_age_verifier_label.approve_button.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.age_verifier_popup.name",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

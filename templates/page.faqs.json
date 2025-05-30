@@ -1,0 +1,131 @@
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "blocks": {
+        "4008fbba-47ab-4250-9113-02a6e587c343": {
+          "type": "description",
+          "settings": {
+            "page_description": "If you have a question, please consult our list of frequently asked questions \nbefore seeking assistance."
+          }
+        }
+      },
+      "block_order": [
+        "4008fbba-47ab-4250-9113-02a6e587c343"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "text_alignment": "center",
+        "eb_breadcrumb": true,
+        "padding_top": 80,
+        "padding_bottom": 25
+      }
+    },
+    "main": {
+      "type": "main-page-faqs",
+      "blocks": {
+        "faq_D3gTRF": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "Heading",
+            "question_1": "Frequently Asked Questions?",
+            "answer_1": "<p>Write the answer.<\/p>",
+            "question_2": "Frequently Asked Questions?",
+            "answer_2": "<p>Write the answer.<\/p>",
+            "question_3": "Frequently Asked Questions?",
+            "answer_3": "<p>Write the answer.<\/p>",
+            "question_4": "Frequently Asked Questions?",
+            "answer_4": "<p>Write the answer.<\/p>",
+            "question_5": "Frequently Asked Questions?",
+            "answer_5": "<p>Write the answer.<\/p>",
+            "question_6": "",
+            "answer_6": "",
+            "question_7": "",
+            "answer_7": "",
+            "question_8": "",
+            "answer_8": "",
+            "question_9": "",
+            "answer_9": "",
+            "question_10": "",
+            "answer_10": ""
+          }
+        },
+        "faq_TX7DDD": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "Heading",
+            "question_1": "Frequently Asked Questions?",
+            "answer_1": "<p>Write the answer.<\/p>",
+            "question_2": "Frequently Asked Questions?",
+            "answer_2": "<p>Write the answer.<\/p>",
+            "question_3": "Frequently Asked Questions?",
+            "answer_3": "<p>Write the answer.<\/p>",
+            "question_4": "Frequently Asked Questions?",
+            "answer_4": "<p>Write the answer.<\/p>",
+            "question_5": "Frequently Asked Questions?",
+            "answer_5": "<p>Write the answer.<\/p>",
+            "question_6": "",
+            "answer_6": "",
+            "question_7": "",
+            "answer_7": "",
+            "question_8": "",
+            "answer_8": "",
+            "question_9": "",
+            "answer_9": "",
+            "question_10": "",
+            "answer_10": ""
+          }
+        },
+        "faq_k8x9xb": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "Heading",
+            "question_1": "Frequently Asked Questions?",
+            "answer_1": "<p>Write the answer.<\/p>",
+            "question_2": "Frequently Asked Questions?",
+            "answer_2": "<p>Write the answer.<\/p>",
+            "question_3": "Frequently Asked Questions?",
+            "answer_3": "<p>Write the answer.<\/p>",
+            "question_4": "Frequently Asked Questions?",
+            "answer_4": "<p>Write the answer.<\/p>",
+            "question_5": "Frequently Asked Questions?",
+            "answer_5": "<p>Write the answer.<\/p>",
+            "question_6": "",
+            "answer_6": "",
+            "question_7": "",
+            "answer_7": "",
+            "question_8": "",
+            "answer_8": "",
+            "question_9": "",
+            "answer_9": "",
+            "question_10": "",
+            "answer_10": ""
+          }
+        }
+      },
+      "block_order": [
+        "faq_D3gTRF",
+        "faq_TX7DDD",
+        "faq_k8x9xb"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "show_number": false,
+        "open_all_question": false,
+        "show_content_right": true,
+        "heading_help": "Heading",
+        "text": "<p>Add a short description for this block.<\/p>",
+        "label_1": "Button label",
+        "link_1": "",
+        "label_2": "Button label",
+        "link_2": "shopify:\/\/pages\/about-us",
+        "padding_top": 40,
+        "padding_bottom": 15
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "main"
+  ]
+}

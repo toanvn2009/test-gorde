@@ -1,0 +1,521 @@
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign aspect_ratio = '1/1'
+  case section.settings.aspect_ratio
+    when 'adapt'
+      assign aspect_ratio = 'adapt'
+    when 'square'
+      assign aspect_ratio = '1/1'
+    when 'portrait'
+      assign aspect_ratio = '3/4'
+    else
+      assign aspect_ratio = '4/3'
+  endcase
+
+  assign section_width = ''
+  if section.settings.section_width == 'fix_width'
+    assign section_width = ' container'
+  elsif section.settings.section_width == 'expand_full_width'
+    assign section_width = ' full-width px-20'
+  else
+    assign section_width = ' full-width-gap'
+  endif
+  assign columns_small_desktop = ''
+  if section.settings.columns_desktop > 3
+    assign columns_small_desktop = ' small-desktop-4'
+  endif
+
+  assign columns_tablet = ''
+  if section.settings.columns_desktop > 2
+    assign columns_tablet = ' tablet-2'
+  endif
+
+  assign columns_mobile = ''
+  if section.settings.columns_desktop > 1
+    assign columns_mobile = ' mb-1'
+  endif
+
+  assign justify = ''
+  if section.settings.text_alignment == 'left'
+    assign justify = 'start'
+  elsif section.settings.text_alignment == 'center'
+    assign justify = 'center'
+  else
+    assign justify = 'end'
+  endif
+
+  assign active = ''
+  if blog.url contains request.path
+    assign active = 'active'
+  endif
+
+  assign pagination = section.settings.pagination
+%}
+{%- capture style -%}
+  --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  --col-number: {{ section.blocks.size }};
+{%- endcapture -%}
+<div
+  class="main-blog bls__section section-padding"
+  id="main-items"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    {%- if blog.articles.size > 0 -%}
+      {%- paginate blog.articles by section.settings.post_limit -%}
+        <div class="bls__section-header mb-30 text-{{ section.settings.text_alignment }}{% if section.settings.text_alignment != 'center' %} d-flex flex-wrap space-between align-center col-gap-30{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if section.settings.title != blank -%}
+            <h2 class="heading-letter-spacing cart__title mt-0 {% if section.settings.text_alignment != 'center' %} mb-12{% else %}mb-22{% endif %}">
+              {{ section.settings.title }}
+            </h2>
+          {%- endif -%}
+          {%- if section.settings.show_all_tags -%}
+            <ul class="blog-tags-list p-0 list-style-none my-0 d-flex flex-wrap flex-1 justify-content-{{ justify }} article-card__info">
+              <li class="post-tags pointer heading-color mb-10 {{ active }}">
+                <a href="{{ blog.url }}" class="remove-underline btn-text-transform d-inline-flex outline-style large">
+                  {{- 'blogs.article.label_all' | t -}}
+                </a>
+              </li>
+              {%- for tag in blog.all_tags -%}
+                <li class="post-tags mb-10 {% if current_tags contains tag %}active{% endif %}">
+                  <a
+                    href="{{ blog.url }}/tagged/{{ tag | handle }}"
+                    class="remove-underline btn-text-transform outline-style large d-inline-flex align-center"
+                  >
+                    {{- tag -}}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+        <div
+          class="grid-cols gap-{{ section.settings.column_gap }}{{ columns_small_desktop }}{{ columns_tablet }}{{ columns_mobile }}"
+          style="--col-number: {{ section.settings.columns_desktop }}"
+          id="bls-content-items"
+        >
+          {%- liquid
+            assign formPositions = ''
+            for block in section.blocks
+              assign position = block.settings.form_position
+              assign formPositions = formPositions | append: position | append: ','
+            endfor
+          -%}
+          {% assign arr = formPositions | split: ',' %}
+          {%- for article in blog.articles limit: section.settings.post_limit -%}
+            {%- liquid
+              assign index = forloop.index0 | plus: 1
+              assign found = false
+              for item in arr
+                assign itemInt = item | plus: 0
+                if itemInt == index
+                  assign found = true
+                  break
+                endif
+              endfor
+            -%}
+            {%- if found -%}
+              {%- for block in section.blocks -%}
+                <div
+                  {{ block.shopify_attributes }}
+                  class="blog-subscribe border rounded-corner-item py-30 px-30 px-lg-60 d-flex align-center justify-content-center"
+                  id="blocks blog-subscribe-{{ block.id }}"
+                >
+                  <div class="blog-subscribe__inner">
+                    {% if block.settings.form_title != blank or block.settings.form_description != blank %}
+                      <div class="bls__section-header mb-40 mb-sm-35">
+                        {% if block.settings.form_title != blank %}
+                          <h2 class="heading-letter-spacing subscribe-title mt-0">
+                            {{ block.settings.form_title }}
+                          </h2>
+                        {% endif %}
+                        {% if block.settings.form_description != blank %}
+                          <div class="short-des">
+                            {{ block.settings.form_description }}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                    {% form 'customer', class: 'subscribe-form' %}
+                      <input type="hidden" name="contact[tags]" value="subscribe">
+                      <div class="subscribe-form__field-wrapper">
+                        <div class="field flex-column gap-15">
+                          <div class="newsletter_field d-flex flex-wrap gap-15">
+                            <div class="input-radius flex-sm-1 w-full">
+                              <input
+                                class="field__input show-placeholder accent-color-second-bg w-full"
+                                name="contact[first_name]"
+                                autocomplete="given-name"
+                                type="text"
+                                placeholder="{{ 'subscribe.first_name' | t }}"
+                                id="NewsletterForm-{{ section.id }}"
+                              >
+                              <label class="visually-hidden" for="NewsletterForm-{{ section.id }}">
+                                {{ 'subscribe.first_name' | t -}}
+                              </label>
+                            </div>
+                            <div class="input-radius flex-sm-1 w-full">
+                              <input
+                                class="field__input show-placeholder accent-color-second-bg w-full"
+                                name="contact[last_name]"
+                                autocomplete="family-name"
+                                type="text"
+                                placeholder="{{ 'subscribe.last_name' | t }}"
+                                id="LastName--{{ section.id }}"
+                              >
+                              <label class="visually-hidden" for="LastName--{{ section.id }}">
+                                {{ 'subscribe.first_name' | t -}}
+                              </label>
+                            </div>
+                          </div>
+                          <div class="field mb-0">
+                            <div class="d-flex flex-sm-1 w-full input-radius input-focus">
+                              <div class="input-withicon relative w-full">
+                                <span class="d-inline-flex align-center absolute left-15 inset-y-0 z-1">
+                                  {% render 'icon-email' -%}
+                                </span>
+                                <input
+                                  id="subscribeForm--{{ block.id }}"
+                                  type="email"
+                                  name="contact[email]"
+                                  class="pl-20 field__input pl-40-impo accent-color-second-bg w-full pr-100 overflow-hidden"
+                                  value="{{ form.email }}"
+                                  aria-required="true"
+                                  autocorrect="off"
+                                  autocapitalize="off"
+                                  autocomplete="email"
+                                  {% if form.errors %}
+                                    autofocus
+                                    aria-invalid="true"
+                                    aria-describedby="subscribe-error--{{ section.id }}"
+                                  {% elsif form.posted_successfully? %}
+                                    aria-describedby="subscribe-success--{{ section.id }}"
+                                  {% endif %}
+                                  placeholder="{{ 'subscribe.label' | t }}"
+                                  required
+                                >
+                                <label class="visually-hidden" for="subscribeForm--{{ block.id }}">
+                                  {{- 'subscribe.label' | t -}}
+                                </label>
+                              </div>
+                            </div>
+                            <button
+                              type="submit"
+                              class="button subscribe-form__button btn-reset-sm word-break absolute-sm right-15 inset-y-0"
+                              name="commit"
+                              id="Subscribe-{{ section.id }}"
+                              aria-label="{{ 'subscribe.button_label' | t }}"
+                            >
+                              {{ 'subscribe.button_label' | t }}
+                            </button>
+                          </div>
+                        </div>
+                        {%- if form.posted_successfully? -%}
+                          <p
+                            class="mb-0 subscribe-form__message subscribe-form__message--success form__message"
+                            id="subscribe-success--{{ section.id }}"
+                            tabindex="-1"
+                            autofocus
+                          >
+                            {% render 'icon-checkmark', custom_width: 13 -%}
+                            {{- 'subscribe.success' | t }}
+                          </p>
+                        {%- elsif form.errors -%}
+                          <small class="subscribe-form__message form__message" id="subscribe-error--{{ section.id }}">
+                            {%- render 'icon-error' -%}
+                            {{- form.errors.translated_fields.email | capitalize }}
+                            {{ form.errors.messages.email -}}
+                          </small>
+                        {%- endif -%}
+                      </div>
+                    {% endform %}
+                  </div>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+            <div class="blog-articles__article article">
+              {% render 'article-card',
+                article: article,
+                media_aspect_ratio: aspect_ratio,
+                show_image: true,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_excerpt: section.settings.show_excerpt,
+                show_cate: section.settings.show_cate,
+                show_tags: section.settings.show_tags,
+                customClass: 'scroll-trigger animate--slide-in',
+                indexFor: forloop.index
+              %}
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          {%- render 'pagination',
+            paginate: paginate,
+            sec_settings: section.settings,
+            anchor: '',
+            pagination: pagination
+          -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <p>{{ 'blogs.article.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.option_1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.option_2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.option_3.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.all.text_alignment.alignment"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.main-blog.settings.heading",
+      "default": "Latest Articles"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_tags",
+      "label": "t:sections.main-blog.settings.show_all_tags.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content_post"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-blog.settings.aspect_ratio.adapt"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-blog.settings.aspect_ratio.option__1"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-blog.settings.aspect_ratio.option__2"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.main-blog.settings.aspect_ratio.option__3"
+        }
+      ],
+      "default": "portrait",
+      "label": "t:sections.main-blog.settings.aspect_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "blog_desgin",
+      "options": [
+        {
+          "value": "desgin_default",
+          "label": "t:sections.collection-list.settings.collection_desgin.option__1"
+        },
+        {
+          "value": "desgin_modern",
+          "label": "t:sections.collection-list.settings.collection_desgin.option__2"
+        }
+      ],
+      "default": "desgin_default",
+      "label": "t:sections.collection-list.settings.collection_desgin.label"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-blog.settings.post_limit.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.main-blog.settings.columns_desktop.label"
+    },
+    {
+      "type": "select",
+      "id": "column_gap",
+      "options": [
+        {
+          "value": "no_gap",
+          "label": "t:sections.all.padding.column_gap.no_gap"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.all.padding.column_gap.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.padding.column_gap.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.padding.column_gap.large"
+        }
+      ],
+      "default": "small",
+      "label": "t:sections.all.padding.column_gap.label"
+    },
+    {
+      "type": "select",
+      "id": "pagination",
+      "label": "t:sections.all.pagination.name",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:sections.all.pagination.settings.option_1.label"
+        },
+        {
+          "value": "load_more",
+          "label": "t:sections.all.pagination.settings.option_2.label"
+        },
+        {
+          "value": "infinit_scrolling",
+          "label": "t:sections.all.pagination.settings.option_3.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cate",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_cate.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_tags.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_excerpt.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 80
+    }
+  ],
+  "max_blocks": 1,
+  "blocks": [
+    {
+      "type": "subcribe_form",
+      "name": "t:sections.main-blog.blocks.name",
+      "settings": [
+        {
+          "type": "range",
+          "id": "form_position",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "default": 6,
+          "label": "t:sections.main-blog.blocks.settings.form_position"
+        },
+        {
+          "type": "text",
+          "id": "form_title",
+          "label": "t:sections.main-blog.blocks.settings.title",
+          "default": "Newsletter"
+        },
+        {
+          "type": "textarea",
+          "id": "form_description",
+          "label": "t:sections.main-blog.blocks.settings.description",
+          "default": "Add a short description for this block."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

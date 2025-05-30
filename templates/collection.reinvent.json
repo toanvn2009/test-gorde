@@ -1,0 +1,215 @@
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "custom_css": [
+
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "color-scheme-1",
+        "desktop_content_position": "middle-center",
+        "show_collection_image": true,
+        "show_breadcrumb": true,
+        "show_collection_description": true,
+        "heading_overlay": true,
+        "desktop_height": "based_on_content",
+        "image_overlay_opacity": 45,
+        "padding_top": 70,
+        "padding_bottom": 50
+      }
+    },
+    "3e8db2db-a0db-492c-9ef2-f468cbfb9e60": {
+      "type": "scrolling-text",
+      "blocks": {
+        "scrolling_text_pGgrcq": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        },
+        "scrolling_text_MnTPLE": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        },
+        "scrolling_text_TrE3Hp": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_text_pGgrcq",
+        "scrolling_text_MnTPLE",
+        "scrolling_text_TrE3Hp"
+      ],
+      "settings": {
+        "section_width": "expand_full_width",
+        "color_scheme": "default-color-scheme",
+        "direction": "left",
+        "marquee_speed": 20,
+        "style_between_item": true,
+        "scrolling_size": "large",
+        "uppercase": true,
+        "use_heading_font": true,
+        "padding_top": 70,
+        "padding_bottom": 35
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "blocks": {
+        "promotion_8rdqL4": {
+          "type": "promotion",
+          "settings": {
+            "promotion_link": "",
+            "banner_position": 7,
+            "subheading": "Subheading",
+            "heading": "Heading",
+            "button_label": "Button label"
+          }
+        }
+      },
+      "block_order": [
+        "promotion_8rdqL4"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "enable_sorting": true,
+        "enable_filtering": true,
+        "show_count": true,
+        "filter_type": "horizontal",
+        "products_to_show": 11,
+        "columns_desktop": 4,
+        "column_gap": "small",
+        "pagination_type": "button",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "c068bb5f-2747-4eba-9a22-a3a56b509577": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_kmgAGA": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "heading_size": "h2",
+            "remove_space": true,
+            "remove_letter_spacing": false
+          }
+        },
+        "spacing_aTpFxY": {
+          "type": "spacing",
+          "settings": {
+            "desktop_spacing": 15,
+            "mobile_spacing": 10
+          }
+        },
+        "text_f8Wm78": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>",
+            "description_size": "",
+            "remove_space": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_kmgAGA",
+        "spacing_aTpFxY",
+        "text_f8Wm78"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "text_alignment": "center",
+        "content_max_width": 100,
+        "padding_top": 40,
+        "padding_bottom": 35
+      }
+    },
+    "924f48f3-866d-4cb4-b071-c60376f5f6cf": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_bwyrYX": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_bmqJtY": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_wDN4PF": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_KTjyjN": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_fKWHpd": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_bwyrYX",
+        "featured_collection_bmqJtY",
+        "featured_collection_wDN4PF",
+        "featured_collection_KTjyjN",
+        "featured_collection_fKWHpd"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "color-scheme-1",
+        "title": "",
+        "description": "",
+        "text_alignment": "center",
+        "show_view_all": false,
+        "image_ratio": "adapt",
+        "information_position": "overlay",
+        "show_product_count": true,
+        "text_information_alignment": "left",
+        "columns_desktop": 5,
+        "column_gap": "small",
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "padding_top": 0,
+        "padding_bottom": 33
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "3e8db2db-a0db-492c-9ef2-f468cbfb9e60",
+    "product-grid",
+    "c068bb5f-2747-4eba-9a22-a3a56b509577",
+    "924f48f3-866d-4cb4-b071-c60376f5f6cf"
+  ]
+}

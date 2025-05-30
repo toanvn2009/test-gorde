@@ -1,0 +1,1096 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "ad27c797-e75c-4265-88b2-1286682d8ddd": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_xaVXCL": {
+          "type": "slide",
+          "settings": {
+            "image_overlay_opacity": 34,
+            "subheading": "Subheading",
+            "heading": "Image slide",
+            "description": "<p>Tell your brand's story through images</p>",
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "desktop_content_position": "bottom-left",
+            "text_alignment": "left"
+          }
+        },
+        "slide_rB3cnW": {
+          "type": "slide",
+          "settings": {
+            "image_overlay_opacity": 34,
+            "subheading": "Subheading",
+            "heading": "Image slide",
+            "description": "<p>Tell your brand's story through images</p>",
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "desktop_content_position": "bottom-left",
+            "text_alignment": "left"
+          }
+        },
+        "slide_Gpar4D": {
+          "type": "slide",
+          "settings": {
+            "image_overlay_opacity": 34,
+            "subheading": "Subheading",
+            "heading": "Image slide",
+            "description": "<p>Tell your brand's story through images</p>",
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "desktop_content_position": "bottom-left",
+            "text_alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "slide_xaVXCL",
+        "slide_rB3cnW",
+        "slide_Gpar4D"
+      ],
+      "custom_css": [],
+      "settings": {
+        "section_width": "expand_full_width",
+        "color_scheme": "",
+        "size": "small",
+        "show_navigation": true,
+        "show_pagination": true,
+        "desktop_panigation_position": "center",
+        "slide_auto_change": true,
+        "change_slide_every": 8,
+        "image_height": "adapt",
+        "show_text_bellow": false,
+        "reset_color": false,
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "featured_collection_PPHHyp": {
+      "type": "featured-collection",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "Featured collection",
+        "description": "",
+        "show_view_all": true,
+        "text_alignment": "left",
+        "collection": "cooktail",
+        "products_to_show": 6,
+        "columns_desktop": 4,
+        "column_gap": "small",
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "collection_list_ijdMbK": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_wfzr9q": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_z9T4EX": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_D3hP94": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_fGhDpf": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_qxckcP": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "featured_collection_LgGErG": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_wfzr9q",
+        "featured_collection_z9T4EX",
+        "featured_collection_D3hP94",
+        "featured_collection_fGhDpf",
+        "featured_collection_qxckcP",
+        "featured_collection_LgGErG"
+      ],
+      "custom_css": [
+        ".collection__inner .absolute {--heading-color: #ffffff; --text-color: 255, 255, 255;}",
+        ".collection__inner .absolute .product-count {color: #fff;}"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "Collection list",
+        "description": "",
+        "text_alignment": "left",
+        "show_view_all": true,
+        "image_ratio": "adapt",
+        "information_position": "overlay",
+        "show_product_count": true,
+        "round_image": false,
+        "show_framed": false,
+        "text_information_alignment": "left",
+        "columns_desktop": 5,
+        "column_gap": "small",
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "padding_top": 40,
+        "padding_bottom": 60
+      }
+    },
+    "featured_collection_8ff9DV": {
+      "type": "featured-collection",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "Featured collection",
+        "description": "",
+        "show_view_all": false,
+        "text_alignment": "left",
+        "collection": "cooktail",
+        "products_to_show": 6,
+        "columns_desktop": 5,
+        "column_gap": "small",
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "shopable_video_ncRVK6": {
+      "type": "shopable-video",
+      "blocks": {
+        "video_hTfTdU": {
+          "type": "video",
+          "settings": {
+            "product": "caro-dress",
+            "poster_image": "shopify://shop_images/gorde_mobile_slide_3.jpg",
+            "local_video": "shopify://files/videos/pexels-thirdman-8484890 (1080p).mp4"
+          }
+        },
+        "video_nmtEQA": {
+          "type": "video",
+          "settings": {
+            "product": ""
+          }
+        },
+        "video_PVg4Wx": {
+          "type": "video",
+          "settings": {
+            "product": ""
+          }
+        },
+        "video_MVG7eh": {
+          "type": "video",
+          "settings": {
+            "product": ""
+          }
+        },
+        "video_qMdTPq": {
+          "type": "video",
+          "settings": {
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_hTfTdU",
+        "video_nmtEQA",
+        "video_PVg4Wx",
+        "video_MVG7eh",
+        "video_qMdTPq"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "",
+        "description": "",
+        "text_alignment": "left",
+        "aspect_ratio": "portrait",
+        "custom_ratio": "",
+        "autoplay": "first_video",
+        "columns_desktop": 5,
+        "show_navigation": true,
+        "show_pagination": false,
+        "enable_autoplay": false,
+        "carousel_time": 3,
+        "column_gap": "medium",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "faq_YRmBw4": {
+      "type": "faq",
+      "blocks": {
+        "faq_items_YAaWxJ": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "What dress style is most flattering for my body type?",
+            "faq_content": "<p>Use a measuring tape to measure your bust, waist, and hips. Compare these measurements to the size chart provided by the brand or retailer.</p>"
+          }
+        },
+        "faq_items_iEgHdJ": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "How do I determine my dress size?",
+            "faq_content": "<p>Use a measuring tape to measure your bust, waist, and hips. Compare these measurements to the size chart provided by the brand or retailer.</p>"
+          }
+        },
+        "faq_items_ixCMVE": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "What's the difference between a cocktail dress and an evening gown?",
+            "faq_content": "<p>Use a measuring tape to measure your bust, waist, and hips. Compare these measurements to the size chart provided by the brand or retailer.</p>"
+          }
+        },
+        "faq_items_cqkCWM": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "What accessories should I wear with my dress",
+            "faq_content": "<p>Use a measuring tape to measure your bust, waist, and hips. Compare these measurements to the size chart provided by the brand or retailer.</p>"
+          }
+        },
+        "faq_items_dNQD9k": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "What accessories should I wear with my dress?",
+            "faq_content": "<p>Use a measuring tape to measure your bust, waist, and hips. Compare these measurements to the size chart provided by the brand or retailer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_items_YAaWxJ",
+        "faq_items_iEgHdJ",
+        "faq_items_ixCMVE",
+        "faq_items_cqkCWM",
+        "faq_items_dNQD9k"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "title": "Common Asked",
+        "description": "<p>FAQS</p>",
+        "text_alignment": "center",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "blog_post_j8UPGf": {
+      "type": "blog-post",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "The world of Gorde",
+        "description": "<p>BLOGS</p>",
+        "show_view_all": true,
+        "text_alignment": "center",
+        "blog": "news",
+        "aspect_ratio": "adapt",
+        "blog_desgin": "desgin_modern",
+        "post_limit": 4,
+        "columns_desktop": 3,
+        "column_gap": "large",
+        "show_blog": true,
+        "show_date": true,
+        "show_author": true,
+        "show_excerpt": false,
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": false,
+        "padding_top": 71,
+        "padding_bottom": 21
+      }
+    },
+    "featured_product_xKdWKT": {
+      "type": "featured-product",
+      "blocks": {
+        "title_C4mqFB": {
+          "type": "title",
+          "settings": {}
+        },
+        "price_i94PWE": {
+          "type": "price",
+          "settings": {
+            "sale_badge": true
+          }
+        },
+        "description_mNACe9": {
+          "type": "description",
+          "settings": {}
+        },
+        "variant_picker_EpFwiT": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_type": "swatches",
+            "show_size_guide": false,
+            "size_guide_label": "Size guide",
+            "size_guide_page": ""
+          }
+        },
+        "inventory_status_ifhg7B": {
+          "type": "inventory_status",
+          "settings": {
+            "inventory_threshold": 20,
+            "inventory_base": 50,
+            "show_bar": true,
+            "show_transfer_notice": true
+          }
+        },
+        "buy_buttons_BMm48K": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        }
+      },
+      "block_order": [
+        "title_C4mqFB",
+        "price_i94PWE",
+        "description_mNACe9",
+        "variant_picker_EpFwiT",
+        "inventory_status_ifhg7B",
+        "buy_buttons_BMm48K"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "product": "brown-bucket-hat",
+        "column_gap": "large",
+        "img_position": "left",
+        "thumbnail_position": "bottom",
+        "image_video_autoplay": true,
+        "video_looping": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "image_with_text_VFLWtY": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_X8DQCE": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text"
+          }
+        },
+        "description_R9xcMy": {
+          "type": "description",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+          }
+        },
+        "button_88AbGR": {
+          "type": "button",
+          "settings": {
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_X8DQCE",
+        "description_R9xcMy",
+        "button_88AbGR"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "image": "shopify://shop_images/Gorde_promo_1.jpg",
+        "desktop_image_width": 43,
+        "image_desktop_position": "left",
+        "desktop_content_position": "center",
+        "text_alignment": "center",
+        "content_size": "small",
+        "column_gap": "medium",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "newsletter_3i7ki6": {
+      "type": "newsletter",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "Newsletter",
+        "description": "<p>Add a short description for this section.</p>",
+        "note": "",
+        "text_alignment": "center",
+        "email_placeholder": "Enter your email",
+        "button_label": "Subscribe",
+        "newletter_desgin": "desgin_default",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "contact_form_Pcyd8e": {
+      "type": "contact-form",
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "title": "Contact form",
+        "description": "<p>Add a short description for this section.</p>",
+        "text_alignment": "right",
+        "name": "Your name",
+        "email_placeholder": "Enter your email...",
+        "message": "Your comment",
+        "button_label": "Send message",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "image_testimonials_g6gmN3": {
+      "type": "image-testimonials",
+      "blocks": {
+        "testimonials_items_qiTrGT": {
+          "type": "testimonials_items",
+          "settings": {
+            "image": "shopify://shop_images/gorde_mobile_promo_1.jpg",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_KkP6cE": {
+          "type": "testimonials_items",
+          "settings": {
+            "image": "shopify://shop_images/Gorde_promo_1.jpg",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_nmJVJQ": {
+          "type": "testimonials_items",
+          "settings": {
+            "image": "shopify://shop_images/Gorde_slide_2.jpg",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_z4hc3i": {
+          "type": "testimonials_items",
+          "settings": {
+            "image": "shopify://shop_images/gorde_mobile_promo_2.jpg",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_LPBACk": {
+          "type": "testimonials_items",
+          "settings": {
+            "image": "shopify://shop_images/gorde_mobile_slide_2.jpg",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_qiTrGT",
+        "testimonials_items_KkP6cE",
+        "testimonials_items_nmJVJQ",
+        "testimonials_items_z4hc3i",
+        "testimonials_items_LPBACk"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "",
+        "description": "",
+        "text_alignment": "left",
+        "show_rate": true,
+        "show_date_published": true,
+        "show_author_name": true,
+        "show_author_info": true,
+        "width_image": "50%",
+        "image_position": "right",
+        "content_position": "middle",
+        "aspect_ratio": "landscape",
+        "custom_ratio": "",
+        "column_gap": "medium",
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "carousel_time": 3,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "image_with_text_overlay_qym3TQ": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_bFiRzK": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text overlay"
+          }
+        },
+        "description_H6aW9w": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+          }
+        },
+        "button_PzAyBy": {
+          "type": "button",
+          "settings": {
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_bFiRzK",
+        "description_H6aW9w",
+        "button_PzAyBy"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "image": "shopify://shop_images/Gorde_slide_3.jpg",
+        "image_overlay_opacity": 21,
+        "image_height": "small",
+        "show_text_bellow": false,
+        "reset_color": false,
+        "desktop_content_position": "bottom-right",
+        "text_alignment": "right",
+        "content_size": "small",
+        "content_max_width": 100,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "logo_list_qXgYhT": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_VzMren": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_at_Aug_31_11-13-31.png",
+            "link": ""
+          }
+        },
+        "logo_WAkhpV": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Gorde_promo_1.jpg",
+            "link": ""
+          }
+        },
+        "logo_yzEBxL": {
+          "type": "logo",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_aHQXLX": {
+          "type": "logo",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_RnDiCf": {
+          "type": "logo",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_AemNxe": {
+          "type": "logo",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_HGj6cR": {
+          "type": "logo",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_3QeCFM": {
+          "type": "logo",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_VzMren",
+        "logo_WAkhpV",
+        "logo_yzEBxL",
+        "logo_aHQXLX",
+        "logo_RnDiCf",
+        "logo_AemNxe",
+        "logo_HGj6cR",
+        "logo_3QeCFM"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "Heading",
+        "description": "<p>Description</p>",
+        "text_alignment": "center",
+        "center_logo": false,
+        "logo_width": 80,
+        "logo_opacity": 70,
+        "columns_desktop": 6,
+        "column_gap": "small",
+        "enable_carousel": true,
+        "show_navigation": true,
+        "show_pagination": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "product_testimonials_KjraWq": {
+      "type": "product-testimonials",
+      "blocks": {
+        "testimonials_items_hVqtMY": {
+          "type": "testimonials_items",
+          "settings": {
+            "product": "caro-dress",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_L3FV7X": {
+          "type": "testimonials_items",
+          "settings": {
+            "product": "",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_jf3kGi": {
+          "type": "testimonials_items",
+          "settings": {
+            "product": "",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_a33HQX": {
+          "type": "testimonials_items",
+          "settings": {
+            "product": "",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_ipA49d": {
+          "type": "testimonials_items",
+          "settings": {
+            "product": "",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_hVqtMY",
+        "testimonials_items_L3FV7X",
+        "testimonials_items_jf3kGi",
+        "testimonials_items_a33HQX",
+        "testimonials_items_ipA49d"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "",
+        "description": "",
+        "text_alignment": "left",
+        "show_rate": false,
+        "show_date_published": true,
+        "show_author_image": true,
+        "show_author_name": true,
+        "show_author_info": false,
+        "testimonial_to_show": "1",
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "carousel_time": 3,
+        "column_gap": "no_gap",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "promotion_banner_Y68cYH": {
+      "type": "promotion-banner",
+      "blocks": {
+        "image_with_text_overlay_WrNVyW": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "image": "shopify://shop_images/gorde_mobile_promo_1.jpg",
+            "color_scheme": "",
+            "image_overlay_opacity": 40,
+            "show_text_bellow": false,
+            "reset_color": false,
+            "subheading": "Subheading",
+            "heading": "Promotion banner",
+            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "desktop_content_position": "center",
+            "text_alignment": "left",
+            "content_size": "small",
+            "vertical": "center",
+            "content_width": "50%"
+          }
+        },
+        "image_with_text_overlay_CNRC7L": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "image": "shopify://shop_images/Gorde_slide_2.jpg",
+            "color_scheme": "",
+            "image_overlay_opacity": 40,
+            "show_text_bellow": false,
+            "reset_color": false,
+            "subheading": "Subheading",
+            "heading": "Promotion banner",
+            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "first_button_label": "Button label",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "desktop_content_position": "center",
+            "text_alignment": "center",
+            "content_size": "small",
+            "vertical": "center",
+            "content_width": "50%"
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_overlay_WrNVyW",
+        "image_with_text_overlay_CNRC7L"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "column_gap": "small",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "scrolling_text_mz6G9j": {
+      "type": "scrolling-text",
+      "blocks": {
+        "scrolling_text_pBfftt": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        },
+        "scrolling_text_zNb3Qb": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_text_pBfftt",
+        "scrolling_text_zNb3Qb"
+      ],
+      "settings": {
+        "section_width": "expand_full_width",
+        "color_scheme": "",
+        "direction": "left",
+        "scrolling_icon": "leaf",
+        "marquee_speed": 20,
+        "style_between_item": true,
+        "use_gradient_color": false,
+        "gradient_color_start": "#288066",
+        "gradient_color_end": "#f4ebe0",
+        "scrolling_size": "large",
+        "uppercase": true,
+        "use_heading_font": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "shopable_image_3jiiDb": {
+      "type": "shopable-image",
+      "blocks": {
+        "product_U9nrxr": {
+          "type": "product",
+          "settings": {
+            "position_top": 45,
+            "position_left": 32,
+            "position_top_mb": 50,
+            "position_left_mb": 50,
+            "product": "floral-maxi-dress"
+          }
+        },
+        "product_cpiRYU": {
+          "type": "product",
+          "settings": {
+            "position_top": 47,
+            "position_left": 56,
+            "position_top_mb": 50,
+            "position_left_mb": 50,
+            "product": "knitwear-dress"
+          }
+        },
+        "product_JN3JMM": {
+          "type": "product",
+          "settings": {
+            "position_top": 62,
+            "position_left": 76,
+            "position_top_mb": 50,
+            "position_left_mb": 50,
+            "product": "floral-pink-dress"
+          }
+        }
+      },
+      "block_order": [
+        "product_U9nrxr",
+        "product_cpiRYU",
+        "product_JN3JMM"
+      ],
+      "settings": {
+        "section_width": "expand_full_width",
+        "color_scheme": "",
+        "title": "Heading",
+        "description": "<p>Description</p>",
+        "text_alignment": "center",
+        "desktop_image": "shopify://shop_images/Gorde_slide_1.jpg",
+        "image_overlay_opacity": 14,
+        "lookbook_type": "default",
+        "column_gap": "small",
+        "show_navigation": false,
+        "show_pagination": false,
+        "slideshow_style": "style_1",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "testimonials_YGawcF": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonials_items_3MKU3g": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/favicon-32x32.png",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_EMpb3m": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/Gorde.png",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_zTYtm4": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/Gorde.png",
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_3MKU3g",
+        "testimonials_items_EMpb3m",
+        "testimonials_items_zTYtm4"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "",
+        "description": "",
+        "text_alignment": "left",
+        "show_rate": true,
+        "show_date_published": true,
+        "show_author_image": true,
+        "show_author_name": true,
+        "show_author_info": true,
+        "design": "design_1",
+        "testimonial_to_show": "1",
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "carousel_time": 3,
+        "column_gap": "medium",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "tiktok_video_fgzeVV": {
+      "type": "tiktok-video",
+      "blocks": {
+        "tiktok_iitem_EcmNKV": {
+          "type": "tiktok_iitem",
+          "settings": {
+            "tiktok_embed_url": "https://www.tiktok.com/@vneconomy.vn/video/7488931708440530183"
+          }
+        },
+        "tiktok_iitem_WbzNdJ": {
+          "type": "tiktok_iitem",
+          "settings": {
+            "tiktok_embed_url": ""
+          }
+        },
+        "tiktok_iitem_MenMpi": {
+          "type": "tiktok_iitem",
+          "settings": {
+            "tiktok_embed_url": ""
+          }
+        },
+        "tiktok_iitem_LPPqkq": {
+          "type": "tiktok_iitem",
+          "settings": {
+            "tiktok_embed_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tiktok_iitem_EcmNKV",
+        "tiktok_iitem_WbzNdJ",
+        "tiktok_iitem_MenMpi",
+        "tiktok_iitem_LPPqkq"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "title": "Vertical video feed",
+        "description": "<p>Add a short description for this section.</p>",
+        "text_alignment": "center",
+        "tiktok_handle": "<p>@yourVideoHandle</p>",
+        "columns_desktop": 4,
+        "column_gap": "medium",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "ad27c797-e75c-4265-88b2-1286682d8ddd",
+    "featured_collection_PPHHyp",
+    "collection_list_ijdMbK",
+    "featured_collection_8ff9DV",
+    "shopable_video_ncRVK6",
+    "faq_YRmBw4",
+    "blog_post_j8UPGf",
+    "featured_product_xKdWKT",
+    "image_with_text_VFLWtY",
+    "newsletter_3i7ki6",
+    "contact_form_Pcyd8e",
+    "image_testimonials_g6gmN3",
+    "image_with_text_overlay_qym3TQ",
+    "logo_list_qXgYhT",
+    "product_testimonials_KjraWq",
+    "promotion_banner_Y68cYH",
+    "scrolling_text_mz6G9j",
+    "shopable_image_3jiiDb",
+    "testimonials_YGawcF",
+    "tiktok_video_fgzeVV"
+  ]
+}

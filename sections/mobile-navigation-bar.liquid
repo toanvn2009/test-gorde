@@ -1,0 +1,133 @@
+{% liquid
+  assign sec_settings = section.settings
+  assign eb_mobile_navbar = sec_settings.eb_mobile_navbar
+  assign show_account = sec_settings.show_account
+  assign show_shop = sec_settings.show_shop
+  assign show_cart = sec_settings.show_cart
+  assign show_homepage = sec_settings.show_homepage
+%}
+{%- if eb_mobile_navbar -%}
+  {%- if show_homepage or show_shop or show_account or show_cart -%}
+    <mobile-navigation-bar class="bls__mobile-navigation-bar d-block d-md-none fixed bottom-0 inset-x-0 z-3 bg-default border-top">
+      <ul class="d-flex space-between align-center list-unstyled">
+        {%- if show_homepage -%}
+          <li class="flex-1 text-center">
+            <a
+              href="{{ routes.root_url }}"
+              id="homepage-icon-bubble"
+              class="remove-underline px-5{% if request.path == "/" %} active{% endif %}"
+            >
+              {% render 'icon-home', custom_width: 24 %}
+              <span class="d-block fs-small">{{ 'general.mobile_navbar.homepage' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if show_shop -%}
+          <li class="flex-1 text-center">
+            <a
+              href="{{ collections.all.url }}"
+              class="remove-underline px-5{% if request.path == "/collections/all" %} active{% endif %}"
+            >
+              {% render 'icon-shop', custom_width: 24 %}
+              <span class="d-block fs-small">{{ 'general.mobile_navbar.shop' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if show_account -%}
+          <li class="flex-1 text-center">
+            <a
+              href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+              class="remove-underline px-5{% if request.path == "/account/login" or request.path == "/account" %} active{% endif %}"
+              aria-label="{{ 'customer.account_fallback' | t }}"
+            >
+              {% render 'icon-account', custom_width: 24 %}
+              <span class="d-block fs-small">
+                {%- liquid
+                  if customer
+                    echo 'customer.account_fallback' | t
+                  else
+                    echo 'customer.account_fallback' | t
+                  endif
+                -%}
+              </span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if show_cart -%}
+          <li class="flex-1 text-center">
+            <a
+              href="{{ routes.cart_url }}"
+              class="link focus-inset remove-underline px-5 icon--cart-action relative{% if request.path == "/cart" %} active{% endif %}"
+              id="cart-icon-bubble-mobile"
+            >
+              {%- if settings.cart_icon == 'shopping_bag' -%}
+                {% render 'icon-bag', custom_width: 20 %}
+              {%- else -%}
+                {% render 'icon-cart', custom_width: 25 %}
+              {%- endif -%}
+
+              <span class="d-block fs-small">{{ 'templates.cart.cart' | t }}</span>
+              {%- if cart != empty -%}
+                <div class="cart-count round-50 bg-dark p-5 color-light fs-small d-inline-flex absolute">
+                  {%- if cart.item_count < 100 -%}
+                    <span aria-hidden="true">{{ cart.item_count }}</span>
+                  {%- else -%}
+                    <span aria-hidden="true">~</span>
+                  {%- endif -%}
+                  <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+                </div>
+              {%- else -%}
+                <div class="cart-count round-50 bg-dark p-5 color-light fs-small d-inline-flex">
+                  <span aria-hidden="true">0</span>
+                </div>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </mobile-navigation-bar>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.mobile-navigation-bar.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.mobile-navigation-bar.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "eb_mobile_navbar",
+      "label": "t:sections.mobile-navigation-bar.settings.show_section",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_homepage",
+      "label": "t:sections.mobile-navigation-bar.settings.show_homepage",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop",
+      "label": "t:sections.mobile-navigation-bar.settings.show_shop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "t:sections.mobile-navigation-bar.settings.show_account",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "t:sections.mobile-navigation-bar.settings.show_cart",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+<div class="contact-form-success">
+  <span class="form__message contact-form__message contact-form__message--success">
+    {% render 'icon-checkmark', custom_width: 13 -%}
+    {{ 'templates.contact.form.post_success' | t }}
+  </span>
+</div>
+<div class="newsletter-form-error">
+  <span class="form__message newsletter-form__message newsletter-form__message--error">
+    {%- render 'icon-error' -%}
+    {{- 'newsletter.error' | t }}
+  </span>
+</div>
+<div class="newsletter-form-success">
+  <span class="form__message newsletter-form__message newsletter-form__message--success">
+    {% render 'icon-checkmark', custom_width: 13 -%}
+    {{- 'newsletter.success' | t }}
+  </span>
+</div>
+<div class="stockalert-form-success">
+  <span class="form__message stockalert-form__message stockalert-form__message--success">
+    {% render 'icon-checkmark', custom_width: 13 -%}
+    {{- 'stockalert.success' | t }}
+  </span>
+</div>

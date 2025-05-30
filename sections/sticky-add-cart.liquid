@@ -1,0 +1,139 @@
+
+{%- unless section.settings.enable_sticky_add_cart == false and section.settings.enable_sticky_add_cart_mobile == false -%}
+  <sticky-buy data-section="{{ section.id }}" class="rounded-10 bg-default p-20 product__item-js fixed z-6 right-30 bottom-30{% if section.settings.enable_sticky_add_cart == false %}d-md-none{% endif %}">
+    <minimal-button class="border-grey lh-1 touch-target transition absolute right-20 top-20 z-1 round-50 border d-inline-flex align-center justify-content-center w-44 h-44 transition">
+      {% render 'icon-plus-animation' %}
+    </minimal-button>
+    {%- liquid
+      assign product_form_id = 'product-form-' | append: section.id
+      assign media = product.featured_media
+      if product.selected_or_first_available_variant.featured_image
+        assign media = product.selected_or_first_available_variant.featured_image
+      endif
+      assign ar = ""
+      if settings.product_image_ratio != 'adapt_to_image'
+        case settings.product_image_ratio
+          when 'square'
+            assign ar = '1/1'
+          else
+            assign ar = '3/4'
+        endcase
+      else
+        if media.media_type == 'model'
+          assign ar = '3/4'
+        else
+          assign ar = media.aspect_ratio
+        endif
+      endif
+    -%}
+    <div class="product-wrapper d-flex pr-60">
+      {%- unless media == null -%}
+        <div
+          class="product__media w-60 rounded-10 mr-15 align-self-start"
+          style="--aspect-ratio: {{ ar }}"
+        >
+          {{
+            media
+            | image_url: width: 1946
+            | image_tag:
+              loading: 'lazy',
+              sizes: '100vw',
+              widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
+          }}
+        </div>
+      {%- endunless -%}
+      <div class="product-info flex-1">
+        <h2 class="mt-0 mb-0 letter-spacing-0 product__name">
+          {%- if product.title != blank -%}
+            {{ product.title | escape }}
+          {%- else -%}
+            {{ 'onboarding.product_title' | t }}
+          {%- endif -%}
+        </h2>
+        <div class="product__price mt-5 heading-color">
+          {%- render 'price' | scope: 'detail' | product: product -%}
+        </div>
+      </div>
+    </div>
+    <div class="expand-content custom-scrollbar pt-25">
+      {%- liquid
+        assign is_dropdown = false
+        if section.settings.variant_type == "dropdown"
+          assign is_dropdown = true
+        endif
+        render 'color-swatches' | product: product | type: "sticky" | is_dropdown: is_dropdown
+        render 'buy-buttons', product: product, product_form_id: product_form_id, section_id: section.id, formClass: "sticky-form"
+      -%}
+      {%- assign is_dropdown = false -%}
+      {% if section.settings.variant_type == "dropdown" %}
+        {%- assign is_dropdown = true -%}
+      {% endif %}
+    </div>  
+    {% unless product == empty %}
+      <script
+        type="application/json"
+        data-product-json
+      >
+        {{ product | json }}
+      </script>
+    {% endunless %}
+    {%- unless product.has_only_default_variant -%}
+      <script type="application/json" class="productVariantsQty">
+        [
+        {%- for variant in product.variants -%}
+          {%- assign op = variant.option1 | replace: '"', '\"' -%}
+          {%- liquid
+              assign id = '"id":' | append: variant.id
+              assign option = '"option":"' | append: op | append: '"'
+              assign quantity = '"qty":' | append: variant.inventory_quantity
+              assign available = '"available":' | append: variant.available
+              assign mamagement = '"mamagement":"' | append: variant.inventory_management | append: '"'
+              assign incoming = '"incoming":"' | append: variant.incoming | append: '"'
+              assign incoming_date = '"incoming_date":"' | append: variant.next_incoming_date | append: '"'
+          -%}
+          { {{ id }},{{ option }},{{ quantity }},{{ available }},{{ mamagement }},{{ incoming }},{{ incoming_date }}}
+          {%- unless forloop.last -%},{%- endunless forloop.last -%}
+        {%- endfor -%}
+        ]
+      </script>
+    {%- endunless -%}
+  </sticky-buy>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "t:sections.sticky_add_cart.name",
+  "tag": "section",
+  "class": "overlay-sticky_add_cart",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_add_cart",
+      "default": true,
+      "label": "t:sections.sticky_add_cart.settings.enable_sticky_add_cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_add_cart_mobile",
+      "default": true,
+      "label": "t:sections.sticky_add_cart.settings.enable_sticky_add_cart_mobile"
+    },
+    {
+      "type": "select",
+      "id": "variant_type",
+      "label": "t:sections.sticky_add_cart.settings.picker_type.label",
+      "options": [
+        {
+          "value": "swatches",
+          "label": "t:sections.sticky_add_cart.settings.picker_type.options__2.label"
+        },
+        {
+          "value": "dropdown",
+          "label": "t:sections.sticky_add_cart.settings.picker_type.options__1.label"
+        }
+      ],
+      "default": "swatches"
+    }
+  ]
+}
+{% endschema %}

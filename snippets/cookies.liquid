@@ -1,0 +1,33 @@
+{% liquid
+  assign design_mode = request.design_mode
+  assign eb_design_mode = settings.show_in_editor
+%}
+
+{%- if settings.enable_cookies -%}
+  <cookies-popup class="fixed bg-default px-50 py-80 rounded-corner-item z-8 text-center w-full" {% if eb_design_mode and design_mode %}open{% endif %} >
+    <div id="bls_cookies" class="bls_cookies">
+      {%- if settings.cookies_title != blank -%}
+        <div class="cookies-title h1 mt-0">
+          {{- settings.cookies_title }}
+        </div>
+      {%- endif -%}
+      <div class="cookies-message">
+        {{- settings.cookies_content }}
+      </div>
+      {%- if settings.cookies_allow != blank or settings.cookies_refusse != blank -%}
+        <div class="cookies-action mt-15 mt-md-55 gap-10">
+          {%- if settings.cookies_allow != blank -%}
+            <button class="button cookies-btn cookies-allow-js btn mb-15">
+              {{ settings.cookies_allow }}
+            </button>
+          {%- endif -%}
+          {%- if settings.cookies_refusse != blank -%}
+            <button class="button cookies-btn cookies-refuse-js btn-reset d-block w-full text-center text-color">
+              {{ settings.cookies_refusse }}
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </cookies-popup>
+{%- endif -%}

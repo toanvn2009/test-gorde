@@ -1,0 +1,354 @@
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "disabled": true,
+      "settings": {
+        "section_width": "stretch_width",
+        "text_alignment": "center",
+        "eb_breadcrumb": true,
+        "padding_top": 80,
+        "padding_bottom": 40
+      }
+    },
+    "85c86895-d3e6-4879-8c04-186884a188bb": {
+      "type": "scrolling-text",
+      "blocks": {
+        "scrolling_text_jKjERT": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        },
+        "scrolling_text_3xjt9x": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        },
+        "scrolling_text_GDGgNB": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        },
+        "scrolling_text_H3WMcA": {
+          "type": "scrolling-text",
+          "settings": {
+            "text": "Scrolling text",
+            "link": "",
+            "accent_color": false
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_text_jKjERT",
+        "scrolling_text_3xjt9x",
+        "scrolling_text_GDGgNB",
+        "scrolling_text_H3WMcA"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "scheme-0ba1b009-7eed-45cd-b0f5-57fda3e81ca0",
+        "direction": "left",
+        "marquee_speed": 18,
+        "style_between_item": true,
+        "scrolling_size": "small",
+        "uppercase": true,
+        "use_heading_font": false,
+        "padding_top": 24,
+        "padding_bottom": 26
+      }
+    },
+    "9f044b8c-52af-4b16-a4d0-afbcc0c7ba78": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_F67dYU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image with text overlay"
+          }
+        },
+        "description_McUjcX": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_F67dYU",
+        "description_McUjcX"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "image_overlay_opacity": 45,
+        "image_height": "adapt",
+        "show_text_bellow": false,
+        "reset_color": false,
+        "desktop_content_position": "middle-center",
+        "text_alignment": "center",
+        "content_size": "medium",
+        "content_max_width": 40,
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "51baa570-7ce4-4bdb-8203-1484de42eb67": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_L96Eet": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "heading_size": "h2",
+            "remove_space": false,
+            "remove_letter_spacing": false
+          }
+        },
+        "text_NnzM3c": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>",
+            "description_size": "",
+            "remove_space": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_L96Eet",
+        "text_NnzM3c"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "text_alignment": "center",
+        "content_max_width": 55,
+        "padding_top": 30,
+        "padding_bottom": 15
+      }
+    },
+    "a0d80c93-196c-4318-a7fb-30fb7d3068b8": {
+      "type": "promotion-banner",
+      "blocks": {
+        "c5577429-329d-4dd3-873d-544a6bfa1ac6": {
+          "type": "image",
+          "settings": {
+            "image_link": "",
+            "vertical": "center",
+            "content_width": "50%"
+          }
+        },
+        "8d22b1f7-704b-4736-897e-e4c79560ebe7": {
+          "type": "image",
+          "settings": {
+            "image_link": "",
+            "vertical": "center",
+            "content_width": "50%"
+          }
+        }
+      },
+      "block_order": [
+        "c5577429-329d-4dd3-873d-544a6bfa1ac6",
+        "8d22b1f7-704b-4736-897e-e4c79560ebe7"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "column_gap": "medium",
+        "padding_top": 30,
+        "padding_bottom": 51
+      }
+    },
+    "ec7a3876-392b-48b3-ad99-29cef939bbda": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_W8wF3j": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "heading_size": "h2",
+            "remove_space": false,
+            "remove_letter_spacing": false
+          }
+        },
+        "spacing_DJTDgM": {
+          "type": "spacing",
+          "settings": {
+            "desktop_spacing": 13,
+            "mobile_spacing": 10
+          }
+        },
+        "text_GcjcHX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>",
+            "description_size": "",
+            "remove_space": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_W8wF3j",
+        "spacing_DJTDgM",
+        "text_GcjcHX"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "text_alignment": "center",
+        "content_max_width": 77,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "768a7ccc-ccc3-4ca0-b745-1d7897be59a0": {
+      "type": "icon-with-text",
+      "blocks": {
+        "icon_with_text_rnGnJg": {
+          "type": "icon-with-text",
+          "settings": {
+            "icon_svg": "none",
+            "heading": "",
+            "description": "<p>Add a short description for this section.<\/p>",
+            "uppercase": false
+          }
+        },
+        "icon_with_text_8mnd4C": {
+          "type": "icon-with-text",
+          "settings": {
+            "icon_svg": "none",
+            "heading": "",
+            "description": "<p>Add a short description for this section.<\/p>",
+            "uppercase": false
+          }
+        },
+        "icon_with_text_7Ntdz8": {
+          "type": "icon-with-text",
+          "settings": {
+            "icon_svg": "none",
+            "heading": "",
+            "description": "<p>Add a short description for this section.<\/p>",
+            "uppercase": false
+          }
+        }
+      },
+      "block_order": [
+        "icon_with_text_rnGnJg",
+        "icon_with_text_8mnd4C",
+        "icon_with_text_7Ntdz8"
+      ],
+      "settings": {
+        "section_width": "fix_width",
+        "color_scheme": "",
+        "icon_position": "left",
+        "icon_width": 30,
+        "heading_size": "large",
+        "text_alignment": "left",
+        "column_gap": "medium",
+        "padding_top": 50,
+        "padding_bottom": 44
+      }
+    },
+    "5d4fc99c-ea37-418a-9f44-0f491ed6fb45": {
+      "type": "promotion-banner",
+      "blocks": {
+        "8a3524cd-eb66-4245-aa04-b03245623349": {
+          "type": "image",
+          "settings": {
+            "image_link": "",
+            "vertical": "start",
+            "content_width": "100%"
+          }
+        }
+      },
+      "block_order": [
+        "8a3524cd-eb66-4245-aa04-b03245623349"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "column_gap": "small",
+        "padding_top": 40,
+        "padding_bottom": 22
+      }
+    },
+    "4c96c224-fc56-4b72-b031-df76b1b025b4": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonials_items_CcUFCG": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.<\/p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_UXiRwT": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.<\/p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        },
+        "testimonials_items_WA6DNP": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.<\/p>",
+            "author_name": "Author's name",
+            "author_address": "Author info",
+            "author_published": "Date published"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_CcUFCG",
+        "testimonials_items_UXiRwT",
+        "testimonials_items_WA6DNP"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "title": "",
+        "description": "",
+        "text_alignment": "left",
+        "show_rate": false,
+        "show_date_published": true,
+        "show_author_image": true,
+        "show_author_name": true,
+        "show_author_info": false,
+        "design": "design_1",
+        "testimonial_to_show": "1",
+        "show_navigation": true,
+        "show_pagination": true,
+        "enable_autoplay": false,
+        "carousel_time": 6,
+        "column_gap": "medium",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "85c86895-d3e6-4879-8c04-186884a188bb",
+    "9f044b8c-52af-4b16-a4d0-afbcc0c7ba78",
+    "51baa570-7ce4-4bdb-8203-1484de42eb67",
+    "a0d80c93-196c-4318-a7fb-30fb7d3068b8",
+    "ec7a3876-392b-48b3-ad99-29cef939bbda",
+    "768a7ccc-ccc3-4ca0-b745-1d7897be59a0",
+    "5d4fc99c-ea37-418a-9f44-0f491ed6fb45",
+    "4c96c224-fc56-4b72-b031-df76b1b025b4"
+  ]
+}

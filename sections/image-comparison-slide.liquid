@@ -1,0 +1,293 @@
+{{ 'section-image-comparison-slide.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign the_settings = settings
+  assign sec_settings = section.settings
+  assign section_width = ''
+  if sec_settings.section_width == 'fix_width'
+    assign section_width = 'container'
+  elsif sec_settings.section_width == 'expand_full_width'
+    assign section_width = 'full-width px-20'
+  else
+    assign section_width = 'full-width-gap'
+  endif
+  assign image_before = sec_settings.image_before
+  assign image_after = sec_settings.image_after | default: image_before
+  assign aspect_ratio = sec_settings.aspect_ratio
+  assign custom_ratio = sec_settings.custom_ratio
+  assign ratio = ''
+  if aspect_ratio != 'adapt'
+    assign ratio = ''
+    case aspect_ratio
+      when 'square'
+        assign ratio = '1/1'
+      when 'portrait'
+        assign ratio = '3/4'
+      when 'landscape'
+        assign ratio = '21/9'
+      else
+        if custom_ratio != empty
+          assign ratio = custom_ratio | replace: ':', '/'
+        else
+          assign ratio = '4/3'
+        endif
+    endcase
+  else
+    if image_before != blank
+      assign ratio = image_before.aspect_ratio
+    elsif image_after != blank
+      assign ratio = image_after.aspect_ratio
+    else
+      assign ratio = '4/3'
+    endif
+  endif
+%}
+{%- capture style -%}
+--section-padding-top: {{ sec_settings.padding_top }}px; --section-padding-bottom: {{ sec_settings.padding_bottom }}px;
+{%- endcapture -%}
+<div
+  class="d-block color-{{ sec_settings.color_scheme }} gradient bls__section bls__image-comparison-slide"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    <div class="section-inner section-padding">
+      {%- if sec_settings.title != blank or sec_settings.description != blank -%}
+        <div class="bls__section-header mb-40 mb-sm-35 text-{{ sec_settings.text_alignment }}{% if the_settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if sec_settings.title != blank -%}
+            <h2 class="bls_section-heading heading-letter-spacing mt-0 mb-7 mb-md-15">{{ sec_settings.title }}</h2>
+          {%- endif -%}
+          {%- if sec_settings.description != blank -%}
+            <div class="short-des">
+              {{ sec_settings.description }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      <image-comparison-slide class="image-comparison-slide relative">
+        <div
+          class="image-comparison-container"
+          style="--percent:50%;"
+        >
+          <button
+            type="button"
+            class="image-comparison__button absolute top-0 bottom-0 z-3 d-flex justify-content-center align-center"
+            aria-label="{{ 'button_compare.label' | t }}"
+          >
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="20" viewBox="0 0 8 20" fill="none">
+                <path d="M0.25 0.25V19.75H1.75V0.25H0.25ZM6.25 0.25V19.75H7.75V0.25H6.25Z" fill="#000000"/>
+              </svg>
+            </span>
+          </button>
+          <div class="image-comparison image-comparison__before">
+            <div class="image-comparison-ratio relative" style="--aspect-ratio: {{ ratio }};">
+              {% if image_before != blank %}
+                {%- assign image_alt = image_before.alt | escape -%}
+                {{
+                  image_before
+                  | image_url: width: 3840
+                  | image_tag:
+                    loading: 'lazy',
+                    sizes: '100vw',
+                    widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                    alt: image_alt
+                }}
+              {% else %}
+                {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+              {% if sec_settings.text_left %}
+                <span class="before-text image-text absolute z-2 left-50 bottom-30 semi-bold heading-color">
+                  {{ sec_settings.text_left }}
+                </span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="image-comparison image-comparison__after absolute inset-0 overflow-hidden">
+            <div class="image-comparison-ratio relative" style="--aspect-ratio: {{ ratio }};">
+              {% if image_after != blank %}
+                {%- assign image_alt = image_after.alt | escape -%}
+                {{
+                  image_after
+                  | image_url: width: 3840
+                  | image_tag:
+                    loading: 'lazy',
+                    sizes: '100vw',
+                    widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                    alt: image_alt
+                }}
+              {% else %}
+                {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+              {% if sec_settings.text_right %}
+                <span class="before-text image-text absolute z-3 right-50 bottom-30 semi-bold heading-color text-right">
+                  {{ sec_settings.text_right }}
+                </span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </image-comparison-slide>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.image-comparison-slide.name",
+  "tag": "section",
+  "class": "section image-comparison-slide",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "fix_width",
+          "label": "t:sections.all.layout.fix_width"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.layout.stretch_width"
+        },
+        {
+          "value": "expand_full_width",
+          "label": "t:sections.all.layout.expand_full_width"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.layout.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_setting.label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.all.content_setting.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.content_setting.description.label"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.option_1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.option_2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.option_3.label"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.all.text_alignment.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.image-comparison-slide.settings.header.image-options"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_before",
+      "label": "t:sections.image-comparison-slide.settings.image_before.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_after",
+      "label": "t:sections.image-comparison-slide.settings.image_after.label"
+    },
+    {
+      "type": "text",
+      "id": "text_left",
+      "label": "t:sections.image-comparison-slide.settings.text_left.label",
+      "default": "Text left"
+    },
+    {
+      "type": "text",
+      "id": "text_right",
+      "label": "t:sections.image-comparison-slide.settings.text_right.label",
+      "default": "Text right"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.adapt"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__1"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__2"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__3"
+        },
+        {
+          "value": "custom",
+          "label": "t:sections.image-tabs.settings.aspect_ratio.option__4"
+        }
+      ],
+      "default": "landscape",
+      "label": "t:sections.image-tabs.settings.aspect_ratio.label"
+    },
+    {
+      "type": "text",
+      "id": "custom_ratio",
+      "label": "t:sections.shopable-video.settings.custom_ratio.label",
+      "info": "t:sections.shopable-video.settings.aspect_ratio.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image-comparison-slide.presets.name"
+    }
+  ]
+}
+{% endschema %}

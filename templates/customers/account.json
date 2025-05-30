@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-account",
+      "settings": {
+        "padding_top": 60,
+        "padding_bottom": 15
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,76 @@
+{% if link.links.size > 0 %}
+  {%- if type == 'classic' -%}
+    <div
+      class="absolute-1025 dropdown-child flex-1 grid-cols small-desktop-1{% if sub != blank %} {{ sub }}{% endif %}"
+    >
+      <back-button tabindex="0" class="d-block d-1025-none relative mb-30 fs-small mt-15 hidden-no-js">
+        <div class="accent-color-second-bg rounded-corner-item px-15 pb-3 pt-5 d-inline-flex align-center heading-color pointer">
+          <span class="icon-back absolute left-10 inset-y-0 d-inline-flex align-center lh-1 currentColor-svg">
+            {%- render 'icon-prev', custom_width: 12 -%}
+          </span>
+          <span class="pl-15 heading-color">{{- link.title -}}</span>
+        </div>
+      </back-button>
+  {%- endif -%}
+  <ul
+    class="menu list-unstyled dropdown-child flex-1 grid-cols small-desktop-1{% if type != 'classic' and sub != blank %} {{ sub }}{% endif %}"
+    {% if column != blank %}
+      style="--col-number: {{ column }}"
+    {% endif %}
+    {% if level1_index != blank %}
+      id="HeaderMenu-MenuList-{{ level1_index }}"
+    {% endif %}
+  >
+    {% for child_link in link.links %}
+      <li class="menu-link level-1{% if child_link.links.size > 0 %} have-child{% endif %}">
+        {%- if child_link.links.size > 0 -%}
+          <details open>
+          <summary
+            class="remove-underline relative menu__item-link submenu__item-link level-1 header-color py-15 py-1025-0 mb-10{% if link.links.size > 0 %} pr-44{% endif %}{% if type != "classic" %} heading-weight fs-18 d-block mb-1025-10{% endif %}"
+            aria-label="{{ child_link.title }}"
+          >
+        {%- else -%}
+          <a
+            class="remove-underline relative menu__item-link submenu__item-link level-1 header-color{% if link.links.size > 0 %} pr-44{% endif %}{% if type != "classic" %} heading-weight fs-18 d-block mb-1025-10{% else %} py-5{% endif %}"
+            aria-label="{{ child_link.title }}"
+            href="{{ child_link.url }}"
+          >
+        {%- endif -%}
+        <span class="submenu__item-tex link_text{% if type == 'classic' %} text-color{% endif %}  {%- if child_link.links.size > 0 and  type != 'classic' -%} fs-bigger-4{%- else -%}text-size-1025{%- endif -%}">{{- child_link.title -}}</span>
+        {% if child_link.links.size > 0 %}
+          <span class="open-children-toggle touch-target absolute inset-0 w-full currentColor-svg">
+            {% render 'icon-arrow-down', custom_width: 12 %}
+          </span>
+        {% endif %}
+        {%- if child_link.links.size > 0 -%}
+          </summary>
+        {%- else -%}
+          </a>
+        {%- endif -%}
+        {% if child_link.links.size > 0 %}
+          <ul class="sub-children-menu list-unstyled opacity-lg-0">
+            {% for grandchild_link in child_link.links %}
+              <li class="menu-link">
+                <a
+                  class="remove-underline menu__item-link submenu__item-link py-5 d-block"
+                  href="{{ grandchild_link.url }}"
+                  aria-label="{{ grandchild_link.title }}"
+                >
+                  <span class="submenu__item-tex link_text text-color text-size-1025 fs-bigger-2">
+                    {{- grandchild_link.title -}}
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {%- if child_link.links.size > 0 -%}
+          </details>
+        {%- endif -%}
+      </li>
+    {% endfor %}
+  </ul>
+  {%- if type == 'classic' -%}
+    </div>
+  {%- endif -%}
+{% endif %}

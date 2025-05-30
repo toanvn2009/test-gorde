@@ -1,0 +1,181 @@
+<action-search
+  class="bls__canvas bls__canvas-right header-search has-close-btn close-slide-up header_search"
+  data-focus-item="search-icon-bubble"
+  role="dialog"
+>
+  <div
+    id="search-form"
+    class="search-form inset-x-0 z-4 bg-default h-full d-flex flex-column overflow-y-auto overflow-x-hidden custom-scrollbar"
+  >
+    {%- liquid
+      assign search_keyword = section.settings.search_popular_keywords
+      assign search_suggest = section.settings.search_collection_recommended
+      assign show_price = true
+      assign show_vendor = true
+      if settings.show_search_price == true
+        assign show_price = false
+      endif
+      if settings.show_search_vendor == true
+        assign show_vendor = false
+      endif
+    -%}
+    <form
+      action="{{ routes.search_url }}"
+      id="search_mini_form"
+      method="get"
+      role="search"
+      class="search search-modal__form padding-inner sticky top-0 bg-default inset-0 z-2 pb-23"
+    >
+      <div class="field align-center flex-nowrap gap-medium gap-0 accent-color-second-bg rounded-10 btn-large">
+        <button
+          type="submit"
+          class="button btn-reset search__button d-inline-flex absolute left-0 top-0 bottom-0 z-1 align-center pl-15"
+          tabindex="0"
+          aria-label="{{ 'general.search.search' | t }}"
+        >
+          {% render 'icon-search', custom_width: 22 %}
+        </button>
+        <input
+          class="pl-44-impo search__input field__input border-0 pr-100 overflow-hidden"
+          type="search"
+          name="q"
+          value=""
+          placeholder="{{ 'general.search.search' | t }}"
+          maxlength="128"
+          id="Search-In-Modal"
+          {% if section.settings.predictive_search_enabled %}
+            role="combobox"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          {% endif %}
+        >
+        <label class="visually-hidden" for="Search-In-Modal"> {{ 'general.search.search' | t }}</label>
+        <input type="hidden" name="options[unavailable_products]" value="show">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="hidden" name="type" value="all">
+        <input type="hidden" name="options[fields]" value="title,vendor,product_type,variants.title">
+        <div class="search__action-right d-flex gap-5 absolute right-0 top-0 bottom-0 z-1 align-center">
+          <div tabindex="0" class="clear-btn d-none btn-text-transform pointer">
+            {% render 'icon-undo', custom_width: 16 %}
+          </div>
+          <close-button class="touch-target has-overlay heading-color hover-svg-zoom" tabindex="0">
+            {% render 'icon-close', custom_width: 20 %}
+          </close-button>
+        </div>
+      </div>
+      <div class="loading-overlay__spinner loading-icon"></div>
+    </form>
+    {%- if search_keyword != blank or search_suggest != blank or section.settings.predictive_search_enabled != false -%}
+      <predictive-search
+        class="overflow-auto search-content d-flex flex-column transition flex-1"
+        style="--col-gap: 30px"
+        role="listbox"
+      >
+        {%- if search_keyword != blank -%}
+          {%- capture link_search_keyword -%}
+              {{ routes.search_url }}?type=product&options%5Bfields%5D=title,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=show&options%5Bprefix%5D=last&q=
+          {%- endcapture -%}
+          <div id="search-keyword" class="search-keyword align-items-center mb-30 padding-inner-x">
+            <p class="search-keyword-title m-0 fs-18 btn-text-transform  heading-color mb-20">
+              {{ 'general.search.search_keyword' | t }}
+            </p>
+            <ul class="search-keyword-list p-0 pl-10 my-0 list-unstyled d-flex flex-wrap">
+              {%- assign search_keyword = search_keyword | replace: ' ,', ',' | replace: ', ', ',' | split: ',' -%}
+              {%- for qr in search_keyword -%}
+                {%- assign search_keywords = qr | strip -%}
+                {%- if search_keywords -%}
+                  <li class="pr-10">
+                    <a
+                      class="recommend-search__item quick-url remove-underline btn-text-transform  fs-small outline-style heading-color d-inline-block mb-10"
+                      href="{{ link_search_keyword }}{{ search_keywords }}"
+                      aria-label="{{ search_keywords }}"
+                      role="option"
+                      aria-selected="false"
+                    >
+                      {{ search_keywords }}
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if search_suggest != blank or section.settings.predictive_search_enabled != false -%}
+          <div class="predictive-search w-full d-none padding-inner-x"></div>
+          <div class="recommend-search flex-1 padding-inner-x pb-30" data-predictive-search>
+            {%- if search_suggest -%}
+              {%- assign collection = collections[search_suggest] -%}
+              {%- if collection.products.size > 0 -%}
+                <div class="search-product">
+                  <p class=" m-0 fs-18 heading-color btn-text-transform mb-20 word-break-all word-break-all">
+                    {{ 'general.search.popular_products' | t }}
+                  </p>
+                  <div
+                    class="grid-cols gap-small small-desktop-2 tablet-2 mb-2"
+                    style="--col-number: 2"
+                  >
+                    {%- for product in collection.products limit: 10 -%}
+                      {% render 'card-product',
+                        card_product: product,
+                        disable_quickview: true,
+                        disable_badge: true,
+                        disable_rate: true,
+                        disable_price: show_price,
+                        disable_vendor: show_vendor,
+                        is_predictive_search: true
+                      %}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </predictive-search>
+    {%- endif -%}
+  </div>
+</action-search>
+{%- if section.settings.predictive_search_enabled -%}
+  <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "t:sections.search.name",
+  "tag": "section",
+  "class": "overlay-section overlay-search",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.search.settings.recommendations.label"
+    },
+    {
+      "type": "text",
+      "id": "search_popular_keywords",
+      "label": "t:sections.search.settings.recommendations.popular_keywords.label",
+      "info": "t:sections.search.settings.recommendations.popular_keywords.info"
+    },
+    {
+      "type": "collection",
+      "id": "search_collection_recommended",
+      "label": "t:sections.search.settings.recommendations.collection_recommended.label",
+      "info": "t:sections.search.settings.recommendations.collection_recommended.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.search.settings.results.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "predictive_search_enabled",
+      "label": "t:sections.search.settings.predictive_search.label",
+      "info": "t:sections.search.settings.predictive_search.info",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,122 @@
+{%- liquid
+  assign limit = 2
+  assign show_price = true
+  assign show_vendor = true
+  if settings.show_search_price == true
+    assign show_price = false
+  endif
+  if settings.show_search_vendor == true
+    assign show_vendor = false
+  endif
+-%}
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results" class="d-flex flex-column" role="listbox">
+    {%- if predictive_search.resources.queries.size > 0
+      or predictive_search.resources.products.size > 0
+      or predictive_search.resources.pages.size > 0
+      or predictive_search.resources.articles.size > 0
+    -%}
+      {%- if predictive_search.resources.queries.size > 0 -%}
+        <div class="search-keyword align-items-center mb-20">
+          <p class="search-keyword-title m-0 fs-18 btn-text-transform  heading-color mb-20">
+            {{ 'general.search.suggestions' | t }}
+          </p>
+          <ul
+            role="group"
+            aria-labelledby="predictive-search-queries"
+            class="search-keyword-list p-0 pl-10 my-0 list-unstyled d-flex flex-wrap"
+          >
+            {%- for query in predictive_search.resources.queries -%}
+              <li role="option" aria-selected="false" class="pr-10">
+                <a
+                  href="{{ query.url }}"
+                  class="predictive-search__item quick-url remove-underline btn-text-transform  fs-small outline-style heading-color d-inline-block mb-10"
+                >
+                  <div>
+                    <p aria-label="{{ query.text }}">{{ query.styled_text }}</p>
+                  </div>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      {%- if predictive_search.resources.products.size > 0 -%}
+        <div class="search-product flex-1 pt-40 border-top">
+          <div class="search-result-heading d-flex align-center gap-15 mb-20 space-between flex-wrap">
+            <p class="m-0 fs-18 heading-color btn-text-transform ">
+              {{ 'general.search.search_for' | t: terms: predictive_search.terms }}
+            </p>
+          </div>
+          <div class="grid-cols gap-small small-desktop-2 tablet-2 mb-2" style="--col-number: 2">
+            {%- for product in predictive_search.resources.products -%}
+              {% render 'card-product',
+                card_product: product,
+                disable_quickview: true,
+                disable_badge: true,
+                disable_rate: true,
+                disable_price: show_price,
+                disable_vendor: show_vendor,
+                is_predictive_search: true
+              %}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if predictive_search.resources.pages.size > 0 -%}
+        <div class="mt-25 pt-25 pb-15 border-top">
+          <p class=" m-0 fs-18 heading-color btn-text-transform mb-15 word-break-all">
+            {{ 'general.search.pages' | t }}
+          </p>
+
+          {%- for page in predictive_search.resources.pages -%}
+            <a
+              class="quick-url d-block mb-5 last-0 predictive-search__item"
+              href="{{ page.url }}"
+              aria-label="{{ page.title }}"
+              aria-selected="false"
+              role="option"
+            >
+              {{ page.title }}
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if predictive_search.resources.articles.size > 0 -%}
+        <div class="mt-25 pt-25 border-top pb-15">
+          <p class=" m-0 fs-18 heading-color btn-text-transform  mb-15 word-break-all">
+            {{ 'general.search.article' | t }}
+          </p>
+
+          {%- for articles in predictive_search.resources.articles -%}
+            <a
+              class="quick-url d-block mb-5 last-0 predictive-search__item"
+              href="{{ articles.url }}"
+              aria-label="{{ articles.title }}"
+              aria-selected="false"
+              role="option"
+            >
+              {{ articles.title }}
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if predictive_search.resources.products.size > limit -%}
+        <div class="text-center sticky bg-default bottom-0 inset-x-0 py-30 drawer__footer{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <a
+            role="option"
+            aria-selected="false"
+            aria-label="{{ 'general.search.more_result' | t }}"
+            class="predictive-search__item btn btn-see-all-search more-result-link align-self-center w-full{% if section.settings.text_alignment == 'center' %} mt-20{% endif %}"
+          >
+            {{ 'general.search.more_result' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="m-0 fs-18 heading-color btn-text-transform mb-20 word-break-all">
+        {{ 'general.search.no_results' | t: terms: predictive_search.terms }}
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
